@@ -51,6 +51,18 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <Button Text="+"
+                FontSize="Medium"
+                BackgroundColor="Black"
+                TextColor="White"
+                TranslationY="-20"
+                TranslationX="-20"
+                HeightRequest="60"
+                WidthRequest="60"
+                HorizontalOptions="End"
+                CornerRadius="60"
+                Clicked="AddItem_Clicked"/>
     </StackLayout>
     
 </ContentPage>
