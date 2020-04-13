@@ -12,6 +12,8 @@
         <Label Text="{Binding Item.Text}" d:Text="Item name" FontSize="Small"/>
         <Label Text="Description:" FontSize="Medium" />
         <Label Text="{Binding Item.Description}" d:Text="Item description" FontSize="Small"/>
+        <Label Text="Position:" FontSize="Medium" />
+        <Label Text="{Binding Item.Position.Text}"  d:Text="Item position" FontSize="Small"/>
     </StackLayout>
     
 </ContentPage>
