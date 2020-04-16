@@ -2,11 +2,9 @@
 
 namespace ProgettoMobileComputing.Models
 {
-
     public class Group
     {
         public string Name { get; set; }
-
     }
 
     public class Position
@@ -14,19 +12,8 @@ namespace ProgettoMobileComputing.Models
         public string Home { get; set; }
         public string Room { get; set; }
         public Group Group { get; set; }
-
-        public string Text
-        {
-            get
-            {
-                return this.Home + " > " + this.Room + " > " + Group.Name;
-            }
-        }
-
+        public string Text => this.Home + " > " + this.Room + " > " + Group.Name;
     }
-
-    
-
 
     public class Item
     {
@@ -34,6 +21,5 @@ namespace ProgettoMobileComputing.Models
         public string Text { get; set; }
         public string Description { get; set; }
         public Position Position { get; set; }
-
     }
 }
