@@ -9,6 +9,13 @@ namespace ProgettoMobileComputing.Models
 
     public class Position
     {
+     /*   public Position(String home, string room, Group group)
+        {
+            this.Home = home;
+            this.Room = room;
+           // this.Group = group;
+        }*/
+    
         public string Home { get; set; }
         public string Room { get; set; }
         public Group Group { get; set; }

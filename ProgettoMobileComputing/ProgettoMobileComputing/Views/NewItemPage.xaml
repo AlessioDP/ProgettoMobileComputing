@@ -15,13 +15,13 @@
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="15">
             <Label Text="Text" FontSize="Medium" />
-            <Entry Text="{Binding Item.Text}" d:Text="Item name" FontSize="Small" />
+            <Entry Text="{Binding Item.Text}" Placeholder="Item name" FontSize="Small" />
             <Label Text="Description" FontSize="Medium" />
-            <Editor Text="{Binding Item.Description}" d:Text="Item description" FontSize="Small" Margin="0" />
+            <Editor Text="{Binding Item.Description}" Placeholder="Item description" FontSize="Small" Margin="0" />
             <Label Text="Position" FontSize="Medium" />
-            <Entry Text="{Binding Item.Position.Home}" d:Text="Item position Home" FontSize="Small" Margin="0"/>
-            <Entry Text="{Binding Item.Position.Room}" d:Text="Item position Room" FontSize="Small" Margin="0"/>
-            <Entry Text="{Binding Item.Position.Group.Name}" d:Text="Item position" FontSize="Small" Margin="0"/>
+            <Editor Text="{Binding Item.Position.Home}" Placeholder="Home name" FontSize="Small" Margin="0" />
+            <Editor Text="{Binding Item.Position.Room}" Placeholder="Room name" FontSize="Small" Margin="0"/>
+            <Editor Text="{Binding Item.Position.Group.Name}" Placeholder="Group name" FontSize="Small" Margin="0"/>
         </StackLayout>
     </ContentPage.Content>
     

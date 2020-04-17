@@ -14,6 +14,7 @@ namespace ProgettoMobileComputing.Views
     public partial class NewItemPage : ContentPage
     {
         public Item Item { get; set; }
+        public Position Position { get; set; }
 
         public NewItemPage()
         {
@@ -21,8 +22,17 @@ namespace ProgettoMobileComputing.Views
 
             Item = new Item
             {
-                Text = "Item name",
-                Description = "This is an item description."
+                Text = null,
+                Description = null,
+                Position = new Position
+                {
+                    Home = null,
+                    Room = null,
+                    Group = new Group
+                    {
+                        Name = null
+                    }
+                }
             };
 
             BindingContext = this;

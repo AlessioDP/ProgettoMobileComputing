@@ -26,10 +26,6 @@
                 <x:Array Type="{x:Type x:String}">
                     <x:String>First Item</x:String>
                     <x:String>Second Item</x:String>
-                    <x:String>Third Item</x:String>
-                    <x:String>Fourth Item</x:String>
-                    <x:String>Fifth Item</x:String>
-                    <x:String>Sixth Item</x:String>
                 </x:Array>
             </d:ListView.ItemsSource>
             <ListView.ItemTemplate>
