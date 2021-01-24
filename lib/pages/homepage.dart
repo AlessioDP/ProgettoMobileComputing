@@ -18,7 +18,7 @@ class Homepage extends StatelessWidget {
     return MaterialApp(
       title: title,
       theme: ThemeData(
-          primarySwatch: Colors.lightBlue,
+          primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity),
       //initialRoute: '', //write home route here
       //routes: //import routes from routes.dart
@@ -127,7 +127,7 @@ class _HomepageState extends State<_Homepage> {
     return FFNavigationBar(
       theme: FFNavigationBarTheme(
           barBackgroundColor: Colors.white,
-          selectedItemBackgroundColor: Colors.green,
+          selectedItemBackgroundColor: Colors.blue,
           selectedItemIconColor: Colors.white,
           selectedItemLabelColor: Colors.black),
       selectedIndex: selectedIndex,
