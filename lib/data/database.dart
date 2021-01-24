@@ -1,30 +1,23 @@
 import 'package:SearchIt/data/users.dart';
+import 'package:SearchIt/data/objects.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:SearchIt/main.dart';
-import 'package:uuid/uuid.dart';
+import 'dart:convert';
 
-Users loggedUser = Users.empty();
+LoggedUser loggedUser = LoggedUser.empty();
+Data data = Data();
 
 class Database {
-  _save() async {
-    final prefs = await SharedPreferences.getInstance();
-    final user = loggedUser;
-    prefs.setString('name', user.name);
-    prefs.setString('lastName', user.lastName);
-    prefs.setString('email', user.email);
-    prefs.setString('bornDate', user.bornDate);
-    prefs.setString('userName', user.userName);
-    prefs.setString('password', user.password);
+  static save() async {
+    var _prefs = await SharedPreferences.getInstance();
+
+    _prefs.setString("loggedUser", jsonEncode(loggedUser));
+    _prefs.setString("data", jsonEncode(data));
   }
 
-  _read() async {
-    final prefs = await SharedPreferences.getInstance();
-    final user = Users.empty();
-    user.name = prefs.getString('name') ?? "";
-    user.lastName = prefs.getString('lastName') ?? "";
-    user.email = prefs.getString('email') ?? "";
-    user.bornDate = prefs.getString('bornDate') ?? "";
-    user.userName = prefs.getString("userName") ?? "";
-    user.userName = prefs.getString('password') ?? "";
+  read() async {
+    var _prefs = await SharedPreferences.getInstance();
+
+    loggedUser = LoggedUser.fromJson(jsonDecode(_prefs.getString("loggedUser")));
+    data = Data.fromJson(jsonDecode(_prefs.getString("data")));
   }
 }

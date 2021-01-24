@@ -1,4 +1,3 @@
-import 'package:SearchIt/data/homes.dart';
 import 'package:SearchIt/data/objects.dart';
 import 'package:flutter/material.dart';
 //import 'package:SearchIt/widgets/bottom_navigation_bar.dart';
@@ -9,8 +8,8 @@ import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 int status =
     0; //Si deve salvare lo stato alla chiusura dell'app così l'utente si ritroverà l'interfaccia con cui ha chiuso l'app
 
-class Home extends StatelessWidget {
-  Home({Key key, this.title}) : super(key: key);
+class Homepage extends StatelessWidget {
+  Homepage({Key key, this.title}) : super(key: key);
 
   final title;
 
@@ -23,21 +22,21 @@ class Home extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity),
       //initialRoute: '', //write home route here
       //routes: //import routes from routes.dart
-      home: _Home(key: key, title: title),
+      home: _Homepage(key: key, title: title),
     );
   }
 }
 
-class _Home extends StatefulWidget {
-  _Home({Key key, this.title}) : super(key: key);
+class _Homepage extends StatefulWidget {
+  _Homepage({Key key, this.title}) : super(key: key);
 
   final title;
 
   @override
-  _HomeState createState() => _HomeState();
+  _HomepageState createState() => _HomepageState();
 }
 
-class _HomeState extends State<_Home> {
+class _HomepageState extends State<_Homepage> {
   bool selectingMode = false;
 
   getAppBar() {
@@ -46,8 +45,8 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  Widget bodyHomeHomes() {
-    List<Homes> homes = loggedUser.homes;
+  Widget bodyHomepageHomes() {
+    List<Home> homes = data.homes;
     return ListView(
       children: List.generate(homes.length, (index) {
         return ListTile(
@@ -85,8 +84,8 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  Widget bodyHomeObjects() {
-    List<Objects> objects = loggedUser.objects;
+  Widget bodyHomepageObjects() {
+    List<Item> objects = []; // Wip: Collect all objects in homes
     return ListView(
       children: List.generate(objects.length, (index) {
         return ListTile(
@@ -163,9 +162,9 @@ class _HomeState extends State<_Home> {
       appBar: getAppBar(),
       bottomNavigationBar: navigationBar(status),
       body: status == 0
-          ? bodyHomeHomes()
+          ? bodyHomepageHomes()
           : status == 1
-              ? bodyHomeObjects()
+              ? bodyHomepageObjects()
               : null,
     );
   }

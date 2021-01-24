@@ -1,6 +1,6 @@
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:SearchIt/pages/home.dart';
+import 'package:SearchIt/pages/homepage.dart';
 
 FFNavigationBar navigationBar(int selectedIndex) {
   return FFNavigationBar(
