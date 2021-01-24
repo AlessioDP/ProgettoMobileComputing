@@ -1,5 +1,6 @@
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:SearchIt/pages/home.dart';
 
 FFNavigationBar navigationBar(int selectedIndex) {
   return FFNavigationBar(
@@ -11,10 +12,10 @@ FFNavigationBar navigationBar(int selectedIndex) {
     selectedIndex: selectedIndex,
     onSelectTab: (index) {
       if (index == 0 && index != selectedIndex) {
-        //list of home
+        status = 0;
       }
       if (index == 1 && index != selectedIndex) {
-        //list of objects
+        status = 1;
       }
     },
     items: [

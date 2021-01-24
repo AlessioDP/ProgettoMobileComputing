@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:SearchIt/main.dart';
 import 'package:uuid/uuid.dart';
 
+Users loggedUser = Users.empty();
+
 class Database {
   _save() async {
     final prefs = await SharedPreferences.getInstance();
