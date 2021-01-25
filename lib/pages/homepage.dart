@@ -1,12 +1,12 @@
 import 'package:SearchIt/data/objects.dart';
 import 'package:flutter/material.dart';
-//import 'package:SearchIt/widgets/bottom_navigation_bar.dart';
+import 'package:SearchIt/widgets/add_floating_button.dart';
 import 'package:SearchIt/data/database.dart';
 import 'dart:developer';
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 
-int status =
-    0; //Si deve salvare lo stato alla chiusura dell'app così l'utente si ritroverà l'interfaccia con cui ha chiuso l'app
+//Si deve salvare lo stato alla chiusura dell'app così l'utente si ritroverà l'interfaccia con cui ha chiuso l'app
+int status = 0;
 
 class Homepage extends StatelessWidget {
   Homepage({Key key, this.title}) : super(key: key);
@@ -84,37 +84,37 @@ class _HomepageState extends State<_Homepage> {
     );
   }
 
-  Widget bodyHomepageObjects() {
-    List<Item> objects = []; // Wip: Collect all objects in homes
+  Widget bodyHomepageItems() {
+    List<Item> items = []; // Wip: Collect all objects in homes
     return ListView(
-      children: List.generate(objects.length, (index) {
+      children: List.generate(items.length, (index) {
         return ListTile(
           onLongPress: () {
             setState(() {
-              objects[index].selected = true;
+              items[index].selected = true;
               selectingMode = true;
             });
           },
           onTap: () {
             setState(() {
               if (selectingMode) {
-                objects[index].selected = !objects[index].selected;
-                log(objects[index].selected.toString());
+                items[index].selected = !items[index].selected;
+                log(items[index].selected.toString());
               }
             });
           },
-          selected: objects[index].selected,
+          selected: items[index].selected,
           leading: GestureDetector(
             behavior: HitTestBehavior.opaque,
             child: Container(
               child: Text(
-                objects[index].name,
+                items[index].name,
                 style: TextStyle(fontSize: 18.0),
               ),
             ),
           ),
           trailing: (selectingMode)
-              ? ((objects[index].selected)
+              ? ((items[index].selected)
                   ? Icon(Icons.check_box)
                   : Icon(Icons.check_box_outline_blank))
               : null,
@@ -164,8 +164,9 @@ class _HomepageState extends State<_Homepage> {
       body: status == 0
           ? bodyHomepageHomes()
           : status == 1
-              ? bodyHomepageObjects()
+              ? bodyHomepageItems()
               : null,
+      floatingActionButton: floatingButton(context),
     );
   }
 }
