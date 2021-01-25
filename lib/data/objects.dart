@@ -41,4 +41,12 @@ class Item {
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
+
+  static List<Item> getSelectedItems(List<Item> allItems) {
+    return allItems.where((item) => item.selected == true).toList();
+  }
+
+  static bool onlyOneSelected(List<Item> allItems) {
+    return getSelectedItems(allItems).length == 1;
+  }
 }

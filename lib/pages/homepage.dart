@@ -4,9 +4,12 @@ import 'package:SearchIt/widgets/add_floating_button.dart';
 import 'package:SearchIt/data/database.dart';
 import 'dart:developer';
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
+import 'edit_item.dart';
 
 //Si deve salvare lo stato alla chiusura dell'app così l'utente si ritroverà l'interfaccia con cui ha chiuso l'app
 int status = 0;
+bool choice = false;
+Item itemToEdit;
 
 class Homepage extends StatelessWidget {
   Homepage({Key key, this.title}) : super(key: key);
@@ -20,15 +23,20 @@ class Homepage extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => _Homepage(title: title),
+        '/edit_item': (context) =>
+            EditItem(key: key, choice: choice, item: itemToEdit),
+      },
       //initialRoute: '', //write home route here
       //routes: //import routes from routes.dart
-      home: _Homepage(key: key, title: title),
     );
   }
 }
 
 class _Homepage extends StatefulWidget {
-  _Homepage({Key key, this.title}) : super(key: key);
+  _Homepage({this.title});
 
   final title;
 
@@ -40,8 +48,81 @@ class _HomepageState extends State<_Homepage> {
   bool selectingMode = false;
 
   getAppBar() {
+    List<Item> items = []; // Wip: Collect all objects in homes
     return AppBar(
+      leading: selectingMode
+          ? IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                setState(() {
+                  selectingMode = false;
+                  if (status == 1) {
+                    items.forEach((item) {
+                      item.selected = false;
+                    });
+                  }
+                  if (status == 0) {
+                    data.homes.forEach((home) {
+                      home.selected = false;
+                    });
+                  }
+                });
+              })
+          : null,
       title: Text(widget.title),
+      actions: selectingMode
+          ? <Widget>[
+              IconButton(
+                  icon: Item.onlyOneSelected(items)
+                      ? Icon(Icons.edit)
+                      : Icon(null),
+                  tooltip: 'Edit',
+                  onPressed: () {
+                    if (status == 1) {
+                      itemToEdit =
+                          items.firstWhere((item) => item.selected == true);
+                      selectingMode = false;
+                      Navigator.pushNamed(context, '/edit_item');
+                    }
+                    if (status == 0) {
+                      //funzione per modificare la casa (tipo per modificare il nome o cose simili)
+                    }
+                  }),
+              IconButton(
+                  icon: Icon(Icons.delete_outline),
+                  tooltip: status == 0 ? 'Delete Home' : 'Delete Item',
+                  onPressed: () {
+                    return showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: status == 0
+                                ? Text(
+                                    'Are you sure you want to delete those houses?')
+                                : Text(
+                                    'Are you sure you want to delete those items?'),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('No')),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    if (status == 0) {
+                                      //delete selected houses
+                                    }
+                                    if (status == 1) {
+                                      //delete selected items
+                                    }
+                                  },
+                                  child: Text('yes'))
+                            ],
+                          );
+                        });
+                  })
+            ]
+          : null,
     );
   }
 
