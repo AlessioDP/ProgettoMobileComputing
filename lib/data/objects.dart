@@ -27,16 +27,23 @@ class Home {
   factory Home.fromJson(Map<String, dynamic> json) => _$HomeFromJson(json);
 
   Map<String, dynamic> toJson() => _$HomeToJson(this);
+
+  
 }
 
 @JsonSerializable()
 class Item {
   String name;
   int quantity;
+  String description;
+  
+  @JsonKey(ignore: true)
+  String homeName;
+
   @JsonKey(ignore: true)
   bool selected = false;
 
-  Item(this.name, this.quantity);
+  Item(this.name, this.quantity, this.description);
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
@@ -49,4 +56,9 @@ class Item {
   static bool onlyOneSelected(List<Item> allItems) {
     return getSelectedItems(allItems).length == 1;
   }
+
+  Home getHome(String nomeCasa) {
+    return Data().homes.where((home) => home.name == nomeCasa).first;
+  }
+
 }

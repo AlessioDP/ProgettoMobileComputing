@@ -35,10 +35,12 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
   return Item(
     json['name'] as String,
     json['quantity'] as int,
+    json['description'] as String,
   );
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'name': instance.name,
       'quantity': instance.quantity,
+      'description': instance.description,
     };

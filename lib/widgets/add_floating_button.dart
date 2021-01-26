@@ -6,7 +6,7 @@ Widget floatingButton(BuildContext context) {
     onPressed: () {
       if (status == 0) {}
       if (status == 1) {
-        //Insert route for edit_item but new item, with boolean
+        Navigator.pushNamed(context, '/edit_item');
       }
     },
     tooltip: 'addItem',

@@ -231,7 +231,7 @@ class _HomepageState extends State<_Homepage> {
         ),
         FFNavigationBarItem(
           iconData: Icons.article,
-          label: 'Objects',
+          label: 'Items',
         )
       ],
     );
