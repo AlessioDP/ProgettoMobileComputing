@@ -57,7 +57,7 @@ class _EditHomeState extends State<_EditHome> {
   _EditHomeState({this.title});
 
   String newName;
-
+  final _nameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,22 +77,14 @@ class _EditHomeState extends State<_EditHome> {
           ),
           Container(
             padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
-            child: TextFormField(
+            child: TextField(
               decoration: InputDecoration(
                   hintText: 'Enter a name for your Home',
                   border: OutlineInputBorder()),
-              initialValue: choiceMaster ? homeMaster.name : '',
-              validator: (homeName) {
-                if (homeName.isEmpty) {
-                  newName = '';
-                  return 'Enter the name of the home';
-                } else {
-                  newName = homeName;
-                  return null;
-                }
-              },
-              onSaved: (value) {
-                newName = value;
+              controller: _nameController,
+              onChanged: (name) {
+                name = _nameController.text.toString();
+                homeMaster.name = name;
               },
             ),
           ),
@@ -110,7 +102,6 @@ class _EditHomeState extends State<_EditHome> {
           FloatingActionButton(
             heroTag: "btn2",
             onPressed: () {
-              homeMaster.name = newName;
               if (!choiceMaster) {
                 data.homes.add(homeMaster);
               }

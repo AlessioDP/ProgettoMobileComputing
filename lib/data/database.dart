@@ -17,7 +17,8 @@ class Database {
   read() async {
     var _prefs = await SharedPreferences.getInstance();
 
-    loggedUser = LoggedUser.fromJson(jsonDecode(_prefs.getString("loggedUser")));
+    loggedUser =
+        LoggedUser.fromJson(jsonDecode(_prefs.getString("loggedUser")));
     data = Data.fromJson(jsonDecode(_prefs.getString("data")));
   }
 }

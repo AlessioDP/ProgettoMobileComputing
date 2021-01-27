@@ -170,7 +170,7 @@ class _HomepageState extends State<_Homepage> {
   }
 
   Widget bodyHomepageItems() {
-    List<Item> items = []; // Wip: Collect all objects in homes
+    List<Item> items = Item.getAllItem(); // Wip: Collect all objects in homes
     return ListView(
       children: List.generate(items.length, (index) {
         return ListTile(

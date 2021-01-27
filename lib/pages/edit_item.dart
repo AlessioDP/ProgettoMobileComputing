@@ -19,7 +19,11 @@ class EditItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     choiceMaster = choice;
-    itemMaster = item;
+    if (item == null) {
+      itemMaster = Item.empty();
+    } else {
+      itemMaster = item;
+    }
     String title;
 
     if (choice) {
@@ -49,14 +53,15 @@ class _EditItemState extends State<_EditItem> {
   String title;
 
   _EditItemState({this.title});
-
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var _quantity;
 
     String newName;
     String newDescription;
-
+    List<String> _homesNames = Home.getHomesNames();
     List<Home> _homes = data.homes;
     String _homeName;
     Home _home;
@@ -66,7 +71,12 @@ class _EditItemState extends State<_EditItem> {
       _quantity = itemMaster.quantity;
       _home = _homes.where((element) => element.name == _homeName).first;
     } else {
-      _homeName = '';
+      if (_homesNames.isNotEmpty) {
+        _homeName = _homesNames[0];
+      } else {
+        _homeName = '';
+        _homesNames.add(_homeName);
+      }
       _quantity = 1;
     }
 
@@ -87,18 +97,14 @@ class _EditItemState extends State<_EditItem> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
-              child: TextFormField(
+              child: TextField(
                 decoration: InputDecoration(
                     hintText: 'Enter a name for your Item',
                     border: OutlineInputBorder()),
-                initialValue: choiceMaster ? itemMaster.name : '',
-                validator: (itemName) {
-                  if (itemName.isEmpty) {
-                    return 'Enter the name of the item';
-                  } else {
-                    newName = itemName;
-                    return null;
-                  }
+                controller: _nameController,
+                onChanged: (name) {
+                  name = _nameController.text.toString();
+                  newName = name;
                 },
               ),
             ),
@@ -111,18 +117,14 @@ class _EditItemState extends State<_EditItem> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
-              child: TextFormField(
+              child: TextField(
                 decoration: InputDecoration(
                     hintText: 'Enter a description for your Item',
                     border: OutlineInputBorder()),
-                initialValue: choiceMaster ? itemMaster.description : '',
-                validator: (itemDescription) {
-                  if (itemDescription.isEmpty) {
-                    return 'Enter the description of the item';
-                  } else {
-                    newDescription = itemDescription;
-                    return null;
-                  }
+                controller: _descriptionController,
+                onChanged: (description) {
+                  description = _descriptionController.text.toString();
+                  newDescription = description;
                 },
               ),
             ),
@@ -173,15 +175,15 @@ class _EditItemState extends State<_EditItem> {
               padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
               child: DropdownButton<String>(
                 value: _homeName,
+                items: _homesNames.map((location) {
+                  return new DropdownMenuItem(
+                      value: location, child: new Text(location));
+                }).toList(),
                 onChanged: (String newValue) {
                   setState(() {
                     _homeName = newValue;
                   });
                 },
-                items: _homes.map((Home map) {
-                  return new DropdownMenuItem<String>(
-                      value: map.name, child: new Text(map.name));
-                }).toList(),
               ),
             ),
           ],
@@ -213,7 +215,7 @@ class _EditItemState extends State<_EditItem> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => Homepage(
-                            title: 'Homepage',
+                            title: 'HomePage',
                           )));
             },
             child: Icon(

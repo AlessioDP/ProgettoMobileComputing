@@ -28,6 +28,14 @@ class Home {
   factory Home.fromJson(Map<String, dynamic> json) => _$HomeFromJson(json);
 
   Map<String, dynamic> toJson() => _$HomeToJson(this);
+
+  static List<String> getHomesNames() {
+    List<String> names = [];
+    data.homes.forEach((home) {
+      names.add(home.name);
+    });
+    return names;
+  }
 }
 
 @JsonSerializable()
@@ -43,13 +51,14 @@ class Item {
   bool selected = false;
 
   Item(this.name, this.quantity, this.description);
+  Item.empty();
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
 
   static List<Item> getAllItem() {
-    List<Item> allItems;
+    List<Item> allItems = [];
     data.homes.forEach((home) {
       allItems.addAll(home.items);
     });
@@ -66,6 +75,6 @@ class Item {
   }
 
   Home getHome(String nomeCasa) {
-    return Data().homes.where((home) => home.name == nomeCasa).first;
+    return data.homes.where((home) => home.name == nomeCasa).first;
   }
 }
