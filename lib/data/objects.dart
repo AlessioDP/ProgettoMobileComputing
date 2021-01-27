@@ -1,3 +1,4 @@
+import 'package:SearchIt/data/database.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'objects.g.dart';
@@ -27,8 +28,6 @@ class Home {
   factory Home.fromJson(Map<String, dynamic> json) => _$HomeFromJson(json);
 
   Map<String, dynamic> toJson() => _$HomeToJson(this);
-
-  
 }
 
 @JsonSerializable()
@@ -36,7 +35,7 @@ class Item {
   String name;
   int quantity;
   String description;
-  
+
   @JsonKey(ignore: true)
   String homeName;
 
@@ -49,16 +48,24 @@ class Item {
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
 
-  static List<Item> getSelectedItems(List<Item> allItems) {
-    return allItems.where((item) => item.selected == true).toList();
+  static List<Item> getAllItem() {
+    List<Item> allItems;
+    data.homes.forEach((home) {
+      allItems.addAll(home.items);
+    });
+    allItems.sort();
+    return allItems;
+  }
+
+  static List<Item> getSelectedItems() {
+    return getAllItem().where((item) => item.selected == true).toList();
   }
 
   static bool onlyOneSelected(List<Item> allItems) {
-    return getSelectedItems(allItems).length == 1;
+    return getSelectedItems().length == 1;
   }
 
   Home getHome(String nomeCasa) {
     return Data().homes.where((home) => home.name == nomeCasa).first;
   }
-
 }

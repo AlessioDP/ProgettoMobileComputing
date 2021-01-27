@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:SearchIt/data/users.dart';
 import 'package:SearchIt/pages/homepage.dart';
+import 'package:SearchIt/data/database.dart';
 
 //final loggedUser = Databas
 
 void main() {
+  Database().read();
   runApp(Homepage(
     title: 'Homepage',
   )); //temporary title

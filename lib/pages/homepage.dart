@@ -1,4 +1,5 @@
 import 'package:SearchIt/data/objects.dart';
+import 'package:SearchIt/pages/edit_home.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/widgets/add_floating_button.dart';
 import 'package:SearchIt/data/database.dart';
@@ -10,6 +11,7 @@ import 'edit_item.dart';
 int status = 0;
 bool choice = false;
 Item itemToEdit;
+Home homeToEdit;
 
 class Homepage extends StatelessWidget {
   Homepage({Key key, this.title}) : super(key: key);
@@ -28,6 +30,8 @@ class Homepage extends StatelessWidget {
         '/': (context) => _Homepage(title: title),
         '/edit_item': (context) =>
             EditItem(key: key, choice: choice, item: itemToEdit),
+        '/edit_home': (context) =>
+            EditHome(key: key, choice: choice, home: homeToEdit),
       },
       //initialRoute: '', //write home route here
       //routes: //import routes from routes.dart

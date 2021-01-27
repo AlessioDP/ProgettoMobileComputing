@@ -1,5 +1,8 @@
+import 'package:SearchIt/pages/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/data/objects.dart';
+import 'package:SearchIt/constants.dart';
+import 'package:SearchIt/data/database.dart';
 
 bool choiceMaster;
 Item itemMaster;
@@ -27,10 +30,7 @@ class EditItem extends StatelessWidget {
 
     return MaterialApp(
         title: choice ? editTitle : newTitle,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
+        theme: theme(),
         home: _EditItem(
           title: title,
         ));
@@ -42,7 +42,7 @@ class _EditItem extends StatefulWidget {
   _EditItem({this.title});
 
   @override
-  State<StatefulWidget> createState() => _EditItemState(title: title);
+  _EditItemState createState() => _EditItemState(title: title);
 }
 
 class _EditItemState extends State<_EditItem> {
@@ -57,7 +57,7 @@ class _EditItemState extends State<_EditItem> {
     String newName;
     String newDescription;
 
-    List<Home> _homes = Data().homes;
+    List<Home> _homes = data.homes;
     String _homeName;
     Home _home;
 
@@ -72,7 +72,7 @@ class _EditItemState extends State<_EditItem> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("EDIT OBJECT"),
+        title: Text(title),
       ),
       body: Form(
         child: Column(
@@ -85,7 +85,6 @@ class _EditItemState extends State<_EditItem> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
-            
             Container(
               padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
               child: TextFormField(
@@ -103,7 +102,6 @@ class _EditItemState extends State<_EditItem> {
                 },
               ),
             ),
-            
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 1),
               child: Text(
@@ -111,7 +109,6 @@ class _EditItemState extends State<_EditItem> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
-           
             Container(
               padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
               child: TextFormField(
@@ -129,7 +126,6 @@ class _EditItemState extends State<_EditItem> {
                 },
               ),
             ),
-           
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 1),
               child: Text(
@@ -137,7 +133,6 @@ class _EditItemState extends State<_EditItem> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
-           
             Container(
               padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
               child: DropdownButton(
@@ -167,7 +162,6 @@ class _EditItemState extends State<_EditItem> {
                 },
               ),
             ),
-           
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 1),
               child: Text(
@@ -175,7 +169,6 @@ class _EditItemState extends State<_EditItem> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
-          
             Container(
               padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
               child: DropdownButton<String>(
@@ -191,7 +184,6 @@ class _EditItemState extends State<_EditItem> {
                 }).toList(),
               ),
             ),
-          
           ],
         ),
       ),
@@ -217,12 +209,12 @@ class _EditItemState extends State<_EditItem> {
               }
 
               itemMaster.getHome(_homeName).items.add(itemMaster);
-              Navigator.pop(context);
-              //Navigator.push(context, route);
-              //TODO
-              //add item in a house
-              //needed connection tra casa e oggetto
-              //ritorna la pagina vista dell'oggetto v
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Homepage(
+                            title: 'Homepage',
+                          )));
             },
             child: Icon(
               Icons.check,
