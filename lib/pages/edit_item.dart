@@ -67,6 +67,8 @@ class _EditItemState extends State<_EditItem> {
     Home _home;
 
     if (choiceMaster) {
+      _nameController.text = itemMaster.name;
+      _descriptionController.text = itemMaster.description;
       _homeName = itemMaster.homeName;
       _quantity = itemMaster.quantity;
       _home = _homes.where((element) => element.name == _homeName).first;
@@ -104,7 +106,7 @@ class _EditItemState extends State<_EditItem> {
                 controller: _nameController,
                 onChanged: (name) {
                   name = _nameController.text.toString();
-                  newName = name;
+                  itemMaster.name = name;
                 },
               ),
             ),
@@ -124,7 +126,7 @@ class _EditItemState extends State<_EditItem> {
                 controller: _descriptionController,
                 onChanged: (description) {
                   description = _descriptionController.text.toString();
-                  newDescription = description;
+                  itemMaster.description = description;
                 },
               ),
             ),
@@ -201,8 +203,8 @@ class _EditItemState extends State<_EditItem> {
           FloatingActionButton(
             heroTag: "btn2",
             onPressed: () {
-              itemMaster.name = newName;
-              itemMaster.description = newDescription;
+              /*   itemMaster.name = newName;
+              itemMaster.description = newDescription;*/
               itemMaster.quantity = _quantity;
               itemMaster.homeName = _homeName;
 

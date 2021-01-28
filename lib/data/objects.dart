@@ -62,7 +62,6 @@ class Item {
     data.homes.forEach((home) {
       allItems.addAll(home.items);
     });
-    allItems.sort();
     return allItems;
   }
 

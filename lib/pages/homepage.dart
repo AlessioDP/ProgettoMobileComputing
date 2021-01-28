@@ -52,7 +52,8 @@ class _HomepageState extends State<_Homepage> {
   bool selectingMode = false;
 
   getAppBar() {
-    List<Item> items = []; // Wip: Collect all objects in homes
+    List<Item> items = Item.getAllItem();
+    List<Home> homes = data.homes;
     return AppBar(
       leading: selectingMode
           ? IconButton(
@@ -77,15 +78,19 @@ class _HomepageState extends State<_Homepage> {
       actions: selectingMode
           ? <Widget>[
               IconButton(
-                  icon: Item.onlyOneSelected(items)
+                  icon: (Item.onlyOneSelected(items))
                       ? Icon(Icons.edit)
                       : Icon(null),
                   tooltip: 'Edit',
                   onPressed: () {
                     if (status == 1) {
+                      choice = true;
                       itemToEdit =
                           items.firstWhere((item) => item.selected == true);
                       selectingMode = false;
+                      items.forEach((element) {
+                        element.selected = false;
+                      });
                       Navigator.pushNamed(context, '/edit_item');
                     }
                     if (status == 0) {
@@ -193,7 +198,7 @@ class _HomepageState extends State<_Homepage> {
             behavior: HitTestBehavior.opaque,
             child: Container(
               child: Text(
-                items[index].name,
+                items[index].name == null ? 'error' : items[index].name,
                 style: TextStyle(fontSize: 18.0),
               ),
             ),
