@@ -198,7 +198,10 @@ class _HomepageState extends State<_Homepage> {
             });
           },
           selected: items[index].selected,
-          leading: GestureDetector(
+          title: Text(items[index].name ,  style: TextStyle(fontSize: 18.0, color: Colors.black) ),
+          subtitle: Text( '/' +items[index].homeName, style: TextStyle(fontSize: 15.0, color: Colors.grey,), textAlign: TextAlign.right,) ,
+          
+          /*leading: GestureDetector(
             behavior: HitTestBehavior.opaque,
             child: Container(
               child: Text(
@@ -206,7 +209,7 @@ class _HomepageState extends State<_Homepage> {
                 style: TextStyle(fontSize: 18.0),
               ),
             ),
-          ),
+          ), */
           trailing: (selectingMode)
               ? ((items[index].selected)
                   ? Icon(Icons.check_box)

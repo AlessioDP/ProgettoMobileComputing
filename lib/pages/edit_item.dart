@@ -32,12 +32,10 @@ class EditItem extends StatelessWidget {
       title = newTitle;
     }
 
-    return MaterialApp(
-        title: choice ? editTitle : newTitle,
-        theme: theme(),
-        home: _EditItem(
-          title: title,
-        ));
+    return Scaffold(
+        body: _EditItem(
+      title: title,
+    ));
   }
 }
 
@@ -57,29 +55,23 @@ class _EditItemState extends State<_EditItem> {
   final _descriptionController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var _quantity;
-
-    String newName;
-    String newDescription;
     List<String> _homesNames = Home.getHomesNames();
     List<Home> _homes = data.homes;
-    String _homeName;
+
     Home _home;
 
     if (choiceMaster) {
       _nameController.text = itemMaster.name;
       _descriptionController.text = itemMaster.description;
-      _homeName = itemMaster.homeName;
-      _quantity = itemMaster.quantity;
-      _home = _homes.where((element) => element.name == _homeName).first;
+      _home =
+          _homes.where((element) => element.name == itemMaster.homeName).first;
     } else {
-      if (_homesNames.isNotEmpty) {
-        _homeName = _homesNames[0];
+      if (_homesNames.isEmpty) {
+        itemMaster.homeName = '';
+        _homesNames.add(itemMaster.homeName);
       } else {
-        _homeName = '';
-        _homesNames.add(_homeName);
+        itemMaster.homeName = _homesNames[0];
       }
-      _quantity = 1;
     }
 
     return Scaffold(
@@ -140,7 +132,9 @@ class _EditItemState extends State<_EditItem> {
             Container(
               padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
               child: DropdownButton(
-                value: _quantity,
+                value: itemMaster.quantity == null
+                    ? itemMaster.quantity = 1
+                    : itemMaster.quantity,
                 items: [
                   DropdownMenuItem(
                     child: Text('1'),
@@ -161,7 +155,7 @@ class _EditItemState extends State<_EditItem> {
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _quantity = value;
+                    itemMaster.quantity = value;
                   });
                 },
               ),
@@ -176,14 +170,16 @@ class _EditItemState extends State<_EditItem> {
             Container(
               padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
               child: DropdownButton<String>(
-                value: _homeName,
+                value: itemMaster.homeName == null
+                    ? _homesNames[0]
+                    : itemMaster.homeName,
                 items: _homesNames.map((location) {
                   return new DropdownMenuItem(
                       value: location, child: new Text(location));
                 }).toList(),
                 onChanged: (String newValue) {
                   setState(() {
-                    _homeName = newValue;
+                    itemMaster.homeName = newValue;
                   });
                 },
               ),
@@ -203,16 +199,11 @@ class _EditItemState extends State<_EditItem> {
           FloatingActionButton(
             heroTag: "btn2",
             onPressed: () {
-              /*   itemMaster.name = newName;
-              itemMaster.description = newDescription;*/
-              itemMaster.quantity = _quantity;
-              itemMaster.homeName = _homeName;
-
               if (choiceMaster) {
                 _home.items.remove(itemMaster);
               }
 
-              itemMaster.getHome(_homeName).items.add(itemMaster);
+              itemMaster.getHome(itemMaster.homeName).items.add(itemMaster);
               Navigator.push(
                   context,
                   MaterialPageRoute(

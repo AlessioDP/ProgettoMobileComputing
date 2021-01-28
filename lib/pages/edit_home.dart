@@ -35,10 +35,8 @@ class EditHome extends StatelessWidget {
     } else {
       title = newTitle;
     }
-    return MaterialApp(
-      title: title,
-      theme: theme(),
-      home: _EditHome(
+    return Scaffold(
+      body: _EditHome(
         title: title,
       ),
     );
