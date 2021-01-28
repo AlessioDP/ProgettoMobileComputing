@@ -1,5 +1,6 @@
 import 'package:SearchIt/data/objects.dart';
 import 'package:SearchIt/pages/edit_home.dart';
+import 'package:SearchIt/widgets/sideBar.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/widgets/add_floating_button.dart';
 import 'package:SearchIt/data/database.dart';
@@ -271,6 +272,7 @@ class _HomepageState extends State<_Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: sideBar(),
       appBar: getAppBar(),
       bottomNavigationBar: navigationBar(status),
       body: status == 0
