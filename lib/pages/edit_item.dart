@@ -69,8 +69,6 @@ class _EditItemState extends State<_EditItem> {
       if (_homesNames.isEmpty) {
         itemMaster.homeName = '';
         _homesNames.add(itemMaster.homeName);
-      } else {
-        itemMaster.homeName = _homesNames[0];
       }
     }
 

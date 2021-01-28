@@ -7,24 +7,26 @@ Widget floatingButton(BuildContext context) {
   return FloatingActionButton(
     onPressed: () {
       if (status == 0) {
+        homeToEdit = Home.empty();
+        choice = false;
         Navigator.pushNamed(context, '/edit_home');
       }
       if (status == 1) {
         if (data.homes.isEmpty) {
           return showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            content: Text('Need to create a home to add an item!'),
-                            actions: <Widget>[
-                              ElevatedButton(  
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text('Gotcha!')),  
-                            ],
-                          );
-                        });
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: Text('Need to create a home to add an item!'),
+                  actions: <Widget>[
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Gotcha!')),
+                  ],
+                );
+              });
         } else {
           itemToEdit = Item.empty();
           choice = false;

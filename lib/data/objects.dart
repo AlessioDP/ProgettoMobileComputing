@@ -36,6 +36,14 @@ class Home {
     });
     return names;
   }
+
+  static List<Home> getSelectedHomes() {
+    return data.homes.where((home) => home.selected == true).toList();
+  }
+
+  static bool onlyOneSelected() {
+    return (getSelectedHomes().length == 1);
+  }
 }
 
 @JsonSerializable()

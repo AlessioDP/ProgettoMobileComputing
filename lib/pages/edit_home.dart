@@ -58,6 +58,10 @@ class _EditHomeState extends State<_EditHome> {
   final _nameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    if (choiceMaster) {
+      _nameController.text = homeMaster.name;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -102,7 +106,15 @@ class _EditHomeState extends State<_EditHome> {
             onPressed: () {
               if (!choiceMaster) {
                 data.homes.add(homeMaster);
+              } else {
+                data.homes
+                    .firstWhere((home) => home == homeMaster)
+                    .items
+                    .forEach((item) {
+                  item.homeName = homeMaster.name;
+                });
               }
+
               Database.save();
               Navigator.push(
                   context,

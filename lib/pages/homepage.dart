@@ -78,7 +78,7 @@ class _HomepageState extends State<_Homepage> {
       actions: selectingMode
           ? <Widget>[
               IconButton(
-                  icon: (Item.onlyOneSelected(items))
+                  icon: (Item.onlyOneSelected(items) || Home.onlyOneSelected())
                       ? Icon(Icons.edit)
                       : Icon(null),
                   tooltip: 'Edit',
@@ -94,7 +94,14 @@ class _HomepageState extends State<_Homepage> {
                       Navigator.pushNamed(context, '/edit_item');
                     }
                     if (status == 0) {
-                      //funzione per modificare la casa (tipo per modificare il nome o cose simili)
+                      choice = true;
+                      homeToEdit =
+                          homes.firstWhere((home) => home.selected == true);
+                      selectingMode = false;
+                      homes.forEach((home) {
+                        home.selected = false;
+                      });
+                      Navigator.pushNamed(context, '/edit_home');
                     }
                   }),
               IconButton(
@@ -198,9 +205,17 @@ class _HomepageState extends State<_Homepage> {
             });
           },
           selected: items[index].selected,
-          title: Text(items[index].name ,  style: TextStyle(fontSize: 18.0, color: Colors.black) ),
-          subtitle: Text( '/' +items[index].homeName, style: TextStyle(fontSize: 15.0, color: Colors.grey,), textAlign: TextAlign.right,) ,
-          
+          title: Text(items[index].name,
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          subtitle: Text(
+            '/' + items[index].homeName,
+            style: TextStyle(
+              fontSize: 15.0,
+              color: Colors.grey,
+            ),
+            textAlign: TextAlign.right,
+          ),
+
           /*leading: GestureDetector(
             behavior: HitTestBehavior.opaque,
             child: Container(
