@@ -122,7 +122,11 @@ class _HomepageState extends State<_Homepage> {
                                       //delete selected houses
                                     }
                                     if (status == 1) {
-                                      //delete selected items
+                                      setState(() {
+                                        Item.removeAllSelectedItems();
+                                        selectingMode = false;
+                                        Navigator.pop(context);
+                                      });
                                     }
                                   },
                                   child: Text('yes'))

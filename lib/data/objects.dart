@@ -76,4 +76,10 @@ class Item {
   Home getHome(String nomeCasa) {
     return data.homes.where((home) => home.name == nomeCasa).first;
   }
+
+  static void removeAllSelectedItems() {
+    data.homes.forEach((home) {
+      home.items.removeWhere((item) => item.selected == true);
+    });
+  }
 }
