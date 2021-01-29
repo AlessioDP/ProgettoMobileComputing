@@ -44,6 +44,10 @@ class Home {
   static bool onlyOneSelected() {
     return (getSelectedHomes().length == 1);
   }
+
+  static void removeAllSelectedHomes() {
+    data.homes.removeWhere((home) => home.selected == true);
+  }
 }
 
 @JsonSerializable()

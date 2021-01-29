@@ -34,7 +34,7 @@ Widget floatingButton(BuildContext context) {
         }
       }
     },
-    tooltip: 'addItem',
+    tooltip: status == 0 ? 'add Home' : 'add Item',
     child: Icon(Icons.add),
   );
 }

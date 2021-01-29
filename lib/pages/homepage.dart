@@ -127,7 +127,11 @@ class _HomepageState extends State<_Homepage> {
                               ElevatedButton(
                                   onPressed: () {
                                     if (status == 0) {
-                                      //delete selected houses
+                                      setState(() {
+                                        Home.removeAllSelectedHomes();
+                                        selectingMode = false;
+                                        Navigator.pop(context);
+                                      });
                                     }
                                     if (status == 1) {
                                       setState(() {

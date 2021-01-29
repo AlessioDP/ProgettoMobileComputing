@@ -95,6 +95,7 @@ class _EditHomeState extends State<_EditHome> {
       floatingActionButton: ButtonBar(
         children: <Widget>[
           FloatingActionButton(
+            backgroundColor: Colors.grey,
             heroTag: "btn1",
             onPressed: () {
               Navigator.pop(context);

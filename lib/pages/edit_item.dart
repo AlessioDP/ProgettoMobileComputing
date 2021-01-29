@@ -66,6 +66,9 @@ class _EditItemState extends State<_EditItem> {
       _home =
           _homes.where((element) => element.name == itemMaster.homeName).first;
     } else {
+      if (itemMaster.homeName == null) {
+        itemMaster.homeName = _homesNames[0];
+      }
       if (_homesNames.isEmpty) {
         itemMaster.homeName = '';
         _homesNames.add(itemMaster.homeName);
@@ -188,6 +191,7 @@ class _EditItemState extends State<_EditItem> {
       floatingActionButton: ButtonBar(
         children: <Widget>[
           FloatingActionButton(
+            backgroundColor: Colors.grey,
             heroTag: "btn1",
             onPressed: () {
               Navigator.pop(context);
