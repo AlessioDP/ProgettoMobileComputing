@@ -1,5 +1,6 @@
 import 'package:SearchIt/data/objects.dart';
 import 'package:SearchIt/pages/edit_home.dart';
+import 'package:SearchIt/pages/view_item.dart';
 import 'package:SearchIt/widgets/sideBar.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/widgets/add_floating_button.dart';
@@ -13,6 +14,7 @@ int status = 0;
 bool choice = false;
 Item itemToEdit;
 Home homeToEdit;
+Item itemToDisplay;
 
 class Homepage extends StatelessWidget {
   Homepage({Key key, this.title}) : super(key: key);
@@ -33,6 +35,7 @@ class Homepage extends StatelessWidget {
             EditItem(key: key, choice: choice, item: itemToEdit),
         '/edit_home': (context) =>
             EditHome(key: key, choice: choice, home: homeToEdit),
+        '/view_item': (context) => ViewItem(item: itemToDisplay),
       },
       //initialRoute: '', //write home route here
       //routes: //import routes from routes.dart
@@ -206,6 +209,9 @@ class _HomepageState extends State<_Homepage> {
               if (selectingMode) {
                 items[index].selected = !items[index].selected;
                 log(items[index].selected.toString());
+              } else {
+                itemToDisplay = items[index];
+                Navigator.pushNamed(context, '/view_item');
               }
             });
           },
