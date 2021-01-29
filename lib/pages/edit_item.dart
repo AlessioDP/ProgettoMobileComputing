@@ -206,12 +206,7 @@ class _EditItemState extends State<_EditItem> {
               }
 
               itemMaster.getHome(itemMaster.homeName).items.add(itemMaster);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Homepage(
-                            title: 'HomePage',
-                          )));
+              Navigator.pushNamed(context, 'homepage');
             },
             child: Icon(
               Icons.check,

@@ -34,6 +34,20 @@ class App extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
+        /*
+        initialRoute: '/',
+        routes: {
+          '/': (context) => Login(title: title),
+        }*/
+        
+        routes: {
+          '/homepage': (context) => Homepage(),
+          '/login': (context) => LoginPage(),
+          //'/home': (context) => null,
+          //'/home/edit': (context) => null,
+          //'/item': (context) => null,
+          //'/item/edit': (context) => null,
+        },
         home: FutureBuilder(
             future: _firebase,
             builder: (context, snapshot) {
@@ -43,18 +57,10 @@ class App extends StatelessWidget {
                 return Text('Something gone wrong!');
               } else if (snapshot.hasData) {
                 // Firebase loaded
-                FirebaseAuth.instance.authStateChanges().listen((User user) {
-                  if (user == null) {
-                    print('User is currently signed out!');
-                  } else {
-                    print('User is signed in!');
-                  }
-                });
-
                 firebaseUser = FirebaseAuth.instance.currentUser;
                 if (firebaseUser != null) {
                   // Shows homepage
-                  return Homepage(title: 'Homepage');
+                  return Homepage();
                 } else {
                   // Login page
                   return LoginPage();

@@ -1,8 +1,9 @@
 import 'package:SearchIt/data/objects.dart';
+import 'package:SearchIt/pages/login.dart';
 import 'package:SearchIt/pages/edit_home.dart';
 import 'package:SearchIt/pages/view_home.dart';
 import 'package:SearchIt/pages/view_item.dart';
-import 'package:SearchIt/widgets/sideBar.dart';
+import 'package:SearchIt/widgets/sidebar.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/widgets/add_floating_button.dart';
 import 'package:SearchIt/data/database.dart';
@@ -18,44 +19,48 @@ Home homeToEdit;
 Item itemToDisplay;
 Home homeToDisplay;
 
-class Homepage extends StatelessWidget {
-  Homepage({Key key, this.title}) : super(key: key);
+/*class Homepage extends StatelessWidget {
 
-  final title;
 
   @override
   Widget build(BuildContext context) {
+    return 
+
     return MaterialApp(
-      title: title,
+      title: 'Homepage',
       theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity),
+      /*
       initialRoute: '/',
       routes: {
         '/': (context) => _Homepage(title: title),
+        '/login': (context) => LoginPage(),
         '/edit_item': (context) =>
             EditItem(key: key, choice: choice, item: itemToEdit),
         '/edit_home': (context) =>
             EditHome(key: key, choice: choice, home: homeToEdit),
         '/view_item': (context) => ViewItem(item: itemToDisplay),
         '/view_home': (context) => ViewHome(home: homeToDisplay),
-      },
+      },*/
       //initialRoute: '', //write home route here
       //routes: //import routes from routes.dart
     );
   }
 }
+*/
+class Homepage extends StatefulWidget {
+  bool items = false;
 
-class _Homepage extends StatefulWidget {
-  _Homepage({this.title});
-
-  final title;
+  Homepage({bool items = false}) {
+    this.items = items;
+  }
 
   @override
   _HomepageState createState() => _HomepageState();
 }
 
-class _HomepageState extends State<_Homepage> {
+class _HomepageState extends State<Homepage> {
   bool selectingMode = false;
 
   getAppBar() {
@@ -81,7 +86,7 @@ class _HomepageState extends State<_Homepage> {
                 });
               })
           : null,
-      title: Text(widget.title),
+      title: Text('Homepage'),
       actions: selectingMode
           ? <Widget>[
               IconButton(
@@ -288,7 +293,7 @@ class _HomepageState extends State<_Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: sideBar(),
+      drawer: sideBar(context),
       appBar: getAppBar(),
       bottomNavigationBar: navigationBar(status),
       body: status == 0

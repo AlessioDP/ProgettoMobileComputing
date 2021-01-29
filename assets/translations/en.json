@@ -1,4 +1,9 @@
 {
     "sign_in": "Sign in",
-    "sign_in_as_guest": "Sign in as Guest"
+    "sign_in_as_guest": "Sign in as Guest",
+
+    "homes": "Homes",
+    "items": "Items",
+    "settings": "Settings",
+    "sign_out": "Sign out"
 }

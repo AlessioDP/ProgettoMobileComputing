@@ -117,12 +117,7 @@ class _EditHomeState extends State<_EditHome> {
               }
 
               Database.save();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Homepage(
-                            title: 'HomePage',
-                          )));
+              Navigator.pushNamed(context, 'homepage');
             },
             child: Icon(
               Icons.check,
