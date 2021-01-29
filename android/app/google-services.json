@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "231588662206",
+    "project_id": "searchit-mobilecomputing",
+    "storage_bucket": "searchit-mobilecomputing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:231588662206:android:fd2166dff2e1880c1907ef",
+        "android_client_info": {
+          "package_name": "it.uniroma3.searchit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "231588662206-tek7soid2m7o52dnp6u5skdlduglb7qp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.uniroma3.searchit",
+            "certificate_hash": "d8948d5f78a023f5b3fad69ef14959df34d0baa3"
+          }
+        },
+        {
+          "client_id": "231588662206-44vqolakhp6mn285q3glpql6d47v468d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7J5EjnP5kcM2jmopSku0z9zGD_wWdp5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "231588662206-44vqolakhp6mn285q3glpql6d47v468d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
