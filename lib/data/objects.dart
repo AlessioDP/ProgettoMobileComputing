@@ -20,6 +20,7 @@ class Home {
   @JsonKey(ignore: true)
   bool selected = false;
   List<Item> items = [];
+  List<Place> places = [];
 
   Home.empty();
 
@@ -51,6 +52,48 @@ class Home {
 }
 
 @JsonSerializable()
+class Place {
+  String name;
+  String description;
+  List<Item> items = [];
+
+  Place(this.name, this.description);
+  Place.empty();
+
+  factory Place.fromJson(Map<String, dynamic> json) => _$PlaceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PlaceToJson(this);
+
+  static Map<String, List<String>> getPlacesNames() {
+    Map<String, List<String>> _placesNames;
+    List<String> names = [];
+    data.homes.forEach((home) {
+      names = [];
+      if (home.places.isNotEmpty) {
+        home.places.forEach((place) {
+          names.add(place.name);
+        });
+      }
+      _placesNames[home.name] = names;
+    });
+    return _placesNames;
+  }
+
+  static List<String> getPlacesNameFromHome(String homeName) {
+    List<String> nomi = [];
+    List<Place> places =
+        data.homes.where((element) => element.name == homeName).first.places;
+    if (places.isNotEmpty) {
+      places.forEach((element) {
+        nomi.add(element.name);
+      });
+      return nomi;
+    }
+    return nomi;
+  }
+}
+
+@JsonSerializable()
 class Item {
   String name;
   int quantity;
@@ -58,6 +101,9 @@ class Item {
 
   @JsonKey(ignore: true)
   String homeName;
+
+  @JsonKey(ignore: true)
+  String placeName;
 
   @JsonKey(ignore: true)
   bool selected = false;

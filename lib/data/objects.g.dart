@@ -21,13 +21,34 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
 Home _$HomeFromJson(Map<String, dynamic> json) {
   return Home(
     json['name'] as String,
+  )
+    ..items = (json['items'] as List)
+        ?.map(
+            (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..places = (json['places'] as List)
+        ?.map(
+            (e) => e == null ? null : Place.fromJson(e as Map<String, dynamic>))
+        ?.toList();
+}
+
+Map<String, dynamic> _$HomeToJson(Home instance) => <String, dynamic>{
+      'name': instance.name,
+      'items': instance.items?.map((e) => e?.toJson())?.toList(),
+    };
+
+Place _$PlaceFromJson(Map<String, dynamic> json) {
+  return Place(
+    json['name'] as String,
+    json['description'] as String,
   )..items = (json['items'] as List)
       ?.map((e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
       ?.toList();
 }
 
-Map<String, dynamic> _$HomeToJson(Home instance) => <String, dynamic>{
+Map<String, dynamic> _$PlaceToJson(Place instance) => <String, dynamic>{
       'name': instance.name,
+      'description': instance.description,
       'items': instance.items?.map((e) => e?.toJson())?.toList(),
     };
 

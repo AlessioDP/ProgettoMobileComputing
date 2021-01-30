@@ -1,15 +1,10 @@
 import 'package:SearchIt/data/objects.dart';
-import 'package:SearchIt/pages/login.dart';
-import 'package:SearchIt/pages/edit_home.dart';
-import 'package:SearchIt/pages/view_home.dart';
-import 'package:SearchIt/pages/view_item.dart';
 import 'package:SearchIt/widgets/sidebar.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/widgets/add_floating_button.dart';
 import 'package:SearchIt/data/database.dart';
 import 'dart:developer';
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
-import 'edit_item.dart';
 
 //Si deve salvare lo stato alla chiusura dell'app così l'utente si ritroverà l'interfaccia con cui ha chiuso l'app
 int status = 0;
@@ -230,7 +225,11 @@ class _HomepageState extends State<Homepage> {
           title: Text(items[index].name,
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           subtitle: Text(
-            '/' + items[index].homeName,
+            '/' +
+                items[index].homeName +
+                (items[index].homeName.isNotEmpty
+                    ? ('/' + items[index].placeName)
+                    : ''),
             style: TextStyle(
               fontSize: 15.0,
               color: Colors.grey,

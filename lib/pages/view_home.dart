@@ -22,41 +22,57 @@ class ViewHome extends StatelessWidget {
                 Navigator.pop(context);
               })),
       body: Center(
-      child: Container(
-        padding: EdgeInsets.all(0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-                child: Container(
-              padding: EdgeInsets.all(30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(9),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.arrow_right,
-                          size: 40,
-                        ),
-                        Text(
-                          ' ' + homeMaster.name,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 40),
-                        ),
-                      ],
+        child: Container(
+          padding: EdgeInsets.all(0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                  child: Container(
+                padding: EdgeInsets.all(30),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(9),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.arrow_right,
+                            size: 40,
+                          ),
+                          Text(
+                            ' ' + homeMaster.name,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 40),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ))
-          ],
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Text('Places: ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300, fontSize: 20)),
+                          (Text(
+                              home.places.isNotEmpty
+                                  ? (home.places[0].name)
+                                  : 'No such Places here!',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w100, fontSize: 20))),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ))
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 }

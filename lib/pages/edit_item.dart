@@ -49,13 +49,15 @@ class _EditItem extends StatefulWidget {
 
 class _EditItemState extends State<_EditItem> {
   String title;
-
   _EditItemState({this.title});
+
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     List<String> _homesNames = Home.getHomesNames();
+
     List<Home> _homes = data.homes;
 
     Home _home;
@@ -72,6 +74,14 @@ class _EditItemState extends State<_EditItem> {
       if (_homesNames.isEmpty) {
         itemMaster.homeName = '';
         _homesNames.add(itemMaster.homeName);
+      }
+      List<String> _placesNames =
+          Place.getPlacesNameFromHome(itemMaster.homeName);
+      if (_placesNames.isEmpty) {
+        _placesNames.add('');
+      }
+      if (itemMaster.placeName == null) {
+        itemMaster.placeName = '';
       }
     }
 
@@ -185,6 +195,27 @@ class _EditItemState extends State<_EditItem> {
                 },
               ),
             ),
+            Place.getPlacesNameFromHome(itemMaster.homeName).isNotEmpty
+                ? Container(
+                    padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
+                    child: DropdownButton<String>(
+                      value: itemMaster.placeName == null
+                          ? (Place.getPlacesNameFromHome(
+                              itemMaster.homeName)[0])
+                          : itemMaster.placeName,
+                      items: Place.getPlacesNameFromHome(itemMaster.homeName)
+                          .map((location) {
+                        return new DropdownMenuItem(
+                            value: location, child: new Text(location));
+                      }).toList(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          itemMaster.placeName = newValue;
+                        });
+                      },
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),
@@ -205,8 +236,19 @@ class _EditItemState extends State<_EditItem> {
                 _home.items.remove(itemMaster);
               }
 
-              itemMaster.getHome(itemMaster.homeName).items.add(itemMaster);
-              Navigator.pushNamed(context, 'homepage');
+              itemMaster.getHome(itemMaster.homeName)..items.add(itemMaster);
+
+              if (itemMaster.getHome(itemMaster.homeName).places.isNotEmpty) {
+                itemMaster
+                    .getHome(itemMaster.homeName)
+                    .places
+                    .firstWhere(
+                        (element) => element.name == itemMaster.placeName)
+                    .items
+                    .add(itemMaster);
+              }
+
+              Navigator.pushReplacementNamed(context, '/homepage');
             },
             child: Icon(
               Icons.check,
