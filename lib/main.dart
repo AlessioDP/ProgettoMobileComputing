@@ -1,3 +1,7 @@
+import 'package:SearchIt/pages/edit_home.dart';
+import 'package:SearchIt/pages/edit_item.dart';
+import 'package:SearchIt/pages/view_home.dart';
+import 'package:SearchIt/pages/view_item.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/data/users.dart';
 import 'package:SearchIt/pages/homepage.dart';
@@ -39,10 +43,16 @@ class App extends StatelessWidget {
         routes: {
           '/': (context) => Login(title: title),
         }*/
-        
+
         routes: {
           '/homepage': (context) => Homepage(),
           '/login': (context) => LoginPage(),
+          '/edit_item': (context) =>
+              EditItem(key: key, choice: choice, item: itemToEdit),
+          '/edit_home': (context) =>
+              EditHome(key: key, choice: choice, home: homeToEdit),
+          '/view_item': (context) => ViewItem(item: itemToDisplay),
+          '/view_home': (context) => ViewHome(home: homeToDisplay),
           //'/home': (context) => null,
           //'/home/edit': (context) => null,
           //'/item': (context) => null,

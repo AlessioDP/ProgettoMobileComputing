@@ -117,7 +117,7 @@ class _EditHomeState extends State<_EditHome> {
               }
 
               Database.save();
-              Navigator.pushNamed(context, 'homepage');
+              Navigator.pushReplacementNamed(context, '/homepage');
             },
             child: Icon(
               Icons.check,
