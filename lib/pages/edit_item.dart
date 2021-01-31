@@ -78,7 +78,10 @@ class _EditItemState extends State<_EditItem> {
       List<String> _placesNames =
           Place.getPlacesNameFromHome(itemMaster.homeName);
       if (_placesNames.isEmpty) {
+        itemMaster.placeName = '';
         _placesNames.add('');
+      } else {
+        itemMaster.placeName = _placesNames[0];
       }
       if (itemMaster.placeName == null) {
         itemMaster.placeName = '';
