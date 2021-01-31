@@ -54,7 +54,7 @@ class Home {
 @JsonSerializable()
 class Place {
   String name;
-  String description;
+  String description; 
   List<Item> items = [];
 
   Place(this.name, this.description);

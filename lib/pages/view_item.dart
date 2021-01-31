@@ -56,7 +56,7 @@ class ViewItem extends StatelessWidget {
                       children: [
                         Text('Description: ',
                             style: TextStyle(
-                                fontWeight: FontWeight.w300, fontSize: 20)),
+                                fontWeight: FontWeight.w400, fontSize: 20)),
                         Text(itemMaster.description,
                             style: TextStyle(
                                 fontWeight: FontWeight.w100, fontSize: 20)),
@@ -69,7 +69,7 @@ class ViewItem extends StatelessWidget {
                       children: [
                         Text('Location: ',
                             style: TextStyle(
-                                fontWeight: FontWeight.w300, fontSize: 20)),
+                                fontWeight: FontWeight.w400, fontSize: 20)),
                         Text(itemMaster.homeName,
                             style: TextStyle(
                                 fontWeight: FontWeight.w100, fontSize: 20)),

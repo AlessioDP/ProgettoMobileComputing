@@ -56,6 +56,10 @@ class _EditHomeState extends State<_EditHome> {
 
   String newName;
   final _nameController = TextEditingController();
+
+  final _placeNameController = TextEditingController();
+  final _placeDescrController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     if (choiceMaster) {
@@ -89,6 +93,111 @@ class _EditHomeState extends State<_EditHome> {
                 homeMaster.name = name;
               },
             ),
+          ),
+          Container(
+              padding: EdgeInsets.fromLTRB(10, 1, 10, 0),
+              child: Row(
+                children: [
+                  Text(
+                    'Home\'s places ',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  ActionChip(
+                      label: Text('+'),
+                      onPressed: () {
+                        Place place = new Place.empty();
+                        return showDialog(
+                            //TODO mettere verifica campo vuoto
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: Container(
+                                  height: 180,
+                                  width: 400,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(5),
+                                        child: Text(
+                                          'Create a place',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.all(5),
+                                        child: TextField(
+                                          decoration: InputDecoration(
+                                              hintText: 'Place\'s name',
+                                              border: OutlineInputBorder()),
+                                          controller: _placeNameController,
+                                          onChanged: (name) {
+                                            name = _placeNameController.text
+                                                .toString();
+                                            place.name = name;
+                                          },
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.all(5),
+                                        child: TextField(
+                                          decoration: InputDecoration(
+                                              hintText: 'Place\'s description',
+                                              border: OutlineInputBorder()),
+                                          controller: _placeDescrController,
+                                          onChanged: (descr) {
+                                            descr = _placeDescrController.text
+                                                .toString();
+                                            place.description = descr;
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                actions: <Widget>[
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('Cancel')),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          homeMaster.places.add(place);
+                                          _placeNameController.text = '';
+                                          _placeDescrController.text = '';
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      child: Text('Save')),
+                                ],
+                              );
+                            });
+                      }),
+                ],
+              )),
+          Container(
+            height: 220,
+            margin: EdgeInsets.all(10),
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                border: Border.all(
+              color: Colors.blue[300],
+              width: 5,
+            )),
+            child: Stack(children: [
+              Expanded(
+                  child: ListView.builder(
+                itemCount: homeMaster.places.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) => ListTile(
+                  title: homeMaster.places.isEmpty
+                      ? Text('default')
+                      : Text(homeMaster.places[index].name),
+                ),
+              ))
+            ]),
           ),
         ],
       )),
