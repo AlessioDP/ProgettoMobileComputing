@@ -182,10 +182,11 @@ class _EditHomeState extends State<_EditHome> {
             margin: EdgeInsets.all(10),
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
                 border: Border.all(
-              color: Colors.blue[300],
-              width: 5,
-            )),
+                  color: Colors.blue[300],
+                  width: 5,
+                )),
             child: Stack(children: [
               Expanded(
                   child: ListView.builder(

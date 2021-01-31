@@ -37,13 +37,14 @@ class ViewHome extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(9),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.arrow_right,
+                            Icons.home,
                             size: 40,
                           ),
                           Text(
-                            ' ' + homeMaster.name,
+                            ' ' + homeMaster.name + ' ',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 40),
                           ),
@@ -54,58 +55,53 @@ class ViewHome extends StatelessWidget {
                       padding: EdgeInsets.all(20),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [ 
+                        children: [
                           Text('Places: ',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 25, fontStyle: FontStyle.italic)),
-                          Container (
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 25,
+                                  fontStyle: FontStyle.italic)),
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                border: Border.all(
+                                  color: Colors.blue[300],
+                                  width: 5,
+                                )),
                             height: 350,
-                            padding: EdgeInsets.all(0),
-                              child: home.places.isNotEmpty
-                                  ? Container(
-                                      margin: EdgeInsets.all(10),
-                                      padding: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                        color: Colors.blue[300],
-                                        width: 5,
-                                      )),
-                                      child: Stack(children: [
-                                         Expanded(
-                                           child: ListView.builder(
-                                               itemCount: homeMaster.places.length,
-                                               shrinkWrap: true,
-                                                itemBuilder: (context, index) => ListTile(
-                                                title: homeMaster.places.isEmpty
-                                                ? Text('default')
-                                                : Row(
+                            child: home.places.isNotEmpty
+                                ? Stack(children: [
+                                    Expanded(
+                                        child: ListView.builder(
+                                      itemCount: homeMaster.places.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) => ListTile(
+                                        title: homeMaster.places.isEmpty
+                                            ? Text('default')
+                                            : Row(
                                                 children: [
-                                                 Icon(
-                                                   Icons.arrow_right,
+                                                  Icon(
+                                                    Icons.arrow_right,
                                                     size: 20,
                                                   ),
                                                   Text(
-                                                    '' + (homeMaster.places[index].name),
+                                                    '' +
+                                                        (homeMaster
+                                                            .places[index]
+                                                            .name),
                                                     style: TextStyle(
-                                                   fontWeight: FontWeight.normal, fontSize: 20),
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        fontSize: 20),
                                                   ),
                                                 ],
-                                                ),
-                                                ),
-                                           ))
-                                        ]),
-                            )
-                                  : Container (
-                                    width: 400,
-                                    height: 100,
-                                    padding: EdgeInsets.all(20),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                        color: Colors.red,
-                                        width: 5,
-                                      )),
-                                    child: Text('No places here!'),
-                                  ),
+                                              ),
+                                      ),
+                                    ))
+                                  ])
+                                : Text('No places here!'),
                           ),
                         ],
                       ),
