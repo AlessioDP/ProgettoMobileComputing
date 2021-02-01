@@ -68,6 +68,7 @@ class Place {
   String name;
   String description;
   List<Item> items = [];
+  List<Place> places = [];
 
   Place(this.name, this.description);
   Place.empty();

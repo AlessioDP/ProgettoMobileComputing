@@ -2,6 +2,7 @@ import 'package:SearchIt/pages/edit_home.dart';
 import 'package:SearchIt/pages/edit_item.dart';
 import 'package:SearchIt/pages/view_home.dart';
 import 'package:SearchIt/pages/view_item.dart';
+import 'package:SearchIt/pages/view_place.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/data/users.dart';
 import 'package:SearchIt/pages/homepage.dart';
@@ -53,6 +54,7 @@ class App extends StatelessWidget {
               EditHome(key: key, choice: choice, home: homeToEdit),
           '/view_item': (context) => ViewItem(item: itemToDisplay),
           '/view_home': (context) => ViewHome(home: homeToDisplay),
+          '/view_place': (context) => ViewPlace(place: placeToView),
           //'/home': (context) => null,
           //'/home/edit': (context) => null,
           //'/item': (context) => null,

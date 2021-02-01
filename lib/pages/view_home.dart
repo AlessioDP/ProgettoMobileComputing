@@ -3,6 +3,7 @@ import 'package:SearchIt/data/objects.dart';
 import 'package:flutter/material.dart';
 
 Home homeMaster;
+Place placeToView;
 
 class ViewHome extends StatelessWidget {
   ViewHome({this.home});
@@ -123,6 +124,12 @@ class _ViewHomeState extends State<_ViewHome> {
                                       itemCount: homeMaster.places.length,
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) => ListTile(
+                                        onTap: () {
+                                          placeToView =
+                                              homeMaster.places[index];
+                                          Navigator.pushNamed(
+                                              context, '/view_place');
+                                        },
                                         title: homeMaster.places.isEmpty
                                             ? Text('default')
                                             : Row(

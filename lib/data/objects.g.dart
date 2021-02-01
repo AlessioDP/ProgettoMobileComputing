@@ -41,15 +41,22 @@ Place _$PlaceFromJson(Map<String, dynamic> json) {
   return Place(
     json['name'] as String,
     json['description'] as String,
-  )..items = (json['items'] as List)
-      ?.map((e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
-      ?.toList();
+  )
+    ..items = (json['items'] as List)
+        ?.map(
+            (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..places = (json['places'] as List)
+        ?.map(
+            (e) => e == null ? null : Place.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$PlaceToJson(Place instance) => <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
       'items': instance.items?.map((e) => e?.toJson())?.toList(),
+      'places': instance.places?.map((e) => e?.toJson())?.toList(),
     };
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
