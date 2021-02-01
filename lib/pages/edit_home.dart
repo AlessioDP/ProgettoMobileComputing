@@ -130,7 +130,11 @@ class _EditHomeState extends State<_EditHome> {
                 itemBuilder: (context, index) => ListTile(
                   title: homeMaster.places.isEmpty
                       ? Text('default')
-                      : Text(homeMaster.places[index].name),
+                      : Container(
+                          child: Row(children: [
+                          Icon(Icons.arrow_right),
+                          Text(homeMaster.places[index].name),
+                        ])),
                 ),
               ))
             ]),

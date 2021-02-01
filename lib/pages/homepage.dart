@@ -218,102 +218,98 @@ class _HomepageState extends State<Homepage> {
   Widget bodyHomepageHomes() {
     List<Home> homes = data.getHomes(sortedHome);
 
-    return ListView(
-      children: List.generate(homes.length, (index) {
-        return ListTile(
-          onLongPress: () {
-            setState(() {
-              homes[index].selected = true;
-              selectingMode = true;
-            });
-          },
-          onTap: () {
-            setState(() {
-              if (selectingMode) {
-                homes[index].selected = !homes[index].selected;
-                log(homes[index].selected.toString());
-              } else {
-                homeToDisplay = homes[index];
-                Navigator.pushNamed(context, '/view_home');
-              }
-            });
-          },
-          selected: homes[index].selected,
-          leading: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            child: Container(
-              child: Text(
+    return ListView.separated(
+        itemCount: homes.length,
+        separatorBuilder: (context, index) {
+          return Divider();
+        },
+        itemBuilder: (context, index) {
+          return ListTile(
+            onLongPress: () {
+              setState(() {
+                homes[index].selected = true;
+                selectingMode = true;
+              });
+            },
+            onTap: () {
+              setState(() {
+                if (selectingMode) {
+                  homes[index].selected = !homes[index].selected;
+                  log(homes[index].selected.toString());
+                } else {
+                  homeToDisplay = homes[index];
+                  Navigator.pushNamed(context, '/view_home');
+                }
+              });
+            },
+            selected: homes[index].selected,
+            leading: Icon(Icons.home),
+            title: Row(children: [
+              Text(
                 homes[index].name,
                 style: TextStyle(fontSize: 18.0),
+                textAlign: TextAlign.left,
               ),
-            ),
-          ),
-          trailing: (selectingMode)
-              ? ((homes[index].selected)
-                  ? Icon(Icons.check_box)
-                  : Icon(Icons.check_box_outline_blank))
-              : null,
-        );
-      }),
-    );
+            ]),
+            trailing: (selectingMode)
+                ? ((homes[index].selected)
+                    ? Icon(Icons.check_box)
+                    : Icon(Icons.check_box_outline_blank))
+                : null,
+          );
+        });
   }
 
   Widget bodyHomepageItems() {
     List<Item> items =
         Item.getAllItem(sortedItem); // Wip: Collect all objects in homes
-    return ListView(
-      children: List.generate(items.length, (index) {
-        return ListTile(
-          onLongPress: () {
-            setState(() {
-              items[index].selected = true;
-              selectingMode = true;
-            });
-          },
-          onTap: () {
-            setState(() {
-              if (selectingMode) {
-                items[index].selected = !items[index].selected;
-                log(items[index].selected.toString());
-              } else {
-                itemToDisplay = items[index];
-                Navigator.pushNamed(context, '/view_item');
-              }
-            });
-          },
-          selected: items[index].selected,
-          title: Text(items[index].name,
-              style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          subtitle: Text(
-            '/' +
-                items[index].homeName +
-                (items[index].homeName.isNotEmpty
-                    ? ('/' + items[index].placeName)
-                    : ''),
-            style: TextStyle(
-              fontSize: 15.0,
-              color: Colors.grey,
-            ),
-            textAlign: TextAlign.right,
-          ),
-
-          /*leading: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            child: Container(
-              child: Text(
-                items[index].name == null ? 'error' : items[index].name,
-                style: TextStyle(fontSize: 18.0),
+    return ListView.separated(
+        itemCount: items.length,
+        separatorBuilder: (context, index) {
+          return Divider();
+        },
+        itemBuilder: (context, index) {
+          return ListTile(
+            onLongPress: () {
+              setState(() {
+                items[index].selected = true;
+                selectingMode = true;
+              });
+            },
+            onTap: () {
+              setState(() {
+                if (selectingMode) {
+                  items[index].selected = !items[index].selected;
+                  log(items[index].selected.toString());
+                } else {
+                  itemToDisplay = items[index];
+                  Navigator.pushNamed(context, '/view_item');
+                }
+              });
+            },
+            selected: items[index].selected,
+            leading: Icon(Icons.file_copy),
+            title: Text(items[index].name,
+                style: TextStyle(fontSize: 18.0, color: Colors.black)),
+            subtitle: Text(
+              '/' +
+                  items[index].homeName +
+                  (items[index].homeName.isNotEmpty
+                      ? ('/' + items[index].placeName)
+                      : ''),
+              style: TextStyle(
+                fontSize: 15.0,
+                color: Colors.grey,
               ),
+              textAlign: TextAlign.right,
             ),
-          ), */
-          trailing: (selectingMode)
-              ? ((items[index].selected)
-                  ? Icon(Icons.check_box)
-                  : Icon(Icons.check_box_outline_blank))
-              : null,
-        );
-      }),
-    );
+            trailing: (selectingMode)
+                ? ((items[index].selected)
+                    ? Icon(Icons.check_box)
+                    : Icon(Icons.check_box_outline_blank))
+                : null,
+          );
+        });
   }
 
   FFNavigationBar navigationBar(int selectedIndex) {
