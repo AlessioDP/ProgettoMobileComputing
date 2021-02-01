@@ -5,6 +5,7 @@ import 'package:SearchIt/widgets/add_floating_button.dart';
 import 'package:SearchIt/data/database.dart';
 import 'dart:developer';
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
+import 'package:flutter_launcher_icons/android.dart';
 
 //Si deve salvare lo stato alla chiusura dell'app così l'utente si ritroverà l'interfaccia con cui ha chiuso l'app
 int status = 0;
@@ -13,6 +14,8 @@ Item itemToEdit;
 Home homeToEdit;
 Item itemToDisplay;
 Home homeToDisplay;
+int sortedItem = -1;
+int sortedHome = -1;
 
 /*class Homepage extends StatelessWidget {
 
@@ -59,7 +62,7 @@ class _HomepageState extends State<Homepage> {
   bool selectingMode = false;
 
   getAppBar() {
-    List<Item> items = Item.getAllItem();
+    List<Item> items = Item.getAllItem(sortedItem);
     List<Home> homes = data.homes;
     return AppBar(
       leading: selectingMode
@@ -153,12 +156,68 @@ class _HomepageState extends State<Homepage> {
                         });
                   })
             ]
-          : null,
+          : <Widget>[
+              IconButton(
+                  icon: Icon(Icons.sort),
+                  onPressed: () {
+                    return showDialog(
+                      context: context,
+                      builder: (context) {
+                        List<String> sortListHome = [
+                          'Home\'s name',
+                          'Last Add'
+                        ];
+                        List<String> sortListItem = [
+                          'Item\'s name (A-Z)',
+                          'Item\'s home name (A-Z)',
+                          'Last add'
+                        ];
+                        return AlertDialog(
+                            content: Container(
+                          height: 180,
+                          width: 400,
+                          child: ListView(
+                            children: status == 0
+                                ? List.generate(sortListHome.length, (index) {
+                                    return ListTile(
+                                      onTap: () {
+                                        setState(() {
+                                          sortedHome = index;
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      leading: GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        child: Text(sortListHome[index]),
+                                      ),
+                                    );
+                                  })
+                                : List.generate(sortListItem.length, (index) {
+                                    return ListTile(
+                                      onTap: () {
+                                        setState(() {
+                                          sortedItem = index;
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      leading: GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        child: Text(sortListItem[index]),
+                                      ),
+                                    );
+                                  }),
+                          ),
+                        ));
+                      },
+                    );
+                  }),
+            ],
     );
   }
 
   Widget bodyHomepageHomes() {
-    List<Home> homes = data.homes;
+    List<Home> homes = data.getHomes(sortedHome);
+
     return ListView(
       children: List.generate(homes.length, (index) {
         return ListTile(
@@ -200,7 +259,8 @@ class _HomepageState extends State<Homepage> {
   }
 
   Widget bodyHomepageItems() {
-    List<Item> items = Item.getAllItem(); // Wip: Collect all objects in homes
+    List<Item> items =
+        Item.getAllItem(sortedItem); // Wip: Collect all objects in homes
     return ListView(
       children: List.generate(items.length, (index) {
         return ListTile(

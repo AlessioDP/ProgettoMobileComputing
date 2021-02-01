@@ -12,6 +12,18 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
   Map<String, dynamic> toJson() => _$DataToJson(this);
+
+  List<Home> getHomes(int sortNumber) {
+    List<Home> homeSorted = this.homes;
+    var backupList = homes;
+    if (sortNumber == 0) {
+      homeSorted.sort((a, b) => a.name.compareTo(b.name));
+    }
+    if (sortNumber == 1) {
+      homeSorted = backupList.reversed.toList();
+    }
+    return homeSorted;
+  }
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -54,7 +66,7 @@ class Home {
 @JsonSerializable()
 class Place {
   String name;
-  String description; 
+  String description;
   List<Item> items = [];
 
   Place(this.name, this.description);
@@ -115,16 +127,28 @@ class Item {
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
 
-  static List<Item> getAllItem() {
+  static List<Item> getAllItem(int sorted) {
     List<Item> allItems = [];
     data.homes.forEach((home) {
       allItems.addAll(home.items);
     });
+
+    List<Item> backupList = allItems;
+
+    if (sorted == 0) {
+      allItems.sort((a, b) => a.name.compareTo(b.name));
+    }
+    if (sorted == 1) {
+      allItems.sort((a, b) => a.homeName.compareTo(b.name));
+    }
+    if (sorted == 2) {
+      allItems = backupList.reversed.toList();
+    }
     return allItems;
   }
 
   static List<Item> getSelectedItems() {
-    return getAllItem().where((item) => item.selected == true).toList();
+    return getAllItem(0).where((item) => item.selected == true).toList();
   }
 
   static bool onlyOneSelected(List<Item> allItems) {

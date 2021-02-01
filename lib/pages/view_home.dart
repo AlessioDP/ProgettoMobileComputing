@@ -69,11 +69,16 @@ class _ViewHomeState extends State<_ViewHome> {
                             Icons.home,
                             size: 40,
                           ),
-                          Text(
-                            ' ' + homeMaster.name + ' ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 40),
-                          ),
+                          Flexible(
+                              child: new Container(
+                            child: Text(
+                              ' ' + homeMaster.name + ' ',
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: false,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 40),
+                            ),
+                          ))
                         ],
                       ),
                     ),
@@ -83,11 +88,14 @@ class _ViewHomeState extends State<_ViewHome> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
                                 'Home\'s places: ',
                                 style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               ActionChip(
                                   label: Text('+'),
@@ -109,7 +117,7 @@ class _ViewHomeState extends State<_ViewHome> {
                                 )),
                             height: 350,
                             child: home.places.isNotEmpty
-                                ? Stack(children: [
+                                ? Column(children: [
                                     Expanded(
                                         child: ListView.builder(
                                       itemCount: homeMaster.places.length,
@@ -138,7 +146,14 @@ class _ViewHomeState extends State<_ViewHome> {
                                       ),
                                     ))
                                   ])
-                                : Text('No places here!'),
+                                : Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                      'No places here!',
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 20),
+                                    ),
+                                  ),
                           ),
                         ],
                       ),

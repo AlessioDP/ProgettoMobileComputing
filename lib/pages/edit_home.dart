@@ -122,7 +122,7 @@ class _EditHomeState extends State<_EditHome> {
                   color: Colors.blue[300],
                   width: 5,
                 )),
-            child: Stack(children: [
+            child: Column(children: [
               Expanded(
                   child: ListView.builder(
                 itemCount: homeMaster.places.length,
