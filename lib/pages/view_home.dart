@@ -11,7 +11,33 @@ class ViewHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: _ViewHome(
+        home: home,
+      ),
+    );
+  }
+}
+
+class _ViewHome extends StatefulWidget {
+  final Home home;
+  _ViewHome({this.home});
+  @override
+  _ViewHomeState createState() => _ViewHomeState(home: home);
+}
+
+class _ViewHomeState extends State<_ViewHome> {
+  final Home home;
+  _ViewHomeState({this.home});
+
+  final _placeNameController = TextEditingController();
+  final _placeDescrController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
     homeMaster = home;
+    _placeNameController.text = '';
+    _placeDescrController.text = '';
 
     return Scaffold(
       appBar: AppBar(
@@ -56,12 +82,23 @@ class ViewHome extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Places: ',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 25,
-                                  fontStyle: FontStyle.italic)),
+                          Row(
+                            children: [
+                              Text(
+                                'Home\'s places: ',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              ActionChip(
+                                  label: Text('+'),
+                                  onPressed: () {
+                                    Place place = new Place.empty();
+                                    return dialogAddPlace(context, place);
+                                  }),
+                            ],
+                          ),
                           Container(
+                            width: 1000, //max width
                             margin: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                                 borderRadius:
@@ -115,17 +152,74 @@ class ViewHome extends StatelessWidget {
       ),
     );
   }
-}
 
-/*
-class _ViewHome extends StatefulWidget {
-  @override
-  _ViewHomeState createState() => _ViewHomeState();
+  Future dialogAddPlace(BuildContext context, Place place) {
+    return showDialog(
+        //TODO mettere verifica campo vuoto
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Container(
+              height: 180,
+              width: 400,
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    child: Text(
+                      'Create a place',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          hintText: 'Place\'s name',
+                          border: OutlineInputBorder()),
+                      controller: _placeNameController,
+                      onChanged: (name) {
+                        name = _placeNameController.text.toString();
+                        place.name = name;
+                      },
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          hintText: 'Place\'s description',
+                          border: OutlineInputBorder()),
+                      controller: _placeDescrController,
+                      onChanged: (descr) {
+                        descr = _placeDescrController.text.toString();
+                        place.description = descr;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                  onPressed: () {
+                    _placeNameController.text = '';
+                    _placeDescrController.text = '';
+                    Navigator.pop(context);
+                  },
+                  child: Text('Cancel')),
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      homeMaster.places.add(place);
+                      _placeNameController.text = '';
+                      _placeDescrController.text = '';
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: Text('Save')),
+            ],
+          );
+        });
+  }
 }
-
-class _ViewHomeState extends State<_ViewHome> {
-
-  @override
-  Widget build(BuildContext context) {
-}
-*/

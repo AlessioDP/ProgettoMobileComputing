@@ -65,6 +65,8 @@ class _EditHomeState extends State<_EditHome> {
     if (choiceMaster) {
       _nameController.text = homeMaster.name;
     }
+    _placeNameController.text = '';
+    _placeDescrController.text = '';
 
     return Scaffold(
       appBar: AppBar(
@@ -106,74 +108,7 @@ class _EditHomeState extends State<_EditHome> {
                       label: Text('+'),
                       onPressed: () {
                         Place place = new Place.empty();
-                        return showDialog(
-                            //TODO mettere verifica campo vuoto
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                content: Container(
-                                  height: 180,
-                                  width: 400,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(5),
-                                        child: Text(
-                                          'Create a place',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.all(5),
-                                        child: TextField(
-                                          decoration: InputDecoration(
-                                              hintText: 'Place\'s name',
-                                              border: OutlineInputBorder()),
-                                          controller: _placeNameController,
-                                          onChanged: (name) {
-                                            name = _placeNameController.text
-                                                .toString();
-                                            place.name = name;
-                                          },
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.all(5),
-                                        child: TextField(
-                                          decoration: InputDecoration(
-                                              hintText: 'Place\'s description',
-                                              border: OutlineInputBorder()),
-                                          controller: _placeDescrController,
-                                          onChanged: (descr) {
-                                            descr = _placeDescrController.text
-                                                .toString();
-                                            place.description = descr;
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                actions: <Widget>[
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text('Cancel')),
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          homeMaster.places.add(place);
-                                          _placeNameController.text = '';
-                                          _placeDescrController.text = '';
-                                          Navigator.pop(context);
-                                        });
-                                      },
-                                      child: Text('Save')),
-                                ],
-                              );
-                            });
+                        return dialogAddPlace(context, place);
                       }),
                 ],
               )),
@@ -225,7 +160,6 @@ class _EditHomeState extends State<_EditHome> {
                   item.homeName = homeMaster.name;
                 });
               }
-
               Database.save();
               Navigator.pushReplacementNamed(context, '/homepage');
             },
@@ -236,5 +170,75 @@ class _EditHomeState extends State<_EditHome> {
         ],
       ),
     );
+  }
+
+  Future dialogAddPlace(BuildContext context, Place place) {
+    return showDialog(
+        //TODO mettere verifica campo vuoto
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Container(
+              height: 180,
+              width: 400,
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    child: Text(
+                      'Create a place',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          hintText: 'Place\'s name',
+                          border: OutlineInputBorder()),
+                      controller: _placeNameController,
+                      onChanged: (name) {
+                        name = _placeNameController.text.toString();
+                        place.name = name;
+                      },
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          hintText: 'Place\'s description',
+                          border: OutlineInputBorder()),
+                      controller: _placeDescrController,
+                      onChanged: (descr) {
+                        descr = _placeDescrController.text.toString();
+                        place.description = descr;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                  onPressed: () {
+                    _placeNameController.text = '';
+                    _placeDescrController.text = '';
+                    Navigator.pop(context);
+                  },
+                  child: Text('Cancel')),
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      homeMaster.places.add(place);
+                      _placeNameController.text = '';
+                      _placeDescrController.text = '';
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: Text('Save')),
+            ],
+          );
+        });
   }
 }

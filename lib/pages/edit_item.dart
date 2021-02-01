@@ -80,7 +80,7 @@ class _EditItemState extends State<_EditItem> {
       if (_placesNames.isEmpty) {
         itemMaster.placeName = '';
         _placesNames.add('');
-      } else {
+      } else if (itemMaster.placeName == null) {
         itemMaster.placeName = _placesNames[0];
       }
       if (itemMaster.placeName == null) {

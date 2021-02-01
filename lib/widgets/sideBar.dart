@@ -1,3 +1,4 @@
+import 'package:SearchIt/pages/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/app_localizations.dart';
@@ -38,11 +39,16 @@ Drawer sideBar(BuildContext context) {
 }
 
 void _actionHomes(BuildContext context) {
-  Navigator.pushReplacementNamed(context, '/homes');
+  /*TODO @AlessioDP to make this works you need to try to use a setState function, make sure to use it in
+  **stateful widget or it won't be able to work. Use status variable to switch between Homes and Items
+  */
+  status = 0;
+  Navigator.pushReplacementNamed(context, '/homepage');
 }
 
 void _actionItems(BuildContext context) {
-  Navigator.pushReplacementNamed(context, '/items');
+  status = 1;
+  Navigator.pushReplacementNamed(context, '/homepage');
 }
 
 void _actionSettings(BuildContext context) {
