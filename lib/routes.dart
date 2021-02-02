@@ -17,3 +17,10 @@ class EditHomeArguments {
 
   EditHomeArguments(this.home);
 }
+
+class EditItemArguments {
+  final ListedObject parent;
+  final Item item;
+
+  EditItemArguments(this.parent, this.item);
+}

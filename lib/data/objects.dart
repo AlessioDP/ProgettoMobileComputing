@@ -5,7 +5,7 @@ part 'objects.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Data {
-  List<Home> homes = [];
+  List<ListedObject> homes = [];
 
   Data();
 
@@ -120,20 +120,11 @@ class Place {
 */
 @JsonSerializable()
 class Item extends ListedObject {
-  int quantity;
   String description;
-/*
-  @JsonKey(ignore: true)
-  String homeName;
-
-  @JsonKey(ignore: true)
-  String placeName;
-
-  @JsonKey(ignore: true)
-  bool selected = false;
-*/
-  Item(String name, List<ListedObject> childs, this.quantity, this.description) : super(name, childs);
-
+  int quantity = 1;
+  bool place = false;
+  
+  Item(String name, List<ListedObject> childs, this.description, this.quantity, this.place) : super(name, childs);
   Item.empty() : super.empty();
 /*
   @override
@@ -146,8 +137,8 @@ class Item extends ListedObject {
     this.selected = sel;
   }
 */
-  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
+  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
   Map<String, dynamic> toJson() => _$ItemToJson(this);
 /*
   static List<Item> getAllItem(int sorted) {
@@ -193,13 +184,15 @@ class Item extends ListedObject {
 @JsonSerializable()
 class ListedObject {
   String name;
-  List<ListedObject> childs;
+  List<ListedObject> childs = [];
 
   ListedObject(this.name, this.childs);
-
   ListedObject.empty();
 
-  factory ListedObject.fromJson(Map<String, dynamic> json) => _$ListedObjectFromJson(json);
+  void deleteChild(ListedObject lo) {
+    childs.remove(lo);
+  }
 
+  factory ListedObject.fromJson(Map<String, dynamic> json) => _$ListedObjectFromJson(json);
   Map<String, dynamic> toJson() => _$ListedObjectToJson(this);
 }

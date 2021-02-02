@@ -1,110 +1,46 @@
 import 'package:SearchIt/pages/homepage.dart';
+import 'package:SearchIt/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/data/objects.dart';
 import 'package:SearchIt/constants.dart';
 import 'package:SearchIt/data/database.dart';
-/*
-bool choiceMaster;
-Item itemMaster;
+import 'package:flutter/services.dart';
 
-class EditItem extends StatelessWidget {
-  final bool choice; //true -> edit // false -> new item
-  final Item item;
+class EditItem extends StatefulWidget {
 
-  final String editTitle = 'Edit Item';
-  final String newTitle = 'Create New Item';
-
-  EditItem({Key key, this.choice, this.item}) : super(key: key);
+  EditItem({Key key})
+  : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    choiceMaster = choice;
-    if (item == null) {
-      itemMaster = Item.empty();
-    } else {
-      itemMaster = item;
-    }
-    String title;
-
-    if (choice) {
-      title = editTitle;
-    } else {
-      title = newTitle;
-    }
-
-    return Scaffold(
-        body: _EditItem(
-      title: title,
-    ));
-  }
+  _EditItemState createState() => _EditItemState();
 }
 
-class _EditItem extends StatefulWidget {
-  final String title;
-  _EditItem({this.title});
-
-  @override
-  _EditItemState createState() => _EditItemState(title: title);
-}
-
-class _EditItemState extends State<_EditItem> {
-  String title;
-  _EditItemState({this.title});
-
-  final _nameController = TextEditingController();
-  final _descriptionController = TextEditingController();
-
+class _EditItemState extends State<EditItem> {
   @override
   Widget build(BuildContext context) {
-    List<String> _homesNames = Home.getHomesNames();
+    final EditItemArguments args = ModalRoute.of(context).settings.arguments;
 
-    List<Home> _homes = data.homes;
-
-    Home _home;
-
-    if (choiceMaster) {
-      _nameController.text = itemMaster.name;
-      _descriptionController.text = itemMaster.description;
-      _home =
-          _homes.where((element) => element.name == itemMaster.homeName).first;
-    } else {
-      if (itemMaster.homeName == null) {
-        itemMaster.homeName = _homesNames[0];
-      }
-      if (_homesNames.isEmpty) {
-        itemMaster.homeName = '';
-        _homesNames.add(itemMaster.homeName);
-      }
-      List<String> _placesNames =
-          Place.getPlacesNameFromHome(itemMaster.homeName);
-      if (_placesNames.isEmpty) {
-        itemMaster.placeName = '';
-        _placesNames.add('');
-      } else if (itemMaster.placeName == null) {
-        itemMaster.placeName = _placesNames[0];
-      }
-      if (itemMaster.placeName == null) {
-        itemMaster.placeName = '';
-      }
-    }
+    final _nameController = TextEditingController(text: args.item?.name);
+    final _descriptionController = TextEditingController(text: args.item?.description);
+    final _quantityController = TextEditingController(text: args.item?.quantity.toString());
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(args.item != null ? 'Edit ' + args.item.name : 'New item'),
       ),
       body: Form(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 1),
+              padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
               child: Text(
                 'Item\'s name: ',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
             ),
             Container(
-              padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextField(
                 decoration: InputDecoration(
                     hintText: 'Enter a name for your Item',
@@ -112,27 +48,26 @@ class _EditItemState extends State<_EditItem> {
                 controller: _nameController,
                 onChanged: (name) {
                   name = _nameController.text.toString();
-                  itemMaster.name = name;
                 },
               ),
             ),
             Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 1),
+              padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
               child: Text(
                 'Item\'s description: ',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
             Container(
-              padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextField(
                 decoration: InputDecoration(
-                    hintText: 'Enter a description for your Item',
-                    border: OutlineInputBorder()),
+                  hintText: 'Enter a description for your Item',
+                  border: OutlineInputBorder()
+                ),
                 controller: _descriptionController,
                 onChanged: (description) {
                   description = _descriptionController.text.toString();
-                  itemMaster.description = description;
                 },
               ),
             ),
@@ -145,113 +80,41 @@ class _EditItemState extends State<_EditItem> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
-              child: DropdownButton(
-                value: itemMaster.quantity == null
-                    ? itemMaster.quantity = 1
-                    : itemMaster.quantity,
-                items: [
-                  DropdownMenuItem(
-                    child: Text('1'),
-                    value: 1,
-                  ),
-                  DropdownMenuItem(
-                    child: Text('2'),
-                    value: 2,
-                  ),
-                  DropdownMenuItem(
-                    child: Text('3'),
-                    value: 3,
-                  ),
-                  DropdownMenuItem(
-                    child: Text('4'),
-                    value: 4,
-                  ),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    itemMaster.quantity = value;
-                  });
-                },
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Enter a quantity for your Item',
+                  border: OutlineInputBorder(),
+                ),
+                controller: _quantityController,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ], // Only numbers can be entered
+                onChanged: (quantity) {
+                  quantity = _quantityController.text.toString();
+                }
               ),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 1),
-              child: Text(
-                'Select the home for the object: ',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
-              child: DropdownButton<String>(
-                value: itemMaster.homeName == null
-                    ? _homesNames[0]
-                    : itemMaster.homeName,
-                items: _homesNames.map((location) {
-                  return new DropdownMenuItem(
-                      value: location, child: new Text(location));
-                }).toList(),
-                onChanged: (String newValue) {
-                  setState(() {
-                    itemMaster.homeName = newValue;
-                  });
-                },
-              ),
-            ),
-            Place.getPlacesNameFromHome(itemMaster.homeName).isNotEmpty
-                ? Container(
-                    padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
-                    child: DropdownButton<String>(
-                      value: itemMaster.placeName == null
-                          ? (Place.getPlacesNameFromHome(
-                              itemMaster.homeName)[0])
-                          : itemMaster.placeName,
-                      items: Place.getPlacesNameFromHome(itemMaster.homeName)
-                          .map((location) {
-                        return new DropdownMenuItem(
-                            value: location, child: new Text(location));
-                      }).toList(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          itemMaster.placeName = newValue;
-                        });
-                      },
-                    ),
-                  )
-                : Container(),
           ],
         ),
       ),
       floatingActionButton: ButtonBar(
         children: <Widget>[
           FloatingActionButton(
-            backgroundColor: Colors.grey,
             heroTag: "btn1",
             onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back),
-          ),
-          FloatingActionButton(
-            heroTag: "btn2",
-            onPressed: () {
-              if (choiceMaster) {
-                _home.items.remove(itemMaster);
+              Item item = args.item;
+              if (item == null) {
+                item = Item.empty();
+                args.parent.childs.add(item);
               }
-
-              itemMaster.getHome(itemMaster.homeName)..items.add(itemMaster);
-
-              if (itemMaster.getHome(itemMaster.homeName).places.isNotEmpty) {
-                itemMaster
-                    .getHome(itemMaster.homeName)
-                    .places
-                    .firstWhere(
-                        (element) => element.name == itemMaster.placeName)
-                    .items
-                    .add(itemMaster);
-              }
-
-              Navigator.pushReplacementNamed(context, '/homepage');
+              item.name = _nameController.text.toString();
+              item.description = _descriptionController.text.toString();
+              item.quantity = int.tryParse(_quantityController.text.toString())?? 1;
+              item.place = true; // TODO - Add form
+              
+              Database.save();
+              Navigator.pop(context, true);
             },
             child: Icon(
               Icons.check,
@@ -262,4 +125,3 @@ class _EditItemState extends State<_EditItem> {
     );
   }
 }
-*/

@@ -20,7 +20,24 @@ class _ItempageState extends State<Itempage> {
       title: args.parent.name,
       parent: args.parent,
       objects: args.parent.childs,
-      drawer: sideBar(context)
+      drawer: sideBar(context),
+      floatingButton: floatingButtonForItems(context, args),
+    );
+  }
+  
+  FloatingActionButton floatingButtonForItems(BuildContext context, ItempageArguments args) {
+    return FloatingActionButton(
+      onPressed: () {
+        //Home home = Home.empty();
+        Navigator.pushNamed(context, '/edit_item', arguments: EditItemArguments(args.parent, null))
+        .then((value) => {
+          if (value ?? false) {
+            setState(() {})
+          }
+        });
+      },
+      tooltip: 'Add item',
+      child: Icon(Icons.add)
     );
   }
 }

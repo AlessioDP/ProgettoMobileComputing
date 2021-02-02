@@ -40,8 +40,8 @@ class App extends StatelessWidget {
           '/itempage': (context) => Itempage(),
           '/login': (context) => LoginPage(),
 
-          //'/edit_item': (context) => EditItem(),
           '/edit_home': (context) => EditHome(),
+          '/edit_item': (context) => EditItem(),
           //'/view_item': (context) => ViewItem(),
           //'/view_home': (context) => ViewHome(),
           //'/view_place': (context) => ViewPlace(),

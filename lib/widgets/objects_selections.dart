@@ -9,7 +9,7 @@ class ObjectSelections extends ChangeNotifier {
   UnmodifiableListView<ListedObject> get objects => UnmodifiableListView(_objects);
 
   bool isSelectionMode() {
-    return _objects.length > 0;
+    return count() > 0;
   }
 
   int count() {
@@ -22,9 +22,9 @@ class ObjectSelections extends ChangeNotifier {
 
   void toggle(ListedObject object) {
     if (contains(object))
-      add(object);
-    else
       remove(object);
+    else
+      add(object);
   }
 
   void add(ListedObject object) {

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:SearchIt/data/database.dart';
 import 'package:SearchIt/routes.dart';
 import 'package:SearchIt/widgets/objects_selections.dart';
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
@@ -49,6 +52,7 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
         title: Text(widget.title),
         actions: objectSelections.isSelectionMode()
             ? <Widget>[
+              // TODO - Check if count == 1
                 IconButton(
                     icon: (objectSelections.count() == 1)
                         ? Icon(Icons.edit)
@@ -59,9 +63,20 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                       objectSelections.removeAll();
 
                       if (lo is Home)
-                        Navigator.pushNamed(context, '/edit_home');
-                      else if (lo is Item)
-                        Navigator.pushNamed(context, '/edit_item');
+                        Navigator.pushNamed(context, '/edit_home', arguments: EditHomeArguments(lo))
+                        .then((value) {
+                          if (value ?? false) {
+                            setState(() {});
+                          }
+                        });
+                      else if (lo is Item) {
+                        Navigator.pushNamed(context, '/edit_item', arguments: EditItemArguments(widget.parent, lo))
+                        .then((value) {
+                          if (value ?? false) {
+                            setState(() {});
+                          }
+                        });
+                      }
                     }),
                 IconButton(
                     icon: Icon(Icons.delete_outline),
@@ -80,7 +95,17 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                                     child: Text('No')),
                                 ElevatedButton(
                                     onPressed: () {
-                                      // TODO - REMOVE
+                                      if (widget.parent != null) {
+                                        objectSelections.objects.forEach((element) {
+                                          widget.parent.deleteChild(element);
+                                        });
+                                      } else {
+                                        objectSelections.objects.forEach((element) {
+                                          data.homes.remove(element);
+                                        });
+                                      }
+                                      objectSelections.removeAll();
+                                      Database.save();
                                       Navigator.pop(context);
                                     },
                                     child: Text('yes'))
@@ -149,6 +174,7 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
       body: buildListObjects(objectSelections)
     );
   }
+
   Widget buildListObjects(ObjectSelections objectSelections) {
     return ListView.separated(
       itemCount: widget.objects.length,
@@ -174,7 +200,11 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
             });
           },
           selected: objectSelections.contains(widget.objects[index]),
-          leading: Icon(Icons.home),
+          leading: Icon(
+            widget.objects[index] is Home ? Icons.home
+            : ((widget.objects[index] as Item).place ? Icons.folder : Icons.article)
+          
+          ),
           title: Row(children: [
             Text(
               widget.objects[index].name,

@@ -51,7 +51,7 @@ class _HomepageState extends State<Homepage> {
     }
     return EditObjectContainer(
       title: 'Homepage',
-      objects: new List<ListedObject>.from(data.homes),
+      objects: data.homes,
       drawer: sideBar(
         context,
         selectedButton: _isItemsPage ? SidebarButton.items : SidebarButton.homes
@@ -98,9 +98,9 @@ class _HomepageState extends State<Homepage> {
       onPressed: () {
         //Home home = Home.empty();
         Navigator.pushNamed(context, '/edit_home', arguments: EditHomeArguments(null))
-        .then((value) => {
+        .then((value) {
           if (value ?? false) {
-            setState(() {})
+            setState(() {});
           }
         });
       },

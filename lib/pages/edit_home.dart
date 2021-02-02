@@ -19,41 +19,42 @@ class EditHome extends StatefulWidget {
 }
 
 class _EditHomeState extends State<EditHome> {
-  final _nameController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final EditHomeArguments args = ModalRoute.of(context).settings.arguments;
+
+    final _nameController = TextEditingController(text: args.home?.name);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(args.home != null ? 'Edit ' + args.home.name : 'New home'),
       ),
       body: Form(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
-            child: Text(
-              'Home\'s name: ',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
+              child: Text(
+                'Home\'s name: ',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-            child: TextField(
-              decoration: InputDecoration(
-                  hintText: 'Enter a name for your Home',
-                  border: OutlineInputBorder()),
-              controller: _nameController,
-              onChanged: (name) {
-                name = _nameController.text.toString();
-              },
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+              child: TextField(
+                decoration: InputDecoration(
+                    hintText: 'Enter a name for your Home',
+                    border: OutlineInputBorder()),
+                controller: _nameController,
+                onChanged: (name) {
+                  name = _nameController.text.toString();
+                },
+              ),
             ),
-          ),
-        ],
-      )),
+          ],
+        )
+      ),
       floatingActionButton: ButtonBar(
         children: <Widget>[
           FloatingActionButton(

@@ -9,8 +9,8 @@ part of 'objects.dart';
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data()
     ..homes = (json['homes'] as List)
-        ?.map(
-            (e) => e == null ? null : Home.fromJson(e as Map<String, dynamic>))
+        ?.map((e) =>
+            e == null ? null : ListedObject.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 
@@ -40,16 +40,18 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : ListedObject.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    json['quantity'] as int,
     json['description'] as String,
+    json['quantity'] as int,
+    json['place'] as bool,
   );
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'name': instance.name,
       'childs': instance.childs,
-      'quantity': instance.quantity,
       'description': instance.description,
+      'quantity': instance.quantity,
+      'place': instance.place,
     };
 
 ListedObject _$ListedObjectFromJson(Map<String, dynamic> json) {
