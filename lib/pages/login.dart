@@ -2,7 +2,6 @@ import 'package:SearchIt/pages/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/data/database.dart';
-import 'package:SearchIt/app_localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatelessWidget {
@@ -16,7 +15,7 @@ class LoginPage extends StatelessWidget {
     final widgetTitle = Center(
         child: Padding(
             padding: EdgeInsets.only(bottom: 10),
-            child: Text(AppLocalizations.of(context).translate('app_name'),
+            child: Text('SearchIt',
                 style: TextStyle(
                   fontSize: 35,
                 ))));
@@ -26,7 +25,7 @@ class LoginPage extends StatelessWidget {
         child: ButtonTheme(
             height: 56,
             child: RaisedButton(
-                child: Text(AppLocalizations.of(context).translate('sign_in'),
+                child: Text('Sign in',
                     style: TextStyle(color: Colors.white, fontSize: 20)),
                 color: Colors.grey[700],
                 shape: RoundedRectangleBorder(
@@ -40,7 +39,7 @@ class LoginPage extends StatelessWidget {
         height: 56,
         child: FlatButton(
             child: Text(
-                AppLocalizations.of(context).translate('sign_in_as_guest'),
+                'Sign in as Guest',
                 style: TextStyle(color: Colors.black, fontSize: 16)),
             onPressed: () {
               _loginAnonymous();

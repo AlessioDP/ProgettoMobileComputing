@@ -1,7 +1,7 @@
 //this class will manage the view of item with all routes
 import 'package:SearchIt/data/objects.dart';
 import 'package:flutter/material.dart';
-
+/*
 Home homeMaster;
 Place placeToView;
 
@@ -245,3 +245,4 @@ class _ViewHomeState extends State<_ViewHome> {
         });
   }
 }
+*/

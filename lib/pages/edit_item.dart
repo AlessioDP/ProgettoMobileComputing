@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:SearchIt/data/objects.dart';
 import 'package:SearchIt/constants.dart';
 import 'package:SearchIt/data/database.dart';
-
+/*
 bool choiceMaster;
 Item itemMaster;
 
@@ -262,3 +262,4 @@ class _EditItemState extends State<_EditItem> {
     );
   }
 }
+*/

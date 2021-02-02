@@ -2,7 +2,7 @@ import 'package:SearchIt/data/database.dart';
 import 'package:SearchIt/data/objects.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/pages/homepage.dart';
-
+/*
 Widget floatingButton(BuildContext context) {
   return FloatingActionButton(
     onPressed: () {
@@ -38,3 +38,4 @@ Widget floatingButton(BuildContext context) {
     child: Icon(Icons.add),
   );
 }
+*/

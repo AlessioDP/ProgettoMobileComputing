@@ -3,7 +3,7 @@ import 'package:SearchIt/pages/view_home.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/data/objects.dart';
 import 'package:flutter_tree/flutter_tree.dart';
-
+/*
 class ViewPlace extends StatelessWidget {
   final Place place;
 
@@ -171,3 +171,4 @@ class __ViewPlaceState extends State<_ViewPlace> {
         });
   }
 }
+*/

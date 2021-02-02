@@ -3,20 +3,25 @@ import 'package:SearchIt/pages/edit_item.dart';
 import 'package:SearchIt/pages/view_home.dart';
 import 'package:SearchIt/pages/view_item.dart';
 import 'package:SearchIt/pages/view_place.dart';
+import 'package:SearchIt/widgets/object_selections.dart';
 import 'package:flutter/material.dart';
-import 'package:SearchIt/data/users.dart';
 import 'package:SearchIt/pages/homepage.dart';
+import 'package:SearchIt/pages/itempage.dart';
 import 'package:SearchIt/pages/login.dart';
 import 'package:SearchIt/data/database.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:SearchIt/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   //Database().read();
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(App());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ObjectSelections(),
+      child: App()
+    )
+  );
 }
 
 class App extends StatelessWidget {
@@ -30,31 +35,18 @@ class App extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        supportedLocales: [
-          const Locale('en', 'US'),
-          const Locale('it', 'IT'),
-        ],
-        localizationsDelegates: [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        /*
-        initialRoute: '/',
-        routes: {
-          '/': (context) => Login(title: title),
-        }*/
-
         routes: {
           '/homepage': (context) => Homepage(),
+          '/itempage': (context) => Itempage(),
           '/login': (context) => LoginPage(),
-          '/edit_item': (context) =>
-              EditItem(key: key, choice: choice, item: itemToEdit),
-          '/edit_home': (context) =>
-              EditHome(key: key, choice: choice, home: homeToEdit),
-          '/view_item': (context) => ViewItem(item: itemToDisplay),
-          '/view_home': (context) => ViewHome(home: homeToDisplay),
-          '/view_place': (context) => ViewPlace(place: placeToView),
+
+          //'/edit_item': (context) => EditItem(),
+          '/edit_home': (context) => EditHome(),
+          //'/view_item': (context) => ViewItem(),
+          //'/view_home': (context) => ViewHome(),
+          //'/view_place': (context) => ViewPlace(),
+
+          
           //'/home': (context) => null,
           //'/home/edit': (context) => null,
           //'/item': (context) => null,

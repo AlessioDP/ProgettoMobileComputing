@@ -27,21 +27,33 @@ class Data {
 }
 
 @JsonSerializable(explicitToJson: true)
-class Home {
-  String name;
-  @JsonKey(ignore: true)
-  bool selected = false;
-  List<Item> items = [];
-  List<Place> places = [];
+class Home extends ListedObject {
+  //@JsonKey(ignore: true)
+  //bool selected = false;
 
-  Home.empty();
+  //List<Item> items = [];
 
-  Home(this.name);
+  //bool container = false;
+  //List<Place> places = [];
+
+  Home.empty() : super.empty();
+
+  Home(String name, List<ListedObject> childs) : super(name, childs);
+/*
+  @override
+  bool isSelected() {
+    return selected;
+  }
+
+  @override
+  bool setSelected(bool sel) {
+    this.selected = sel;
+  }*/
 
   factory Home.fromJson(Map<String, dynamic> json) => _$HomeFromJson(json);
 
   Map<String, dynamic> toJson() => _$HomeToJson(this);
-
+/*
   static List<String> getHomesNames() {
     List<String> names = [];
     data.homes.forEach((home) {
@@ -60,9 +72,9 @@ class Home {
 
   static void removeAllSelectedHomes() {
     data.homes.removeWhere((home) => home.selected == true);
-  }
+  }*/
 }
-
+/*
 @JsonSerializable()
 class Place {
   String name;
@@ -105,13 +117,12 @@ class Place {
     return nomi;
   }
 }
-
+*/
 @JsonSerializable()
-class Item {
-  String name;
+class Item extends ListedObject {
   int quantity;
   String description;
-
+/*
   @JsonKey(ignore: true)
   String homeName;
 
@@ -120,14 +131,25 @@ class Item {
 
   @JsonKey(ignore: true)
   bool selected = false;
+*/
+  Item(String name, List<ListedObject> childs, this.quantity, this.description) : super(name, childs);
 
-  Item(this.name, this.quantity, this.description);
-  Item.empty();
+  Item.empty() : super.empty();
+/*
+  @override
+  bool isSelected() {
+    return selected;
+  }
 
+  @override
+  bool setSelected(bool sel) {
+    this.selected = sel;
+  }
+*/
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
-
+/*
   static List<Item> getAllItem(int sorted) {
     List<Item> allItems = [];
     data.homes.forEach((home) {
@@ -165,4 +187,19 @@ class Item {
       home.items.removeWhere((item) => item.selected == true);
     });
   }
+  */
+}
+
+@JsonSerializable()
+class ListedObject {
+  String name;
+  List<ListedObject> childs;
+
+  ListedObject(this.name, this.childs);
+
+  ListedObject.empty();
+
+  factory ListedObject.fromJson(Map<String, dynamic> json) => _$ListedObjectFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ListedObjectToJson(this);
 }

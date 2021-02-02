@@ -1,4 +1,5 @@
 import 'package:SearchIt/data/objects.dart';
+import 'package:SearchIt/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/constants.dart';
 import 'package:SearchIt/data/database.dart';
@@ -8,16 +9,95 @@ import 'homepage.dart';
 bool choiceMaster;
 Home homeMaster;
 
-class EditHome extends StatelessWidget {
+class EditHome extends StatefulWidget {
+
+  EditHome({Key key})
+  : super(key: key);
+
+  @override
+  _EditHomeState createState() => _EditHomeState();
+}
+
+class _EditHomeState extends State<EditHome> {
+  final _nameController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final EditHomeArguments args = ModalRoute.of(context).settings.arguments;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(args.home != null ? 'Edit ' + args.home.name : 'New home'),
+      ),
+      body: Form(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
+            child: Text(
+              'Home\'s name: ',
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+            child: TextField(
+              decoration: InputDecoration(
+                  hintText: 'Enter a name for your Home',
+                  border: OutlineInputBorder()),
+              controller: _nameController,
+              onChanged: (name) {
+                name = _nameController.text.toString();
+              },
+            ),
+          ),
+        ],
+      )),
+      floatingActionButton: ButtonBar(
+        children: <Widget>[
+          FloatingActionButton(
+            heroTag: "btn1",
+            onPressed: () {
+              Home home = args.home;
+              if (home == null) {
+                home = Home.empty();
+                data.homes.add(home);
+              }
+              home.name = _nameController.text.toString();
+              
+              Database.save();
+              Navigator.pop(context, true);
+            },
+            child: Icon(
+              Icons.check,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
   //true => edit
   //false => new
-  final bool choice;
-  final Home home;
-
+  //final bool choice;
+  //final Home home;
+/*
   final String editTitle = 'Edit home';
   final String newTitle = 'Create new home';
 
-  EditHome({Key key, this.choice, this.home}) : super(key: key);
+  EditHome({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +176,7 @@ class _EditHomeState extends State<_EditHome> {
               },
             ),
           ),
+          /*
           Container(
               padding: EdgeInsets.fromLTRB(10, 1, 10, 0),
               child: Row(
@@ -138,7 +219,7 @@ class _EditHomeState extends State<_EditHome> {
                 ),
               ))
             ]),
-          ),
+          ),*/
         ],
       )),
       floatingActionButton: ButtonBar(
@@ -151,6 +232,7 @@ class _EditHomeState extends State<_EditHome> {
             },
             child: Icon(Icons.arrow_back),
           ),
+          /*
           FloatingActionButton(
             heroTag: "btn2",
             onPressed: () {
@@ -170,7 +252,7 @@ class _EditHomeState extends State<_EditHome> {
             child: Icon(
               Icons.check,
             ),
-          ),
+          ),*/
         ],
       ),
     );
@@ -245,4 +327,6 @@ class _EditHomeState extends State<_EditHome> {
           );
         });
   }
+}
+*/
 }

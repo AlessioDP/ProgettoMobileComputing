@@ -1,7 +1,7 @@
 //this class will manage the view of item with all routes
 import 'package:SearchIt/data/objects.dart';
 import 'package:flutter/material.dart';
-
+/*
 Item itemMaster;
 
 class ViewItem extends StatelessWidget {
@@ -161,4 +161,5 @@ class _ViewItemState extends State<_ViewItem> {
     );
   }
 }
+*/
 */
