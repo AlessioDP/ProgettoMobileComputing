@@ -1,5 +1,5 @@
 import 'package:SearchIt/routes.dart';
-import 'package:SearchIt/widgets/object_selections.dart';
+import 'package:SearchIt/widgets/objects_selections.dart';
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/data/objects.dart';
