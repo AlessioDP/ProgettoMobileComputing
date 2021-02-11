@@ -1,13 +1,13 @@
+import 'dart:developer';
+
 import 'package:SearchIt/data/objects.dart';
 import 'package:SearchIt/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/constants.dart';
 import 'package:SearchIt/data/database.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'homepage.dart';
-
-bool choiceMaster;
-Home homeMaster;
 
 class EditHome extends StatefulWidget {
 
@@ -19,11 +19,25 @@ class EditHome extends StatefulWidget {
 }
 
 class _EditHomeState extends State<EditHome> {
+  TextEditingController _nameController;
+  TextEditingController _descriptionController;
+  Color savedColor;
+
+  void changeColor(Color color) {
+    setState(() => savedColor = color);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final EditHomeArguments args = ModalRoute.of(context).settings.arguments;
 
-    final _nameController = TextEditingController(text: args.home?.name);
+    if (_nameController == null)
+      _nameController = TextEditingController(text: args.home?.name);
+    if (_descriptionController == null)
+      _descriptionController = TextEditingController(text: args.home?.description);
+    Color pickerColor = savedColor ?? (args.home != null ? Color(int.parse(args.home.color, radix: 16)) : Color(0xffffffff));
+
 
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +50,7 @@ class _EditHomeState extends State<EditHome> {
             Container(
               padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
               child: Text(
-                'Home\'s name: ',
+                'Name:',
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
             ),
@@ -44,7 +58,7 @@ class _EditHomeState extends State<EditHome> {
               padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextField(
                 decoration: InputDecoration(
-                    hintText: 'Enter a name for your Home',
+                    hintText: 'Enter a name',
                     border: OutlineInputBorder()),
                 controller: _nameController,
                 onChanged: (name) {
@@ -52,6 +66,55 @@ class _EditHomeState extends State<EditHome> {
                 },
               ),
             ),
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
+              child: Text(
+                'Description:',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+              child: TextField(
+                decoration: InputDecoration(
+                    hintText: 'Enter a description',
+                    border: OutlineInputBorder()),
+                controller: _descriptionController,
+                onChanged: (name) {
+                  name = _descriptionController.text.toString();
+                },
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
+              child: RaisedButton(
+                elevation: 2.0,
+                child: Text('Color'),
+                color: pickerColor,
+                textColor: useWhiteForeground(pickerColor)
+                        ? const Color(0xffffffff)
+                        : const Color(0xff000000),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        titlePadding: const EdgeInsets.all(0.0),
+                        contentPadding: const EdgeInsets.all(0.0),
+                        content: SingleChildScrollView(
+                          child: ColorPicker(
+                            pickerColor: pickerColor,
+                            onColorChanged: changeColor,
+                            showLabel: true,
+                            pickerAreaHeightPercent: 0.8,
+                          ),
+                        ),
+                      );
+                    }
+                  );
+                }
+              )
+            )
           ],
         )
       ),
@@ -66,7 +129,9 @@ class _EditHomeState extends State<EditHome> {
                 data.homes.add(home);
               }
               home.name = _nameController.text.toString();
-              
+              home.description = _descriptionController.text.toString();
+              home.color = pickerColor.toString().split('(0x')[1].split(')')[0];
+              log("Saved color: " + home.color);
               Database.save();
               Navigator.pop(context, true);
             },
@@ -331,3 +396,4 @@ class _EditHomeState extends State<_EditHome> {
 }
 */
 }
+

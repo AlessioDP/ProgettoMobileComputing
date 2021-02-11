@@ -38,7 +38,7 @@ class Home extends ListedObject {
 
   Home.empty() : super.empty();
 
-  Home(String name, List<ListedObject> childs) : super(name, childs);
+  Home(String name, String description, String color, List<ListedObject> childs) : super(name, description, color, childs);
 /*
   @override
   bool isSelected() {
@@ -120,11 +120,10 @@ class Place {
 */
 @JsonSerializable()
 class Item extends ListedObject {
-  String description;
   int quantity = 1;
   bool place = false;
   
-  Item(String name, List<ListedObject> childs, this.description, this.quantity, this.place) : super(name, childs);
+  Item(String name, String description, String color, List<ListedObject> childs, this.place) : super(name, description, color, childs);
   Item.empty() : super.empty();
 /*
   @override
@@ -184,9 +183,11 @@ class Item extends ListedObject {
 @JsonSerializable()
 class ListedObject {
   String name;
+  String description;
+  String color;
   List<ListedObject> childs = [];
 
-  ListedObject(this.name, this.childs);
+  ListedObject(this.name, this.description, this.color, this.childs);
   ListedObject.empty();
 
   void deleteChild(ListedObject lo) {

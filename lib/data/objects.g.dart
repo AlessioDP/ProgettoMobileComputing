@@ -21,6 +21,8 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
 Home _$HomeFromJson(Map<String, dynamic> json) {
   return Home(
     json['name'] as String,
+    json['description'] as String,
+    json['color'] as String,
     (json['childs'] as List)
         ?.map((e) =>
             e == null ? null : ListedObject.fromJson(e as Map<String, dynamic>))
@@ -30,26 +32,29 @@ Home _$HomeFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$HomeToJson(Home instance) => <String, dynamic>{
       'name': instance.name,
+      'description': instance.description,
+      'color': instance.color,
       'childs': instance.childs?.map((e) => e?.toJson())?.toList(),
     };
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
   return Item(
     json['name'] as String,
+    json['description'] as String,
+    json['color'] as String,
     (json['childs'] as List)
         ?.map((e) =>
             e == null ? null : ListedObject.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    json['description'] as String,
-    json['quantity'] as int,
     json['place'] as bool,
-  );
+  )..quantity = json['quantity'] as int;
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'name': instance.name,
-      'childs': instance.childs,
       'description': instance.description,
+      'color': instance.color,
+      'childs': instance.childs,
       'quantity': instance.quantity,
       'place': instance.place,
     };
@@ -57,6 +62,8 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
 ListedObject _$ListedObjectFromJson(Map<String, dynamic> json) {
   return ListedObject(
     json['name'] as String,
+    json['description'] as String,
+    json['color'] as String,
     (json['childs'] as List)
         ?.map((e) =>
             e == null ? null : ListedObject.fromJson(e as Map<String, dynamic>))
@@ -67,5 +74,7 @@ ListedObject _$ListedObjectFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ListedObjectToJson(ListedObject instance) =>
     <String, dynamic>{
       'name': instance.name,
+      'description': instance.description,
+      'color': instance.color,
       'childs': instance.childs,
     };

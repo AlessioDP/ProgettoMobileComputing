@@ -212,11 +212,16 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
               textAlign: TextAlign.left,
             ),
           ]),
+          subtitle: Text(
+            widget.objects[index].description,
+            style: TextStyle(fontSize: 18.0),
+            textAlign: TextAlign.left,
+          ),
           trailing: (objectSelections.isSelectionMode())
               ? ((objectSelections.contains(widget.objects[index]))
                   ? Icon(Icons.check_box)
                   : Icon(Icons.check_box_outline_blank))
-              : null,
+              : (widget.objects[index].color != null ? Icon(Icons.circle, color: Color(int.parse(widget.objects[index].color, radix: 16))) : null),
         );
       });
   }
