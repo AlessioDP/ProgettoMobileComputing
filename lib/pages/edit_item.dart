@@ -5,24 +5,41 @@ import 'package:SearchIt/data/objects.dart';
 import 'package:SearchIt/constants.dart';
 import 'package:SearchIt/data/database.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class EditItem extends StatefulWidget {
-
-  EditItem({Key key})
-  : super(key: key);
+  EditItem({Key key}) : super(key: key);
 
   @override
   _EditItemState createState() => _EditItemState();
 }
 
 class _EditItemState extends State<EditItem> {
+  TextEditingController _nameController;
+  TextEditingController _descriptionController;
+  TextEditingController _quantityController;
+  Color savedColor;
+
+  void changeColor(Color color) {
+    setState(() => savedColor = color);
+  }
+
   @override
   Widget build(BuildContext context) {
     final EditItemArguments args = ModalRoute.of(context).settings.arguments;
 
-    final _nameController = TextEditingController(text: args.item?.name);
-    final _descriptionController = TextEditingController(text: args.item?.description);
-    final _quantityController = TextEditingController(text: args.item?.quantity.toString());
+    if (_nameController == null)
+      _nameController = TextEditingController(text: args.item?.name);
+    if (_descriptionController == null)
+      _descriptionController =
+          TextEditingController(text: args.item?.description);
+    Color pickerColor = savedColor ??
+        (args.item != null
+            ? Color(int.parse(args.item.color, radix: 16))
+            : Color(0xffffffff));
+    if (_quantityController == null)
+      _quantityController =
+          TextEditingController(text: args.item?.quantity.toString());
 
     return Scaffold(
       appBar: AppBar(
@@ -62,9 +79,8 @@ class _EditItemState extends State<EditItem> {
               padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: 'Enter a description for your Item',
-                  border: OutlineInputBorder()
-                ),
+                    hintText: 'Enter a description for your Item',
+                    border: OutlineInputBorder()),
                 controller: _descriptionController,
                 onChanged: (description) {
                   description = _descriptionController.text.toString();
@@ -80,21 +96,77 @@ class _EditItemState extends State<EditItem> {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Enter a quantity for your Item',
-                  border: OutlineInputBorder(),
-                ),
-                controller: _quantityController,
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ], // Only numbers can be entered
-                onChanged: (quantity) {
-                  quantity = _quantityController.text.toString();
-                }
+              child: DropdownButton(
+                value: int.tryParse(_quantityController.text) ?? 1,
+                items: [
+                  DropdownMenuItem(
+                    child: Text('1'),
+                    value: 1,
+                  ),
+                  DropdownMenuItem(
+                    child: Text('2'),
+                    value: 2,
+                  ),
+                  DropdownMenuItem(
+                    child: Text('3'),
+                    value: 3,
+                  ),
+                  DropdownMenuItem(
+                    child: Text('4'),
+                    value: 4,
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _quantityController.text = value.toString();
+                  });
+                },
               ),
             ),
+
+            /*Container(
+              padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Enter a quantity for your Item',
+                    border: OutlineInputBorder(),
+                  ),
+                  controller: _quantityController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ], // Only numbers can be entered
+                  onChanged: (quantity) {
+                    quantity = _quantityController.text.toString();
+                  }),
+            ),*/
+            Container(
+                padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
+                child: RaisedButton(
+                    elevation: 2.0,
+                    child: Text('Color'),
+                    color: pickerColor,
+                    textColor: useWhiteForeground(pickerColor)
+                        ? const Color(0xffffffff)
+                        : const Color(0xff000000),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              titlePadding: const EdgeInsets.all(0.0),
+                              contentPadding: const EdgeInsets.all(0.0),
+                              content: SingleChildScrollView(
+                                child: ColorPicker(
+                                  pickerColor: pickerColor,
+                                  onColorChanged: changeColor,
+                                  showLabel: true,
+                                  pickerAreaHeightPercent: 0.8,
+                                ),
+                              ),
+                            );
+                          });
+                    }))
           ],
         ),
       ),
@@ -110,9 +182,11 @@ class _EditItemState extends State<EditItem> {
               }
               item.name = _nameController.text.toString();
               item.description = _descriptionController.text.toString();
-              item.quantity = int.tryParse(_quantityController.text.toString())?? 1;
+              item.quantity =
+                  int.tryParse(_quantityController.text.toString()) ?? 1;
+              item.color = pickerColor.toString().split('(0x')[1].split(')')[0];
               item.place = true; // TODO - Add form
-              
+
               Database.save();
               Navigator.pop(context, true);
             },
