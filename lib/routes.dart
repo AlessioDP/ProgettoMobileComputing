@@ -24,3 +24,10 @@ class EditItemArguments {
 
   EditItemArguments(this.parent, this.item);
 }
+
+class ViewItemArguments {
+  final ListedObject parent;
+  final Item item;
+
+  ViewItemArguments(this.parent, this.item);
+}

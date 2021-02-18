@@ -211,8 +211,15 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                 if (objectSelections.isSelectionMode()) {
                   objectSelections.toggle(widget.objects[index]);
                 } else {
-                  Navigator.pushNamed(context, '/itempage',
-                      arguments: ItempageArguments(widget.objects[index]));
+                  if (widget.objects[index] is Item &&
+                      !((widget.objects[index] as Item).isPlace())) {
+                    Navigator.pushNamed(context, '/view_item',
+                        arguments: ViewItemArguments(
+                            widget.parent, widget.objects[index]));
+                  } else {
+                    Navigator.pushNamed(context, '/itempage',
+                        arguments: ItempageArguments(widget.objects[index]));
+                  }
                 }
               });
             },

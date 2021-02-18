@@ -19,6 +19,7 @@ class _EditItemState extends State<EditItem> {
   TextEditingController _descriptionController;
   TextEditingController _quantityController;
   Color savedColor;
+  var checkBoxValue = false;
 
   void changeColor(Color color) {
     setState(() => savedColor = color);
@@ -88,60 +89,81 @@ class _EditItemState extends State<EditItem> {
               ),
             ),
             Container(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(0, 5, 5, 0),
+                      child: Text(
+                        'Item\'s quantity: ',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      child: DropdownButton(
+                        value: int.tryParse(_quantityController.text) ?? 1,
+                        items: [
+                          DropdownMenuItem(
+                            child: Text('1'),
+                            value: 1,
+                          ),
+                          DropdownMenuItem(
+                            child: Text('2'),
+                            value: 2,
+                          ),
+                          DropdownMenuItem(
+                            child: Text('3'),
+                            value: 3,
+                          ),
+                          DropdownMenuItem(
+                            child: Text('4'),
+                            value: 4,
+                          ),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            _quantityController.text = value.toString();
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                )),
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: Row(
+                children: [
+                  Container(
+                    child: Text(
+                      'Is a place: ',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Container(
+                    child: Checkbox(
+                        value: checkBoxValue,
+                        activeColor: Colors.green,
+                        onChanged: (bool newValue) {
+                          setState(() {
+                            checkBoxValue = newValue;
+                          });
+                        }),
+                  ),
+                ],
+              ),
+            ),
+            Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 1),
               child: Text(
-                'Item\'s quantity: ',
+                'Pick a color: ',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
             Container(
-              padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
-              child: DropdownButton(
-                value: int.tryParse(_quantityController.text) ?? 1,
-                items: [
-                  DropdownMenuItem(
-                    child: Text('1'),
-                    value: 1,
-                  ),
-                  DropdownMenuItem(
-                    child: Text('2'),
-                    value: 2,
-                  ),
-                  DropdownMenuItem(
-                    child: Text('3'),
-                    value: 3,
-                  ),
-                  DropdownMenuItem(
-                    child: Text('4'),
-                    value: 4,
-                  ),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _quantityController.text = value.toString();
-                  });
-                },
-              ),
-            ),
-
-            /*Container(
-              padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
-              child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Enter a quantity for your Item',
-                    border: OutlineInputBorder(),
-                  ),
-                  controller: _quantityController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ], // Only numbers can be entered
-                  onChanged: (quantity) {
-                    quantity = _quantityController.text.toString();
-                  }),
-            ),*/
-            Container(
-                padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
                 child: RaisedButton(
                     elevation: 2.0,
                     child: Text('Color'),
@@ -185,7 +207,7 @@ class _EditItemState extends State<EditItem> {
               item.quantity =
                   int.tryParse(_quantityController.text.toString()) ?? 1;
               item.color = pickerColor.toString().split('(0x')[1].split(')')[0];
-              item.place = true; // TODO - Add form
+              item.place = checkBoxValue;
 
               Database.save();
               Navigator.pop(context, true);

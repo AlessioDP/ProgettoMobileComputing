@@ -49,7 +49,7 @@ class App extends StatelessWidget {
 
           '/edit_home': (context) => EditHome(),
           '/edit_item': (context) => EditItem(),
-          //'/view_item': (context) => ViewItem(),
+          '/view_item': (context) => ViewItem(),
           //'/view_home': (context) => ViewHome(),
           //'/view_place': (context) => ViewPlace(),
 
