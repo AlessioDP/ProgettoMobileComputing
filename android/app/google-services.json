@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "231588662206-6f03kau7r8cu9giiglk3eslkike7v7gh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.uniroma3.searchit",
+            "certificate_hash": "3d42fdc56c3835bbfd39e83a497a62e2fcc12845"
+          }
+        },
+        {
+          "client_id": "231588662206-gal2fgq91qo3gkh32u382bjfuv2do9kb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.uniroma3.searchit",
+            "certificate_hash": "15d304330775c444a42c628027e9cce699a73ef1"
+          }
+        },
+        {
           "client_id": "231588662206-tek7soid2m7o52dnp6u5skdlduglb7qp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

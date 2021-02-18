@@ -24,12 +24,8 @@ void main() async {
   await Database.init();
   await Database.load();
 
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => ObjectSelections(),
-      child: App()
-    )
-  );
+  runApp(ChangeNotifierProvider(
+      create: (context) => ObjectSelections(), child: App()));
 }
 
 class App extends StatelessWidget {
@@ -53,7 +49,6 @@ class App extends StatelessWidget {
           //'/view_item': (context) => ViewItem(),
           //'/view_home': (context) => ViewHome(),
           //'/view_place': (context) => ViewPlace(),
-
 
           //'/home': (context) => null,
           //'/home/edit': (context) => null,
