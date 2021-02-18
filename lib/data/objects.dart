@@ -5,7 +5,7 @@ part 'objects.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Data {
-  List<ListedObject> homes = [];
+  List<Home> homes = [];
 
   Data();
 
@@ -27,52 +27,43 @@ class Data {
 }
 
 @JsonSerializable(explicitToJson: true)
-class Home extends ListedObject {
-  //@JsonKey(ignore: true)
-  //bool selected = false;
+class Home implements ListedObject {
+  String name;
+  String description;
+  String color;
+  List<Item> childs = [];
 
-  //List<Item> items = [];
+  Home.empty();
+  Home(this.name, this.description, this.color, this.childs);
 
-  //bool container = false;
-  //List<Place> places = [];
-
-  Home.empty() : super.empty();
-
-  Home(String name, String description, String color, List<ListedObject> childs) : super(name, description, color, childs);
-/*
-  @override
-  bool isSelected() {
-    return selected;
+  String getName() {
+    return this.name;
+  }
+  void setName(String name) {
+    this.name = name;
   }
 
-  @override
-  bool setSelected(bool sel) {
-    this.selected = sel;
-  }*/
+  String getDescription() {
+    return this.description;
+  }
+  void setDescription(String description) {
+    this.description = description;
+  }
+
+  String getColor() {
+    return this.color;
+  }
+  void setColor(String color) {
+    this.color = color;
+  }
+
+  List<ListedObject> getChilds() {
+    return childs;
+  }
 
   factory Home.fromJson(Map<String, dynamic> json) => _$HomeFromJson(json);
 
   Map<String, dynamic> toJson() => _$HomeToJson(this);
-/*
-  static List<String> getHomesNames() {
-    List<String> names = [];
-    data.homes.forEach((home) {
-      names.add(home.name);
-    });
-    return names;
-  }
-
-  static List<Home> getSelectedHomes() {
-    return data.homes.where((home) => home.selected == true).toList();
-  }
-
-  static bool onlyOneSelected() {
-    return (getSelectedHomes().length == 1);
-  }
-
-  static void removeAllSelectedHomes() {
-    data.homes.removeWhere((home) => home.selected == true);
-  }*/
 }
 /*
 @JsonSerializable()
@@ -119,23 +110,55 @@ class Place {
 }
 */
 @JsonSerializable()
-class Item extends ListedObject {
+class Item implements ListedObject {
+  String name;
+  String description;
+  String color;
+  List<Item> childs = [];
   int quantity = 1;
   bool place = false;
-  
-  Item(String name, String description, String color, List<ListedObject> childs, this.place) : super(name, description, color, childs);
-  Item.empty() : super.empty();
-/*
-  @override
-  bool isSelected() {
-    return selected;
+
+  Item.empty();
+  Item(this.name, this.description, this.color, this.childs, this.quantity, this.place);
+
+  String getName() {
+    return this.name;
+  }
+  void setName(String name) {
+    this.name = name;
   }
 
-  @override
-  bool setSelected(bool sel) {
-    this.selected = sel;
+  String getDescription() {
+    return this.description;
   }
-*/
+  void setDescription(String description) {
+    this.description = description;
+  }
+
+  String getColor() {
+    return this.color;
+  }
+  void setColor(String color) {
+    this.color = color;
+  }
+
+  List<ListedObject> getChilds() {
+    return childs;
+  }
+
+  int getQuantity() {
+    return this.quantity;
+  }
+  void setQuantity(int quantity) {
+    this.quantity = quantity;
+  }
+
+  bool isPlace() {
+    return this.place;
+  }
+  void setPlace(bool place) {
+    this.place = place;
+  }
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
   Map<String, dynamic> toJson() => _$ItemToJson(this);
@@ -180,20 +203,16 @@ class Item extends ListedObject {
   */
 }
 
-@JsonSerializable()
 class ListedObject {
-  String name;
-  String description;
-  String color;
-  List<ListedObject> childs = [];
 
-  ListedObject(this.name, this.description, this.color, this.childs);
-  ListedObject.empty();
+  String getName() {}
+  void setName(String name) {}
 
-  void deleteChild(ListedObject lo) {
-    childs.remove(lo);
-  }
+  String getDescription() {}
+  void setDescription(String description) {}
 
-  factory ListedObject.fromJson(Map<String, dynamic> json) => _$ListedObjectFromJson(json);
-  Map<String, dynamic> toJson() => _$ListedObjectToJson(this);
+  String getColor() {}
+  void setColor(String color) {}
+
+  List<ListedObject> getChilds() {}
 }

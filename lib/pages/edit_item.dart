@@ -178,7 +178,7 @@ class _EditItemState extends State<EditItem> {
               Item item = args.item;
               if (item == null) {
                 item = Item.empty();
-                args.parent.childs.add(item);
+                args.parent.getChilds().add(item);
               }
               item.name = _nameController.text.toString();
               item.description = _descriptionController.text.toString();

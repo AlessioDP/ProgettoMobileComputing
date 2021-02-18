@@ -17,9 +17,9 @@ class _ItempageState extends State<Itempage> {
     final ItempageArguments args = ModalRoute.of(context).settings.arguments;
 
     return EditObjectContainer(
-      title: args.parent.name,
+      title: args.parent.getName(),
       parent: args.parent,
-      objects: args.parent.childs,
+      objects: args.parent.getChilds(),
       drawer: sideBar(context),
       floatingButton: floatingButtonForItems(context, args),
     );

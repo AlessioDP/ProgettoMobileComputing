@@ -97,7 +97,7 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                                     onPressed: () {
                                       if (widget.parent != null) {
                                         objectSelections.objects.forEach((element) {
-                                          widget.parent.deleteChild(element);
+                                          widget.parent.getChilds().remove(element);
                                         });
                                       } else {
                                         objectSelections.objects.forEach((element) {
@@ -171,7 +171,9 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                     }),*/
               ],
       ),
-      body: buildListObjects(objectSelections)
+      body: widget.objects.length > 0
+        ? buildListObjects(objectSelections)
+        : Center( child: Text("Press the + below to add " + (widget.parent == null ? "a home" : "an item")))
     );
   }
 
@@ -207,13 +209,13 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
           ),
           title: Row(children: [
             Text(
-              widget.objects[index].name,
+              widget.objects[index].getName(),
               style: TextStyle(fontSize: 18.0),
               textAlign: TextAlign.left,
             ),
           ]),
           subtitle: Text(
-            widget.objects[index].description,
+            widget.objects[index].getDescription(),
             style: TextStyle(fontSize: 18.0),
             textAlign: TextAlign.left,
           ),
@@ -221,7 +223,7 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
               ? ((objectSelections.contains(widget.objects[index]))
                   ? Icon(Icons.check_box)
                   : Icon(Icons.check_box_outline_blank))
-              : (widget.objects[index].color != null ? Icon(Icons.circle, color: Color(int.parse(widget.objects[index].color, radix: 16))) : null),
+              : (widget.objects[index].getColor() != null ? Icon(Icons.circle, color: Color(int.parse(widget.objects[index].getColor(), radix: 16))) : null),
         );
       });
   }

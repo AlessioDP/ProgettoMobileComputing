@@ -9,8 +9,8 @@ part of 'objects.dart';
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data()
     ..homes = (json['homes'] as List)
-        ?.map((e) =>
-            e == null ? null : ListedObject.fromJson(e as Map<String, dynamic>))
+        ?.map(
+            (e) => e == null ? null : Home.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 
@@ -24,8 +24,8 @@ Home _$HomeFromJson(Map<String, dynamic> json) {
     json['description'] as String,
     json['color'] as String,
     (json['childs'] as List)
-        ?.map((e) =>
-            e == null ? null : ListedObject.fromJson(e as Map<String, dynamic>))
+        ?.map(
+            (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }
@@ -43,11 +43,12 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     json['description'] as String,
     json['color'] as String,
     (json['childs'] as List)
-        ?.map((e) =>
-            e == null ? null : ListedObject.fromJson(e as Map<String, dynamic>))
+        ?.map(
+            (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    json['quantity'] as int,
     json['place'] as bool,
-  )..quantity = json['quantity'] as int;
+  );
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
@@ -57,24 +58,4 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'childs': instance.childs,
       'quantity': instance.quantity,
       'place': instance.place,
-    };
-
-ListedObject _$ListedObjectFromJson(Map<String, dynamic> json) {
-  return ListedObject(
-    json['name'] as String,
-    json['description'] as String,
-    json['color'] as String,
-    (json['childs'] as List)
-        ?.map((e) =>
-            e == null ? null : ListedObject.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
-
-Map<String, dynamic> _$ListedObjectToJson(ListedObject instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'description': instance.description,
-      'color': instance.color,
-      'childs': instance.childs,
     };

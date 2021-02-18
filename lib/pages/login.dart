@@ -31,8 +31,7 @@ class LoginPage extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50)),
                 onPressed: () {
-                  _loginGoogle();
-                  _loadHomepage(context);
+                  _loginGoogle(context);
                 })));
 
     final widgetLoginAnon = ButtonTheme(
@@ -42,8 +41,7 @@ class LoginPage extends StatelessWidget {
                 'Sign in as Guest',
                 style: TextStyle(color: Colors.black, fontSize: 16)),
             onPressed: () {
-              _loginAnonymous();
-                  _loadHomepage(context);
+              _loginAnonymous(context);
             }));
 
     return SafeArea(
@@ -56,13 +54,16 @@ class LoginPage extends StatelessWidget {
     ))));
   }
 
-  void _loginAnonymous() async {
+  void _loginAnonymous(BuildContext context) async {
     UserCredential userCredential =
         await FirebaseAuth.instance.signInAnonymously();
     firebaseUser = userCredential.user;
+
+    // Load homepage
+    _loadHomepage(context);
   }
 
-  void _loginGoogle() async {
+  void _loginGoogle(BuildContext context) async {
     // Trigger the authentication flow
     final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
 
@@ -80,6 +81,9 @@ class LoginPage extends StatelessWidget {
     UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
     firebaseUser = userCredential.user;
+
+    // Load homepage
+    _loadHomepage(context);
   }
 
   void _loadHomepage(BuildContext context) {

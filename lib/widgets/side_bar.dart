@@ -1,3 +1,4 @@
+import 'package:SearchIt/data/database.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/auth.dart';
 import 'package:SearchIt/routes.dart';
@@ -5,20 +6,23 @@ import 'package:SearchIt/routes.dart';
 Drawer sideBar(BuildContext context, {SidebarButton selectedButton}) {
   return Drawer(
       child: ListView(padding: EdgeInsets.zero, children: <Widget>[
-        DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blue),
-            child: Text('SearchIt',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24))),
+        UserAccountsDrawerHeader(
+          accountName: firebaseUser.isAnonymous ? Text("Guest") : Text(firebaseUser.displayName),
+          accountEmail: firebaseUser.isAnonymous ? null : Text(firebaseUser.email),
+          currentAccountPicture: firebaseUser.isAnonymous
+            ? CircleAvatar(
+              backgroundColor: Colors.grey[200],
+              child: Icon(Icons.person, size: 60),
+            )
+          : Image.network(firebaseUser.photoURL),
+        ),
         ListTile(
           leading: Icon(Icons.home),
           title: Text(
             'Homes',
             style: TextStyle(color: selectedButton == SidebarButton.homes ? Colors.blue : Colors.black)
           ),
-          onTap: () => _actionHomes,
+          onTap: () => _actionHomes(context),
         ),
         ListTile(
           leading: Icon(Icons.article),
@@ -26,7 +30,7 @@ Drawer sideBar(BuildContext context, {SidebarButton selectedButton}) {
             'Items',
             style: TextStyle(color: selectedButton == SidebarButton.items ? Colors.blue : Colors.black)
           ),
-          onTap: () => _actionItems,
+          onTap: () => _actionItems(context),
         ),
         Divider(),
         ListTile(
@@ -35,7 +39,7 @@ Drawer sideBar(BuildContext context, {SidebarButton selectedButton}) {
             'Settings',
             style: TextStyle(color: selectedButton == SidebarButton.settings ? Colors.blue : Colors.black)
           ),
-          onTap: () => _actionSettings,
+          onTap: () => _actionSettings(context),
         ),
         ListTile(
           leading: Icon(Icons.logout),
@@ -43,7 +47,7 @@ Drawer sideBar(BuildContext context, {SidebarButton selectedButton}) {
             'Sign out',
             style: TextStyle(color: Colors.black)
           ),
-          onTap: () => _actionSignOut,
+          onTap: () => _actionSignOut(context),
         )
       ]
     ),
@@ -51,6 +55,7 @@ Drawer sideBar(BuildContext context, {SidebarButton selectedButton}) {
 }
 
 void _actionHomes(BuildContext context) {
+  print("Home?");
   Navigator.pushReplacementNamed(context, '/homepage', arguments: HomepageArguments(false));
 }
 
@@ -63,6 +68,7 @@ void _actionSettings(BuildContext context) {
 }
 
 void _actionSignOut(BuildContext context) {
+  print("Signed out?");
   authSignOut();
   Navigator.pushReplacementNamed(context, '/login');
 }

@@ -9,18 +9,23 @@ LoggedUser loggedUser = LoggedUser.empty();
 Data data = Data();
 
 class Database {
-  static save() async {
-    var _prefs = await SharedPreferences.getInstance();
+  static SharedPreferences _preferences;
 
-    _prefs.setString("loggedUser", jsonEncode(loggedUser));
-    _prefs.setString("data", jsonEncode(data));
+  static Future init() async =>
+    _preferences = await SharedPreferences.getInstance();
+
+
+  static Future save() async {
+    await _preferences.setString("data", jsonEncode(data));
+    await _preferences.setString("loggedUser", jsonEncode(loggedUser));
+
+    load();
   }
 
-  read() async {
-    var _prefs = await SharedPreferences.getInstance();
-
-    loggedUser =
-        LoggedUser.fromJson(jsonDecode(_prefs.getString("loggedUser")));
-    data = Data.fromJson(jsonDecode(_prefs.getString("data")));
+  static Future load() async {
+    if (_preferences.getString("data") != null)
+      data = Data.fromJson(jsonDecode(_preferences.getString("data")));
+    if (_preferences.getString("loggedUser") != null)
+      loggedUser = LoggedUser.fromJson(jsonDecode(_preferences.getString("loggedUser")));
   }
 }
