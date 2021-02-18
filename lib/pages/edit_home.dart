@@ -10,9 +10,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'homepage.dart';
 
 class EditHome extends StatefulWidget {
-
-  EditHome({Key key})
-  : super(key: key);
+  EditHome({Key key}) : super(key: key);
 
   @override
   _EditHomeState createState() => _EditHomeState();
@@ -27,7 +25,6 @@ class _EditHomeState extends State<EditHome> {
     setState(() => savedColor = color);
   }
 
-
   @override
   Widget build(BuildContext context) {
     final EditHomeArguments args = ModalRoute.of(context).settings.arguments;
@@ -35,89 +32,87 @@ class _EditHomeState extends State<EditHome> {
     if (_nameController == null)
       _nameController = TextEditingController(text: args.home?.name);
     if (_descriptionController == null)
-      _descriptionController = TextEditingController(text: args.home?.description);
-    Color pickerColor = savedColor ?? (args.home != null ? Color(int.parse(args.home.color, radix: 16)) : Color(0xffffffff));
-
+      _descriptionController =
+          TextEditingController(text: args.home?.description);
+    Color pickerColor = savedColor ??
+        (args.home != null
+            ? Color(int.parse(args.home.color, radix: 16))
+            : Color(0xffffffff));
 
     return Scaffold(
       appBar: AppBar(
         title: Text(args.home != null ? 'Edit ' + args.home.name : 'New home'),
       ),
       body: Form(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
-              child: Text(
-                'Name:',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-              ),
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
+            child: Text(
+              'Name:',
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-              child: TextField(
-                decoration: InputDecoration(
-                    hintText: 'Enter a name',
-                    border: OutlineInputBorder()),
-                controller: _nameController,
-                onChanged: (name) {
-                  name = _nameController.text.toString();
-                },
-              ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+            child: TextField(
+              decoration: InputDecoration(
+                  hintText: 'Enter a name', border: OutlineInputBorder()),
+              controller: _nameController,
+              onChanged: (name) {
+                name = _nameController.text.toString();
+              },
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
-              child: Text(
-                'Description:',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-              ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
+            child: Text(
+              'Description:',
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-              child: TextField(
-                decoration: InputDecoration(
-                    hintText: 'Enter a description',
-                    border: OutlineInputBorder()),
-                controller: _descriptionController,
-                onChanged: (name) {
-                  name = _descriptionController.text.toString();
-                },
-              ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+            child: TextField(
+              decoration: InputDecoration(
+                  hintText: 'Enter a description',
+                  border: OutlineInputBorder()),
+              controller: _descriptionController,
+              onChanged: (name) {
+                name = _descriptionController.text.toString();
+              },
             ),
-            Container(
+          ),
+          Container(
               padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
               child: RaisedButton(
-                elevation: 2.0,
-                child: Text('Color'),
-                color: pickerColor,
-                textColor: useWhiteForeground(pickerColor)
-                        ? const Color(0xffffffff)
-                        : const Color(0xff000000),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        titlePadding: const EdgeInsets.all(0.0),
-                        contentPadding: const EdgeInsets.all(0.0),
-                        content: SingleChildScrollView(
-                          child: ColorPicker(
-                            pickerColor: pickerColor,
-                            onColorChanged: changeColor,
-                            showLabel: true,
-                            pickerAreaHeightPercent: 0.8,
-                          ),
-                        ),
-                      );
-                    }
-                  );
-                }
-              )
-            )
-          ],
-        )
-      ),
+                  elevation: 2.0,
+                  child: Text('Color'),
+                  color: pickerColor,
+                  textColor: useWhiteForeground(pickerColor)
+                      ? const Color(0xffffffff)
+                      : const Color(0xff000000),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            titlePadding: const EdgeInsets.all(0.0),
+                            contentPadding: const EdgeInsets.all(0.0),
+                            content: SingleChildScrollView(
+                              child: ColorPicker(
+                                pickerColor: pickerColor,
+                                onColorChanged: changeColor,
+                                showLabel: true,
+                                pickerAreaHeightPercent: 0.8,
+                              ),
+                            ),
+                          );
+                        });
+                  }))
+        ],
+      )),
       floatingActionButton: ButtonBar(
         children: <Widget>[
           FloatingActionButton(
@@ -131,7 +126,7 @@ class _EditHomeState extends State<EditHome> {
               home.name = _nameController.text.toString();
               home.description = _descriptionController.text.toString();
               home.color = pickerColor.toString().split('(0x')[1].split(')')[0];
-              log("Saved color: " + home.color);
+
               Database.save();
               Navigator.pop(context, true);
             },
@@ -143,17 +138,6 @@ class _EditHomeState extends State<EditHome> {
       ),
     );
   }
-
-
-
-
-
-
-
-
-
-
-
 
   //true => edit
   //false => new
@@ -396,4 +380,3 @@ class _EditHomeState extends State<_EditHome> {
 }
 */
 }
-

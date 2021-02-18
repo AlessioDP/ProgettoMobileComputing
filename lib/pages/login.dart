@@ -37,8 +37,7 @@ class LoginPage extends StatelessWidget {
     final widgetLoginAnon = ButtonTheme(
         height: 56,
         child: FlatButton(
-            child: Text(
-                'Sign in as Guest',
+            child: Text('Sign in as Guest',
                 style: TextStyle(color: Colors.black, fontSize: 16)),
             onPressed: () {
               _loginAnonymous(context);
@@ -47,11 +46,17 @@ class LoginPage extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
             body: Center(
-                child: ListView(
+                child: Column(
+      //padding: EdgeInsets.symmetric(horizontal: 20),
+      children: [widgetLogo, widgetTitle, widgetLoginGoogle, widgetLoginAnon],
+    )
+
+                /*istView(
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 20),
       children: [widgetLogo, widgetTitle, widgetLoginGoogle, widgetLoginAnon],
-    ))));
+    )*/
+                )));
   }
 
   void _loginAnonymous(BuildContext context) async {
