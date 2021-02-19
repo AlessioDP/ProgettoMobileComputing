@@ -4,11 +4,15 @@ import 'package:SearchIt/routes.dart';
 import 'package:flutter/material.dart';
 
 class ViewItem extends StatelessWidget {
+  ListedObject parent;
+
   ViewItem();
 
   @override
   Widget build(BuildContext context) {
     final ViewItemArguments args = ModalRoute.of(context).settings.arguments;
+
+    parent = Data.getObjectAtIndex(args.indexParent);
 
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +71,7 @@ class ViewItem extends StatelessWidget {
                           Text('Location: ',
                               style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 20)),
-                          Text(args.parent.getName(),
+                          Text(parent.getName(),
                               style: TextStyle(
                                   fontWeight: FontWeight.w100, fontSize: 20)),
                         ],

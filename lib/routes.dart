@@ -7,27 +7,31 @@ class HomepageArguments {
 }
 
 class ItempageArguments {
-  final ListedObject parent;
+  final List<int> indexParent;
+  //final ListedObject parent;
 
-  ItempageArguments(this.parent);
+  ItempageArguments(this.indexParent);
 }
 
 class EditHomeArguments {
-  final Home home;
+  //final Home home;
+  final int indexHome;
 
-  EditHomeArguments(this.home);
+  EditHomeArguments(this.indexHome);
 }
 
 class EditItemArguments {
-  final ListedObject parent;
-  final Item item;
+  //final ListedObject parent;
+  //final Item item;
+  final List<int> indexParent;
+  final int indexItem;
 
-  EditItemArguments(this.parent, this.item);
+  EditItemArguments(this.indexParent, this.indexItem);
 }
 
 class ViewItemArguments {
-  final ListedObject parent;
+  final List<int> indexParent;
   final Item item;
 
-  ViewItemArguments(this.parent, this.item);
+  ViewItemArguments(this.indexParent, this.item);
 }

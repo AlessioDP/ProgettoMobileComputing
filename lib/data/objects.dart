@@ -13,6 +13,43 @@ class Data {
 
   Map<String, dynamic> toJson() => _$DataToJson(this);
 
+  static ListedObject getObjectAtIndex(List<int> indexes) {
+    ListedObject ret = data.homes[indexes[0]];
+    for (int c = 1; c < indexes.length; c++) {
+      ret = ret.getChilds()[indexes[c]];
+    }
+    return ret;
+  }
+
+  static ListedObject getParentOfIndex(List<int> indexes) {
+    ListedObject ret = data.homes[indexes[0]];
+    for (int c = 1; c < indexes.length - 1; c++) {
+      ret = ret.getChilds()[indexes[c]];
+    }
+    return ret;
+  }
+
+  static List<Map> getAllItems() {
+    List<Map> items = [];
+
+    for (int home = 0; home < data.homes.length; home++) {
+      for (int item = 0; item < data.homes[home].childs.length; item++) {
+        _insertObjects([home, item], data.homes[home].childs[item], items);
+      }
+    }
+    return items;
+  }
+
+  static void _insertObjects(List<int> indexes, Item item, List items) {
+    if (item.isPlace()) {
+      for (int c = 0; c < item.childs.length; c++) {
+        _insertObjects([...indexes, c], item.childs[c], items);
+      }
+    } else {
+      items.add({"index": indexes, "item": item});
+    }
+  }
+
   List<Home> getHomes(int sortNumber) {
     List<Home> homeSorted = this.homes;
     var backupList = homes;
@@ -39,6 +76,7 @@ class Home implements ListedObject {
   String getName() {
     return this.name;
   }
+
   void setName(String name) {
     this.name = name;
   }
@@ -46,6 +84,7 @@ class Home implements ListedObject {
   String getDescription() {
     return this.description;
   }
+
   void setDescription(String description) {
     this.description = description;
   }
@@ -53,6 +92,7 @@ class Home implements ListedObject {
   String getColor() {
     return this.color;
   }
+
   void setColor(String color) {
     this.color = color;
   }
@@ -65,6 +105,7 @@ class Home implements ListedObject {
 
   Map<String, dynamic> toJson() => _$HomeToJson(this);
 }
+
 /*
 @JsonSerializable()
 class Place {
@@ -119,11 +160,13 @@ class Item implements ListedObject {
   bool place = false;
 
   Item.empty();
-  Item(this.name, this.description, this.color, this.childs, this.quantity, this.place);
+  Item(this.name, this.description, this.color, this.childs, this.quantity,
+      this.place);
 
   String getName() {
     return this.name;
   }
+
   void setName(String name) {
     this.name = name;
   }
@@ -131,6 +174,7 @@ class Item implements ListedObject {
   String getDescription() {
     return this.description;
   }
+
   void setDescription(String description) {
     this.description = description;
   }
@@ -138,6 +182,7 @@ class Item implements ListedObject {
   String getColor() {
     return this.color;
   }
+
   void setColor(String color) {
     this.color = color;
   }
@@ -149,6 +194,7 @@ class Item implements ListedObject {
   int getQuantity() {
     return this.quantity;
   }
+
   void setQuantity(int quantity) {
     this.quantity = quantity;
   }
@@ -156,6 +202,7 @@ class Item implements ListedObject {
   bool isPlace() {
     return this.place;
   }
+
   void setPlace(bool place) {
     this.place = place;
   }
@@ -204,7 +251,6 @@ class Item implements ListedObject {
 }
 
 class ListedObject {
-
   String getName() {}
   void setName(String name) {}
 

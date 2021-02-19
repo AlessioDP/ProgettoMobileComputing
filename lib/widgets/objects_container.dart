@@ -11,8 +11,9 @@ import 'package:provider/provider.dart';
 
 class EditObjectContainer extends StatefulWidget {
   final String title;
-  final ListedObject parent;
-  final List<ListedObject> objects;
+  //final ListedObject parent;
+  final List<int> indexes;
+  //final List<ListedObject> objects;
 
   final Drawer drawer;
   final FFNavigationBar bottomNavigationBar;
@@ -22,8 +23,9 @@ class EditObjectContainer extends StatefulWidget {
   EditObjectContainer(
       {Key key,
       this.title,
-      this.parent,
-      this.objects,
+      //this.parent,
+      this.indexes,
+      //this.objects,
       this.drawer,
       this.bottomNavigationBar,
       this.floatingButton,
@@ -35,9 +37,36 @@ class EditObjectContainer extends StatefulWidget {
 }
 
 class _EditObjectContainerState extends State<EditObjectContainer> {
+  ListedObject parent;
+  List<ListedObject> childs;
+  Map childsParents;
+  var sort;
+
   @override
   Widget build(BuildContext context) {
     ObjectSelections objectSelections = Provider.of<ObjectSelections>(context);
+    print(widget.indexes);
+    if (widget.indexes == null) {
+      childs = [];
+      childsParents = new Map();
+
+      Data.getAllItems().forEach((element) {
+        childs.add(element["item"]);
+        childsParents[element["item"]] = element["index"];
+      });
+    } else if (widget.indexes.length > 0) {
+      parent = Data.getObjectAtIndex(widget.indexes);
+      childs = parent.getChilds();
+    } else {
+      childs = data.homes;
+    }
+
+    if (sort == 0) {
+      childs.sort((a, b) => a.getName().compareTo(b.getName()));
+    }
+    if (sort == 1) {
+      childs.reversed.toList();
+    }
 
     return Scaffold(
         drawer: widget.drawer,
@@ -50,7 +79,7 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                   onPressed: () {
                     objectSelections.removeAll();
                   })
-              : (widget.parent != null
+              : (parent != null
                   ? IconButton(
                       icon: Icon(Icons.arrow_back),
                       onPressed: () {
@@ -72,16 +101,20 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
 
                         if (lo is Home)
                           Navigator.pushNamed(context, '/edit_home',
-                                  arguments: EditHomeArguments(lo))
+                                  arguments:
+                                      EditHomeArguments(childs.indexOf(lo)))
                               .then((value) {
                             if (value ?? false) {
                               setState(() {});
                             }
                           });
                         else if (lo is Item) {
+                          List<int> parentIndex =
+                              new List.of(childsParents[lo]);
+                          int itemIndex = parentIndex.removeLast();
                           Navigator.pushNamed(context, '/edit_item',
                                   arguments:
-                                      EditItemArguments(widget.parent, lo))
+                                      EditItemArguments(parentIndex, itemIndex))
                               .then((value) {
                             if (value ?? false) {
                               setState(() {});
@@ -107,12 +140,10 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                                       child: Text('No')),
                                   ElevatedButton(
                                       onPressed: () {
-                                        if (widget.parent != null) {
+                                        if (parent != null) {
                                           objectSelections.objects
                                               .forEach((element) {
-                                            widget.parent
-                                                .getChilds()
-                                                .remove(element);
+                                            parent.getChilds().remove(element);
                                           });
                                         } else {
                                           objectSelections.objects
@@ -131,126 +162,130 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                       })
                 ]
               : <Widget>[
-                  /*
-                IconButton(
-                    icon: Icon(Icons.sort),
-                    onPressed: () {
-                      return showDialog(
-                        context: context,
-                        builder: (context) {
-                          List<String> sortListHome = [
-                            'Home\'s name',
-                            'Last Add'
-                          ];
-                          List<String> sortListItem = [
-                            'Item\'s name (A-Z)',
-                            'Item\'s home name (A-Z)',
-                            'Last add'
-                          ];
-                          return AlertDialog(
-                              content: Container(
-                            height: 180,
-                            width: 400,
-                            child: ListView(
-                              children: status == 0
-                                  ? List.generate(sortListHome.length, (index) {
-                                      return ListTile(
-                                        onTap: () {
-                                          setState(() {
-                                            sortedHome = index;
-                                            Navigator.pop(context);
-                                          });
-                                        },
-                                        leading: GestureDetector(
-                                          behavior: HitTestBehavior.opaque,
-                                          child: Text(sortListHome[index]),
-                                        ),
-                                      );
-                                    })
-                                  : List.generate(sortListItem.length, (index) {
-                                      return ListTile(
-                                        onTap: () {
-                                          setState(() {
-                                            sortedItem = index;
-                                            Navigator.pop(context);
-                                          });
-                                        },
-                                        leading: GestureDetector(
-                                          behavior: HitTestBehavior.opaque,
-                                          child: Text(sortListItem[index]),
-                                        ),
-                                      );
-                                    }),
-                            ),
-                          ));
-                        },
-                      );
-                    }),*/
+                  IconButton(
+                      icon: childs is Item ? null : Icon(Icons.sort), //TODO
+                      onPressed: () {
+                        return showDialog(
+                          context: context,
+                          builder: (context) {
+                            List<String> sortListHome = [
+                              'Home\'s name',
+                              'Last Add'
+                            ];
+                            List<String> sortListItem = [
+                              'Item\'s name (A-Z)',
+                              'Last add'
+                            ];
+                            return AlertDialog(
+                                content: Container(
+                              height: 120,
+                              width: 400,
+                              child: ListView(
+                                children: childs is Home //TODO
+                                    ? List.generate(sortListHome.length,
+                                        (index) {
+                                        return ListTile(
+                                          onTap: () {
+                                            setState(() {
+                                              //sortedHome = index;
+                                              Navigator.pop(context);
+                                            });
+                                          },
+                                          leading: GestureDetector(
+                                            behavior: HitTestBehavior.opaque,
+                                            child: Text(sortListHome[index]),
+                                          ),
+                                        );
+                                      })
+                                    : List.generate(sortListItem.length,
+                                        (index) {
+                                        return ListTile(
+                                          onTap: () {
+                                            setState(() {
+                                              sort = index;
+                                              Navigator.pop(context);
+                                            });
+                                          },
+                                          leading: GestureDetector(
+                                            behavior: HitTestBehavior.opaque,
+                                            child: Text(sortListItem[index]),
+                                          ),
+                                        );
+                                      }),
+                              ),
+                            ));
+                          },
+                        );
+                      }),
                 ],
         ),
-        body: widget.objects.length > 0
+        body: childs.length > 0
             ? buildListObjects(objectSelections)
             : Center(
                 child: Text("Press the + below to add " +
-                    (widget.parent == null ? "a home" : "an item"))));
+                    (parent == null ? "a home" : "an item"))));
   }
 
   Widget buildListObjects(ObjectSelections objectSelections) {
     return ListView.separated(
-        itemCount: widget.objects.length,
+        itemCount: childs.length,
         separatorBuilder: (context, index) {
           return Divider();
         },
         itemBuilder: (context, index) {
           return ListTile(
             onLongPress: () {
-              objectSelections.toggle(widget.objects[index]);
+              objectSelections.toggle(childs[index]);
             },
             onTap: () {
               setState(() {
                 if (objectSelections.isSelectionMode()) {
-                  objectSelections.toggle(widget.objects[index]);
+                  objectSelections.toggle(childs[index]);
                 } else {
-                  if (widget.objects[index] is Item &&
-                      !((widget.objects[index] as Item).isPlace())) {
+                  if (childs[index] is Item &&
+                      !((childs[index] as Item).isPlace())) {
+                    List<int> parentIndex =
+                        new List.of(childsParents[childs[index]]);
+                    parentIndex.removeLast();
                     Navigator.pushNamed(context, '/view_item',
-                        arguments: ViewItemArguments(
-                            widget.parent, widget.objects[index]));
+                        arguments:
+                            ViewItemArguments(parentIndex, childs[index]));
                   } else {
                     Navigator.pushNamed(context, '/itempage',
-                        arguments: ItempageArguments(widget.objects[index]));
+                        arguments:
+                            ItempageArguments([...widget.indexes, index]));
                   }
                 }
               });
             },
-            selected: objectSelections.contains(widget.objects[index]),
-            leading: Icon(widget.objects[index] is Home
+            selected: objectSelections.contains(childs[index]),
+            leading: Icon(childs[index] is Home
                 ? Icons.home
-                : ((widget.objects[index] as Item).isPlace()
+                : ((childs[index] as Item).isPlace()
                     ? Icons.folder
                     : Icons.article)),
             title: Row(children: [
               Text(
-                widget.objects[index].getName(),
+                childs[index].getName(),
                 style: TextStyle(fontSize: 18.0),
                 textAlign: TextAlign.left,
               ),
             ]),
-            subtitle: widget.objects[index].getDescription().isNotEmpty
+            subtitle: childs[index].getDescription().isNotEmpty
                 ? Text(
-                    widget.objects[index].getDescription(),
+                    childs[index].getDescription(),
                     style: TextStyle(fontSize: 18.0),
                     textAlign: TextAlign.left,
                   )
                 : null,
             trailing: (objectSelections.isSelectionMode())
-                ? ((objectSelections.contains(widget.objects[index]))
+                ? ((objectSelections.contains(childs[index]))
                     ? Icon(Icons.check_box)
                     : Icon(Icons.check_box_outline_blank))
-                : (widget.objects[index].getColor() != null
+                : (childs[index].getColor() != null
                     ? Icon(Icons.circle,
-                        color: Color(int.parse(widget.objects[index].getColor(),
-                            radix: 16)))
+                        color: Color(
+                            int.parse(childs[index].getColor(), radix: 16)))
                     : null),
           );
         });

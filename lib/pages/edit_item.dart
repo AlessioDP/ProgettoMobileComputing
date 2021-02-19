@@ -15,6 +15,9 @@ class EditItem extends StatefulWidget {
 }
 
 class _EditItemState extends State<EditItem> {
+  ListedObject parent;
+  Item item;
+
   TextEditingController _nameController;
   TextEditingController _descriptionController;
   TextEditingController _quantityController;
@@ -29,22 +32,27 @@ class _EditItemState extends State<EditItem> {
   Widget build(BuildContext context) {
     final EditItemArguments args = ModalRoute.of(context).settings.arguments;
 
+    print("==");
+    print(args.indexParent);
+    print(args.indexItem);
+    print("==");
+    parent = Data.getObjectAtIndex(args.indexParent);
+    item = args.indexItem != null ? parent.getChilds()[args.indexItem] : null;
     if (_nameController == null)
-      _nameController = TextEditingController(text: args.item?.name);
+      _nameController = TextEditingController(text: item?.name);
     if (_descriptionController == null)
-      _descriptionController =
-          TextEditingController(text: args.item?.description);
+      _descriptionController = TextEditingController(text: item?.description);
     Color pickerColor = savedColor ??
-        (args.item != null
-            ? Color(int.parse(args.item.color, radix: 16))
+        (item != null
+            ? Color(int.parse(item.color, radix: 16))
             : Color(0xffffffff));
     if (_quantityController == null)
       _quantityController =
-          TextEditingController(text: args.item?.quantity.toString());
+          TextEditingController(text: item?.quantity.toString());
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(args.item != null ? 'Edit ' + args.item.name : 'New item'),
+        title: Text(item != null ? 'Edit ' + item.name : 'New item'),
       ),
       body: Form(
         child: Column(
@@ -196,11 +204,14 @@ class _EditItemState extends State<EditItem> {
         children: <Widget>[
           FloatingActionButton(
             heroTag: "btn1",
-            onPressed: () {
-              Item item = args.item;
+            onPressed: () async {
+              var a = data.homes[0].childs.length;
+              var b = Database.dataToJson(data).length;
+              print("Previous $a [$b]");
+
               if (item == null) {
                 item = Item.empty();
-                args.parent.getChilds().add(item);
+                parent.getChilds().add(item);
               }
               item.name = _nameController.text.toString();
               item.description = _descriptionController.text.toString();
@@ -209,7 +220,11 @@ class _EditItemState extends State<EditItem> {
               item.color = pickerColor.toString().split('(0x')[1].split(')')[0];
               item.place = checkBoxValue;
 
-              Database.save();
+              await Database.save();
+
+              a = parent.getChilds().length;
+              b = Database.dataToJson(data).length;
+              print("New $a [$b]");
               Navigator.pop(context, true);
             },
             child: Icon(

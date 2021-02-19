@@ -17,6 +17,8 @@ class EditHome extends StatefulWidget {
 }
 
 class _EditHomeState extends State<EditHome> {
+  Home home;
+
   TextEditingController _nameController;
   TextEditingController _descriptionController;
   Color savedColor;
@@ -29,19 +31,19 @@ class _EditHomeState extends State<EditHome> {
   Widget build(BuildContext context) {
     final EditHomeArguments args = ModalRoute.of(context).settings.arguments;
 
+    home = args.indexHome != null ? data.homes[args.indexHome] : null;
     if (_nameController == null)
-      _nameController = TextEditingController(text: args.home?.name);
+      _nameController = TextEditingController(text: home?.name);
     if (_descriptionController == null)
-      _descriptionController =
-          TextEditingController(text: args.home?.description);
+      _descriptionController = TextEditingController(text: home?.description);
     Color pickerColor = savedColor ??
-        (args.home != null
-            ? Color(int.parse(args.home.color, radix: 16))
+        (home != null
+            ? Color(int.parse(home.color, radix: 16))
             : Color(0xffffffff));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(args.home != null ? 'Edit ' + args.home.name : 'New home'),
+        title: Text(home != null ? 'Edit ' + home.name : 'New home'),
       ),
       body: Form(
           child: Column(
@@ -118,7 +120,6 @@ class _EditHomeState extends State<EditHome> {
           FloatingActionButton(
             heroTag: "btn1",
             onPressed: () {
-              Home home = args.home;
               if (home == null) {
                 home = Home.empty();
                 data.homes.add(home);

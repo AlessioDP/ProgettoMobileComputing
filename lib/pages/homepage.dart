@@ -20,15 +20,14 @@ int sortedItem = -1;
 int sortedHome = -1;*/
 
 class Homepage extends StatefulWidget {
-  Homepage({Key key})
-  : super(key: key);
+  Homepage({Key key}) : super(key: key);
 
   @override
   _HomepageState createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> {
-  bool _isItemsPage = false;
+  bool _isItemsPage; //TODO if null the app doesn't run
 
   void showHomes() {
     setState(() {
@@ -45,19 +44,19 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     final HomepageArguments args = ModalRoute.of(context).settings.arguments;
-    if (args != null) {
+    if (_isItemsPage == null && args != null) {
       // Args can be null if this widget is loaded directly
       _isItemsPage = args.itemsPage;
     }
     return EditObjectContainer(
-      title: 'Homepage',
-      objects: data.homes,
-      drawer: sideBar(
-        context,
-        selectedButton: _isItemsPage ? SidebarButton.items : SidebarButton.homes
-      ),
+      title: _isItemsPage ? 'ItemPage' : 'Homepage',
+      indexes: _isItemsPage ? null : [],
+      //  objects: _isItemsPage ? getAllItems() : data.homes,
+      drawer: sideBar(context,
+          selectedButton:
+              _isItemsPage ? SidebarButton.items : SidebarButton.homes),
       bottomNavigationBar: navigationBar(),
-      floatingButton: floatingButtonForHomes(context),
+      floatingButton: _isItemsPage ? null : floatingButtonForHomes(context),
     );
   }
 
@@ -78,7 +77,6 @@ class _HomepageState extends State<Homepage> {
             showItems();
           }
         }
-        
       },
       items: [
         FFNavigationBarItem(
@@ -95,17 +93,17 @@ class _HomepageState extends State<Homepage> {
 
   FloatingActionButton floatingButtonForHomes(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {
-        //Home home = Home.empty();
-        Navigator.pushNamed(context, '/edit_home', arguments: EditHomeArguments(null))
-        .then((value) {
-          if (value ?? false) {
-            setState(() {});
-          }
-        });
-      },
-      tooltip: 'Add home',
-      child: Icon(Icons.add)
-    );
+        onPressed: () {
+          //Home home = Home.empty();
+          Navigator.pushNamed(context, '/edit_home',
+                  arguments: EditHomeArguments(null))
+              .then((value) {
+            if (value ?? false) {
+              setState(() {});
+            }
+          });
+        },
+        tooltip: 'Add home',
+        child: Icon(Icons.add));
   }
 }
