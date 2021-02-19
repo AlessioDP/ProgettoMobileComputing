@@ -69,6 +69,7 @@ class _EditHomeState extends State<EditHome> {
               controller: _nameController,
               autofocus: true,
               textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.next,
               onChanged: (name) {
                 name = _nameController.text.toString();
               },
@@ -91,7 +92,8 @@ class _EditHomeState extends State<EditHome> {
                 border: OutlineInputBorder()
               ),
               controller: _descriptionController,
-                textCapitalization: TextCapitalization.sentences,
+              textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
               onChanged: (name) {
                 name = _descriptionController.text.toString();
               },
