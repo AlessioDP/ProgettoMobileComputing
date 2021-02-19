@@ -107,25 +107,25 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                       })
                   : null),
           title: _isSearching
-            ? TextField( // Search input box
-              controller: _searchController,
-              style: new TextStyle(
-                color: Colors.white,
-              ),
-              decoration: new InputDecoration(
-                  prefixIcon:
-                      new Icon(Icons.search, color: Colors.white),
-                  hintText: "Search...",
-                  hintStyle: new TextStyle(color: Colors.white)),
-              onChanged: (search) {
-                search = _searchController.text.toString();
+              ? TextField(
+                  // Search input box
+                  controller: _searchController,
+                  style: new TextStyle(
+                    color: Colors.white,
+                  ),
+                  decoration: new InputDecoration(
+                      prefixIcon: new Icon(Icons.search, color: Colors.white),
+                      hintText: "Search...",
+                      hintStyle: new TextStyle(color: Colors.white)),
+                  onChanged: (search) {
+                    search = _searchController.text.toString();
 
-                setState(() {
-                  _searchText = search;
-                });
-              },
-            )
-            : Text(widget.title),
+                    setState(() {
+                      _searchText = search;
+                    });
+                  },
+                )
+              : Text(widget.title),
           actions: objectSelections.isSelectionMode()
               ? <Widget>[
                   // TODO - Check if count == 1
@@ -223,68 +223,50 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                       });
                     },
                   ),
-                  IconButton(
-                      icon: childs is Item ? null : Icon(Icons.sort), //TODO
-                      onPressed: () {
-                        return showDialog(
-                          context: context,
-                          builder: (context) {
-                            List<String> sortListHome = [
-                              'Home\'s name',
-                              'Last Add'
-                            ];
-                            List<String> sortListItem = [
-                              'Item\'s name (A-Z)',
-                              'Last add'
-                            ];
-                            return AlertDialog(
-                                content: Container(
-                              height: 120,
-                              width: 400,
-                              child: ListView(
-                                children: childs is Home //TODO
-                                    ? List.generate(sortListHome.length,
+                  isItemPage
+                      ? IconButton(
+                          icon: Icon(Icons.sort), //TODO
+                          onPressed: () {
+                            return showDialog(
+                              context: context,
+                              builder: (context) {
+                                List<String> sortListItem = [
+                                  'Item\'s name (A-Z)',
+                                  'Home\' name'
+                                ];
+                                return AlertDialog(
+                                    content: Container(
+                                  height: 120,
+                                  width: 400,
+                                  child: ListView(
+                                    children: List.generate(sortListItem.length,
                                         (index) {
-                                        return ListTile(
-                                          onTap: () {
-                                            setState(() {
-                                              //sortedHome = index;
-                                              Navigator.pop(context);
-                                            });
-                                          },
-                                          leading: GestureDetector(
-                                            behavior: HitTestBehavior.opaque,
-                                            child: Text(sortListHome[index]),
-                                          ),
-                                        );
-                                      })
-                                    : List.generate(sortListItem.length,
-                                        (index) {
-                                        return ListTile(
-                                          onTap: () {
-                                            setState(() {
-                                              sort = index;
-                                              Navigator.pop(context);
-                                            });
-                                          },
-                                          leading: GestureDetector(
-                                            behavior: HitTestBehavior.opaque,
-                                            child: Text(sortListItem[index]),
-                                          ),
-                                        );
-                                      }),
-                              ),
-                            ));
-                          },
-                        );
-                      }),
+                                      return ListTile(
+                                        onTap: () {
+                                          setState(() {
+                                            sort = index;
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                        leading: GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          child: Text(sortListItem[index]),
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                ));
+                              },
+                            );
+                          })
+                      : Icon(null),
                 ],
         ),
         body: childs.length > 0
             ? buildListObjects(objectSelections)
-                : Center(
-                    child: Text("Press the + below to add " +
-                        (parent == null ? "a home" : "an item"))));
+            : Center(
+                child: Text("Press the + below to add " +
+                    (parent == null ? "a home" : "an item"))));
   }
 
   Widget buildListObjects(ObjectSelections objectSelections) {
