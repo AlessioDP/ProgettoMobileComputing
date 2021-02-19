@@ -21,18 +21,21 @@ class LoginPage extends StatelessWidget {
                 ))));
 
     final widgetLoginGoogle = Padding(
-        padding: EdgeInsets.only(top: 5, bottom: 5),
-        child: ButtonTheme(
-            height: 56,
-            child: RaisedButton(
-                child: Text('Sign in',
-                    style: TextStyle(color: Colors.white, fontSize: 20)),
-                color: Colors.grey[700],
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50)),
-                onPressed: () {
-                  _loginGoogle(context);
-                })));
+      padding: EdgeInsets.only(top: 5, bottom: 5),
+      child: ButtonTheme(
+        height: 56,
+        child: RaisedButton(
+          child: Text('Sign in',
+              style: TextStyle(color: Colors.white, fontSize: 20)),
+          color: Colors.grey[700],
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50)),
+          onPressed: () {
+            _loginGoogle(context);
+          }
+        )
+      )
+    );
 
     final widgetLoginAnon = ButtonTheme(
         height: 56,
@@ -44,19 +47,14 @@ class LoginPage extends StatelessWidget {
             }));
 
     return SafeArea(
-        child: Scaffold(
-            body: Center(
-                child: Column(
-      //padding: EdgeInsets.symmetric(horizontal: 20),
-      children: [widgetLogo, widgetTitle, widgetLoginGoogle, widgetLoginAnon],
-    )
-
-                /*istView(
-      shrinkWrap: true,
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      children: [widgetLogo, widgetTitle, widgetLoginGoogle, widgetLoginAnon],
-    )*/
-                )));
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            children: [widgetLogo, widgetTitle, widgetLoginGoogle, widgetLoginAnon],
+          )
+        )
+      )
+    );
   }
 
   void _loginAnonymous(BuildContext context) async {

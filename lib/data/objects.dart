@@ -106,50 +106,6 @@ class Home implements ListedObject {
   Map<String, dynamic> toJson() => _$HomeToJson(this);
 }
 
-/*
-@JsonSerializable()
-class Place {
-  String name;
-  String description;
-  List<Item> items = [];
-  List<Place> places = [];
-
-  Place(this.name, this.description);
-  Place.empty();
-
-  factory Place.fromJson(Map<String, dynamic> json) => _$PlaceFromJson(json);
-
-  Map<String, dynamic> toJson() => _$PlaceToJson(this);
-
-  static Map<String, List<String>> getPlacesNames() {
-    Map<String, List<String>> _placesNames;
-    List<String> names = [];
-    data.homes.forEach((home) {
-      names = [];
-      if (home.places.isNotEmpty) {
-        home.places.forEach((place) {
-          names.add(place.name);
-        });
-      }
-      _placesNames[home.name] = names;
-    });
-    return _placesNames;
-  }
-
-  static List<String> getPlacesNameFromHome(String homeName) {
-    List<String> nomi = [];
-    List<Place> places =
-        data.homes.where((element) => element.name == homeName).first.places;
-    if (places.isNotEmpty) {
-      places.forEach((element) {
-        nomi.add(element.name);
-      });
-      return nomi;
-    }
-    return nomi;
-  }
-}
-*/
 @JsonSerializable()
 class Item implements ListedObject {
   String name;
@@ -209,45 +165,6 @@ class Item implements ListedObject {
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
   Map<String, dynamic> toJson() => _$ItemToJson(this);
-/*
-  static List<Item> getAllItem(int sorted) {
-    List<Item> allItems = [];
-    data.homes.forEach((home) {
-      allItems.addAll(home.items);
-    });
-
-    List<Item> backupList = allItems;
-
-    if (sorted == 0) {
-      allItems.sort((a, b) => a.name.compareTo(b.name));
-    }
-    if (sorted == 1) {
-      allItems.sort((a, b) => a.homeName.compareTo(b.name));
-    }
-    if (sorted == 2) {
-      allItems = backupList.reversed.toList();
-    }
-    return allItems;
-  }
-
-  static List<Item> getSelectedItems() {
-    return getAllItem(0).where((item) => item.selected == true).toList();
-  }
-
-  static bool onlyOneSelected(List<Item> allItems) {
-    return getSelectedItems().length == 1;
-  }
-
-  Home getHome(String nomeCasa) {
-    return data.homes.where((home) => home.name == nomeCasa).first;
-  }
-
-  static void removeAllSelectedItems() {
-    data.homes.forEach((home) {
-      home.items.removeWhere((item) => item.selected == true);
-    });
-  }
-  */
 }
 
 class ListedObject {

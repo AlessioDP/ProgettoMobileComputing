@@ -87,32 +87,35 @@ class _EditHomeState extends State<EditHome> {
             ),
           ),
           Container(
-              padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
-              child: RaisedButton(
-                  elevation: 2.0,
-                  child: Text('Color'),
-                  color: pickerColor,
-                  textColor: useWhiteForeground(pickerColor)
-                      ? const Color(0xffffffff)
-                      : const Color(0xff000000),
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            titlePadding: const EdgeInsets.all(0.0),
-                            contentPadding: const EdgeInsets.all(0.0),
-                            content: SingleChildScrollView(
-                              child: ColorPicker(
-                                pickerColor: pickerColor,
-                                onColorChanged: changeColor,
-                                showLabel: true,
-                                pickerAreaHeightPercent: 0.8,
-                              ),
-                            ),
-                          );
-                        });
-                  }))
+            padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
+            child: RaisedButton(
+              elevation: 2.0,
+              child: Text('Color'),
+              color: pickerColor,
+              textColor: useWhiteForeground(pickerColor)
+                  ? const Color(0xffffffff)
+                  : const Color(0xff000000),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      titlePadding: const EdgeInsets.all(0.0),
+                      contentPadding: const EdgeInsets.all(0.0),
+                      content: SingleChildScrollView(
+                        child: ColorPicker(
+                          pickerColor: pickerColor,
+                          onColorChanged: changeColor,
+                          showLabel: true,
+                          pickerAreaHeightPercent: 0.8,
+                        ),
+                      ),
+                    );
+                  }
+                );
+              }
+            )
+          )
         ],
       )),
       floatingActionButton: ButtonBar(
@@ -139,245 +142,4 @@ class _EditHomeState extends State<EditHome> {
       ),
     );
   }
-
-  //true => edit
-  //false => new
-  //final bool choice;
-  //final Home home;
-/*
-  final String editTitle = 'Edit home';
-  final String newTitle = 'Create new home';
-
-  EditHome({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    choiceMaster = choice;
-
-    if (choiceMaster) {
-      homeMaster = home;
-    } else {
-      homeMaster = Home.empty();
-    }
-
-    String title;
-    if (choice) {
-      title = editTitle;
-    } else {
-      title = newTitle;
-    }
-    return Scaffold(
-      body: _EditHome(
-        title: title,
-      ),
-    );
-  }
-}
-
-class _EditHome extends StatefulWidget {
-  String title;
-  _EditHome({this.title});
-  @override
-  _EditHomeState createState() => _EditHomeState(title: title);
-}
-
-class _EditHomeState extends State<_EditHome> {
-  String title;
-  _EditHomeState({this.title});
-
-  String newName;
-  final _nameController = TextEditingController();
-
-  final _placeNameController = TextEditingController();
-  final _placeDescrController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    if (choiceMaster) {
-      _nameController.text = homeMaster.name;
-    }
-    _placeNameController.text = '';
-    _placeDescrController.text = '';
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Form(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.fromLTRB(10, 10, 10, 1),
-            child: Text(
-              'Home\'s name: ',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(10, 1, 10, 10),
-            child: TextField(
-              decoration: InputDecoration(
-                  hintText: 'Enter a name for your Home',
-                  border: OutlineInputBorder()),
-              controller: _nameController,
-              onChanged: (name) {
-                name = _nameController.text.toString();
-                homeMaster.name = name;
-              },
-            ),
-          ),
-          /*
-          Container(
-              padding: EdgeInsets.fromLTRB(10, 1, 10, 0),
-              child: Row(
-                children: [
-                  Text(
-                    'Home\'s places ',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  ActionChip(
-                      label: Text('+'),
-                      onPressed: () {
-                        Place place = new Place.empty();
-                        return dialogAddPlace(context, place);
-                      }),
-                ],
-              )),
-          Container(
-            height: 220,
-            margin: EdgeInsets.all(10),
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                border: Border.all(
-                  color: Colors.blue[300],
-                  width: 5,
-                )),
-            child: Column(children: [
-              Expanded(
-                  child: ListView.builder(
-                itemCount: homeMaster.places.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => ListTile(
-                  title: homeMaster.places.isEmpty
-                      ? Text('default')
-                      : Container(
-                          child: Row(children: [
-                          Icon(Icons.arrow_right),
-                          Text(homeMaster.places[index].name),
-                        ])),
-                ),
-              ))
-            ]),
-          ),*/
-        ],
-      )),
-      floatingActionButton: ButtonBar(
-        children: <Widget>[
-          FloatingActionButton(
-            backgroundColor: Colors.grey,
-            heroTag: "btn1",
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back),
-          ),
-          /*
-          FloatingActionButton(
-            heroTag: "btn2",
-            onPressed: () {
-              if (!choiceMaster) {
-                data.homes.add(homeMaster);
-              } else {
-                data.homes
-                    .firstWhere((home) => home == homeMaster)
-                    .items
-                    .forEach((item) {
-                  item.homeName = homeMaster.name;
-                });
-              }
-              Database.save();
-              Navigator.pushReplacementNamed(context, '/homepage');
-            },
-            child: Icon(
-              Icons.check,
-            ),
-          ),*/
-        ],
-      ),
-    );
-  }
-
-  Future dialogAddPlace(BuildContext context, Place place) {
-    return showDialog(
-        //TODO mettere verifica campo vuoto
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Container(
-              height: 180,
-              width: 400,
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    child: Text(
-                      'Create a place',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          hintText: 'Place\'s name',
-                          border: OutlineInputBorder()),
-                      controller: _placeNameController,
-                      onChanged: (name) {
-                        name = _placeNameController.text.toString();
-                        place.name = name;
-                      },
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          hintText: 'Place\'s description',
-                          border: OutlineInputBorder()),
-                      controller: _placeDescrController,
-                      onChanged: (descr) {
-                        descr = _placeDescrController.text.toString();
-                        place.description = descr;
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              ElevatedButton(
-                  onPressed: () {
-                    _placeNameController.text = '';
-                    _placeDescrController.text = '';
-                    Navigator.pop(context);
-                  },
-                  child: Text('Cancel')),
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      homeMaster.places.add(place);
-                      _placeNameController.text = '';
-                      _placeDescrController.text = '';
-                      Navigator.pop(context);
-                    });
-                  },
-                  child: Text('Save')),
-            ],
-          );
-        });
-  }
-}
-*/
 }

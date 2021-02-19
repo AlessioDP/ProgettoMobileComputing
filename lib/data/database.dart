@@ -19,8 +19,6 @@ class Database {
     await _preferences.setString("loggedUser", jsonEncode(loggedUser));
 
     load();
-    print("Saved data:");
-    print(data.homes[0].childs);
   }
 
   static Future load() async {

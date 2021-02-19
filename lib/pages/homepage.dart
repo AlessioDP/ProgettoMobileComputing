@@ -1,23 +1,9 @@
-import 'package:SearchIt/data/objects.dart';
 import 'package:SearchIt/routes.dart';
 import 'package:SearchIt/widgets/objects_container.dart';
 import 'package:SearchIt/widgets/side_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:SearchIt/widgets/add_floating_button.dart';
-import 'package:SearchIt/data/database.dart';
-import 'dart:developer';
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
-import 'package:flutter_launcher_icons/android.dart';
 
-//Si deve salvare lo stato alla chiusura dell'app così l'utente si ritroverà l'interfaccia con cui ha chiuso l'app
-/*int status = 0;
-bool choice = false;
-Item itemToEdit;
-Home homeToEdit;
-Item itemToDisplay;
-Home homeToDisplay;
-int sortedItem = -1;
-int sortedHome = -1;*/
 
 class Homepage extends StatefulWidget {
   Homepage({Key key}) : super(key: key);
@@ -27,16 +13,19 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  bool _isItemsPage; //TODO if null the app doesn't run
+  bool _userChoise = false;
+  bool _isItemsPage = false;
 
   void showHomes() {
     setState(() {
+      _userChoise = true;
       _isItemsPage = false;
     });
   }
 
   void showItems() {
     setState(() {
+      _userChoise = true;
       _isItemsPage = true;
     });
   }
@@ -44,7 +33,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     final HomepageArguments args = ModalRoute.of(context).settings.arguments;
-    if (_isItemsPage == null && args != null) {
+    if (!_userChoise && args != null) {
       // Args can be null if this widget is loaded directly
       _isItemsPage = args.itemsPage;
     }

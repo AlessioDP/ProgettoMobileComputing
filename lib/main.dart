@@ -1,9 +1,7 @@
 import 'package:SearchIt/pages/edit_home.dart';
 import 'package:SearchIt/pages/edit_item.dart';
 import 'package:SearchIt/pages/settings.dart';
-import 'package:SearchIt/pages/view_home.dart';
 import 'package:SearchIt/pages/view_item.dart';
-import 'package:SearchIt/pages/view_place.dart';
 import 'package:SearchIt/widgets/objects_selections.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/pages/homepage.dart';
