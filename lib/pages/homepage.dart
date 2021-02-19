@@ -36,9 +36,8 @@ class _HomepageState extends State<Homepage> {
       // Args can be null if this widget is loaded directly
       _isItemsPage = args.itemsPage;
     }
-    print("building homepage");
     return EditObjectContainer(
-      title: _isItemsPage ? 'ItemPage' : 'Homepage',
+      title: 'Homepage',
       indexes: _isItemsPage ? null : [],
       //  objects: _isItemsPage ? getAllItems() : data.homes,
       drawer: sideBar(context,

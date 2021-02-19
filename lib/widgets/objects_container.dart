@@ -70,6 +70,10 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
       childs = data.homes;
     }
 
+    if (_isSearching && !isItemPage)
+      _isSearching = false;
+
+
     if (_isSearching && _searchText.isNotEmpty) {
       List<ListedObject> oldChilds = childs;
       childs = [];
@@ -112,9 +116,14 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                     color: Colors.white,
                   ),
                   decoration: new InputDecoration(
-                      prefixIcon: new Icon(Icons.search, color: Colors.white),
+                      //prefixIcon: new Icon(Icons.search, color: Colors.white),
                       hintText: "Search...",
-                      hintStyle: new TextStyle(color: Colors.white)),
+                      hintStyle: new TextStyle(color: Colors.white),
+                      fillColor: Colors.yellow,
+                  ),
+                  cursorColor: Colors.white,
+                  textCapitalization: TextCapitalization.sentences,
+                  autofocus: true,
                   onChanged: (search) {
                     search = _searchController.text.toString();
 
@@ -225,7 +234,8 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                       })
                 ]
               : <Widget>[
-                  IconButton(
+                  isItemPage
+                  ? IconButton(
                     icon: new Icon(
                       _isSearching ? Icons.close : Icons.search,
                       color: Colors.white,
@@ -239,7 +249,8 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                         }
                       });
                     },
-                  ),
+                  )
+                  : Icon(null),
                   isItemPage
                       ? IconButton(
                           icon: Icon(Icons.sort),
@@ -248,8 +259,8 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                               context: context,
                               builder: (context) {
                                 List<String> sortListItem = [
-                                  'Item\'s name (A-Z)',
-                                  'Home\' name'
+                                  'By item name (A-Z)',
+                                  'By home/container'
                                 ];
                                 return AlertDialog(
                                     content: Container(

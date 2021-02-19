@@ -75,6 +75,9 @@ class _EditItemState extends State<EditItem> {
                   errorText: _validName ? null : 'You must insert a valid name',
                 ),
                 controller: _nameController,
+                autofocus: true,
+                textCapitalization: TextCapitalization.sentences,
+                textInputAction: TextInputAction.next,
                 onChanged: (name) {
                   name = _nameController.text.toString();
                 },
@@ -93,6 +96,8 @@ class _EditItemState extends State<EditItem> {
                 decoration: InputDecoration(
                     labelText: 'Description', border: OutlineInputBorder()),
                 controller: _descriptionController,
+                textCapitalization: TextCapitalization.sentences,
+                textInputAction: TextInputAction.done,
                 onChanged: (description) {
                   description = _descriptionController.text.toString();
                 },
