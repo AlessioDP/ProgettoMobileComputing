@@ -14,7 +14,7 @@ class LoginPage extends StatelessWidget {
 
     final widgetTitle = Center(
         child: Padding(
-            padding: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.only(bottom: 100),
             child: Text('SearchIt',
                 style: TextStyle(
                   fontSize: 35,
@@ -28,6 +28,7 @@ class LoginPage extends StatelessWidget {
           child: Text('Sign in',
               style: TextStyle(color: Colors.white, fontSize: 20)),
           color: Colors.grey[700],
+          padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50)),
           onPressed: () {
@@ -41,16 +42,22 @@ class LoginPage extends StatelessWidget {
         height: 56,
         child: FlatButton(
             child: Text('Sign in as Guest',
-                style: TextStyle(color: Colors.black, fontSize: 16)),
+                style: TextStyle(color: Colors.grey[600], fontSize: 16)),
+            padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50)),
             onPressed: () {
               _loginAnonymous(context);
             }));
 
-    return SafeArea(
-      child: Scaffold(
-        body: Center(
-          child: Column(
-            children: [widgetLogo, widgetTitle, widgetLoginGoogle, widgetLoginAnon],
+    return Scaffold(
+      body: SafeArea(
+        child: Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [widgetLogo, widgetTitle, widgetLoginGoogle, widgetLoginAnon],
+            )
           )
         )
       )

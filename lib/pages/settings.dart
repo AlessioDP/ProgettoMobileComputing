@@ -21,7 +21,7 @@ class _SettingsPageState extends State<SettingsPage> {
         title: "Settings",
         children: [
           SettingsGroup(
-            title: 'Single Choice Settings',
+            title: 'Data Settings',
             children: <Widget>[
               SimpleSettingsTile(
                 title: "Import data",
