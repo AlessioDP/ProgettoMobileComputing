@@ -76,9 +76,7 @@ Drawer sideBar(BuildContext context, {SidebarButton selectedButton}) {
 }
 
 void _actionHomes(BuildContext context) {
-  print("Home?");
-  Navigator.pushReplacementNamed(context, '/homepage',
-      arguments: HomepageArguments(false));
+  Navigator.pushReplacementNamed(context, '/homepage', arguments: HomepageArguments(false));
 }
 
 void _actionItems(BuildContext context) {
@@ -87,11 +85,10 @@ void _actionItems(BuildContext context) {
 }
 
 void _actionSettings(BuildContext context) {
-  // TODO - Implement settings page
+  Navigator.pushNamed(context, '/settings');
 }
 
 void _actionSignOut(BuildContext context) {
-  print("Signed out?");
   authSignOut();
   Navigator.pushReplacementNamed(context, '/login');
 }

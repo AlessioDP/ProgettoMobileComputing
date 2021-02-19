@@ -1,5 +1,6 @@
 import 'package:SearchIt/pages/edit_home.dart';
 import 'package:SearchIt/pages/edit_item.dart';
+import 'package:SearchIt/pages/settings.dart';
 import 'package:SearchIt/pages/view_home.dart';
 import 'package:SearchIt/pages/view_item.dart';
 import 'package:SearchIt/pages/view_place.dart';
@@ -12,6 +13,7 @@ import 'package:SearchIt/data/database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -23,6 +25,7 @@ void main() async {
   ]);
   await Database.init();
   await Database.load();
+  await Settings.init();
 
   runApp(ChangeNotifierProvider(
       create: (context) => ObjectSelections(), child: App()));
@@ -50,6 +53,7 @@ class App extends StatelessWidget {
           //'/view_home': (context) => ViewHome(),
           //'/view_place': (context) => ViewPlace(),
 
+          '/settings': (context) => SettingsPage(),
           //'/home': (context) => null,
           //'/home/edit': (context) => null,
           //'/item': (context) => null,

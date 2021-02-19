@@ -219,7 +219,7 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
             selected: objectSelections.contains(widget.objects[index]),
             leading: Icon(widget.objects[index] is Home
                 ? Icons.home
-                : ((widget.objects[index] as Item).place
+                : ((widget.objects[index] as Item).isPlace()
                     ? Icons.folder
                     : Icons.article)),
             title: Row(children: [

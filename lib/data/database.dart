@@ -16,7 +16,7 @@ class Database {
 
 
   static Future save() async {
-    await _preferences.setString("data", jsonEncode(data));
+    await _preferences.setString("data", dataToJson(data));
     await _preferences.setString("loggedUser", jsonEncode(loggedUser));
 
     load();
@@ -24,8 +24,16 @@ class Database {
 
   static Future load() async {
     if (_preferences.getString("data") != null)
-      data = Data.fromJson(jsonDecode(_preferences.getString("data")));
+      data = dataFromJson(_preferences.getString("data"));
     if (_preferences.getString("loggedUser") != null)
       loggedUser = LoggedUser.fromJson(jsonDecode(_preferences.getString("loggedUser")));
+  }
+
+  static Data dataFromJson(String json) {
+    return Data.fromJson(jsonDecode(json));
+  }
+
+  static String dataToJson(Data data) {
+    return jsonEncode(data);
   }
 }
