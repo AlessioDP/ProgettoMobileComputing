@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:SearchIt/data/database.dart';
 import 'package:SearchIt/routes.dart';
 import 'package:SearchIt/widgets/objects_selections.dart';
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:SearchIt/data/objects.dart';
-import 'package:SearchIt/widgets/side_bar.dart';
 import 'package:provider/provider.dart';
 
 class EditObjectContainer extends StatefulWidget {
@@ -73,7 +70,7 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
       childs = data.homes;
     }
 
-    if (_isSearching && !_searchText.isEmpty) {
+    if (_isSearching && _searchText.isNotEmpty) {
       List<ListedObject> oldChilds = childs;
       childs = [];
       oldChilds.forEach((child) {
@@ -128,7 +125,6 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
               : Text(widget.title),
           actions: objectSelections.isSelectionMode()
               ? <Widget>[
-                  // TODO - Check if count == 1
                   IconButton(
                       icon: (objectSelections.count() == 1)
                           ? Icon(Icons.edit)
@@ -186,22 +182,36 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                                       child: Text('No')),
                                   ElevatedButton(
                                       onPressed: () {
-                                        if (parent != null) {
-                                          objectSelections.objects
-                                              .forEach((element) {
-                                            parent.getChilds().remove(element);
+                                        if (isItemPage) {
+                                          var toDelete = [];
+                                          objectSelections.objects.forEach((lo) {
+                                            toDelete.add({
+                                              "parent": Data.getParentOfIndex(childsParents[lo]),
+                                              "child": lo,
+                                            });
+                                          });
+
+                                          toDelete.forEach((element) {
+                                            element['parent'].getChilds().remove(element['child']);
                                           });
                                         } else {
-                                          objectSelections.objects
-                                              .forEach((element) {
-                                            data.homes.remove(element);
-                                          });
+                                          if (parent != null) {
+                                            objectSelections.objects
+                                                .forEach((element) {
+                                              parent.getChilds().remove(element);
+                                            });
+                                          } else {
+                                            objectSelections.objects
+                                                .forEach((element) {
+                                              data.homes.remove(element);
+                                            });
+                                          }
                                         }
                                         objectSelections.removeAll();
                                         Database.save();
                                         Navigator.pop(context);
                                       },
-                                      child: Text('yes'))
+                                      child: Text('Yes'))
                                 ],
                               );
                             });
@@ -225,7 +235,7 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                   ),
                   isItemPage
                       ? IconButton(
-                          icon: Icon(Icons.sort), //TODO
+                          icon: Icon(Icons.sort),
                           onPressed: () {
                             return showDialog(
                               context: context,
@@ -281,7 +291,6 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
               objectSelections.toggle(childs[index]);
             },
             onTap: () {
-              //setState(() {
               if (objectSelections.isSelectionMode()) {
                 objectSelections.toggle(childs[index]);
               } else {
@@ -302,7 +311,6 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                           [...(widget.indexes ?? []), index]));
                 }
               }
-              //});
             },
             selected: objectSelections.contains(childs[index]),
             leading: Icon(childs[index] is Home
