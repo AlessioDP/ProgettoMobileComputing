@@ -40,10 +40,13 @@ class ViewItem extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            ' ' + args.item.name,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 40),
+                          Text( args.item.name,
+                            style: TextStyle( 
+                                fontWeight: FontWeight.bold, fontSize: 40,
+                                foreground: Paint()
+                                  ..style = PaintingStyle.fill
+                                  ..strokeWidth = 0.5
+                                  ..color = Colors.blue[700],),
                           ),
                         ],
                       ),
@@ -59,6 +62,7 @@ class ViewItem extends StatelessWidget {
                               style: TextStyle(
                                 color: Colors.grey[700],
                                 fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.italic,
                                 fontSize: 20
                               )
                             )
@@ -68,28 +72,38 @@ class ViewItem extends StatelessWidget {
                     ),
                     Container(
                       padding: EdgeInsets.only(top: 30),
-                      child: Text('Location:',
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.home_outlined, size: 25,),
+                          Text(' Location:',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 20))
+                                  fontWeight: FontWeight.w800, fontSize: 20))
                                   
-                    ),
+                      ]),),
                     Flexible(
                         child: Text(
                           _generateLocationName(parent, args.indexParent),
                           style: TextStyle(
-                              fontWeight: FontWeight.w100, fontSize: 20)),
+                              fontWeight: FontWeight.w200, fontSize: 20)),
                     ),
                     Container(
-                      padding: EdgeInsets.only(top: 30),
-                      child: Text('Quantity:',
+                       padding: EdgeInsets.only(top: 30),
+                         child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                           Icon(Icons.format_list_numbered_outlined, size: 20,),
+                          Text(' Quantity:',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 20))
+                                  fontWeight: FontWeight.w800, fontSize: 20))
                                   
-                    ),
+                    ]),),
                     Container(
                       child: Text(args.item.quantity.toString(),
                               style: TextStyle(
-                                  fontWeight: FontWeight.w100, fontSize: 20))
+                                  fontWeight: FontWeight.w200, fontSize: 20))
                                   
                     ),
                   ],
