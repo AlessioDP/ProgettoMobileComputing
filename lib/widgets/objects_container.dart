@@ -80,7 +80,8 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
     }
 
     if (sort == 0) {
-      childs.sort((a, b) => a.getName().compareTo(b.getName()));
+      childs.sort((a, b) =>
+          a.getName().toLowerCase().compareTo(b.getName().toLowerCase()));
     } else if (sort == 1) {
       childs.reversed.toList();
     }
@@ -184,21 +185,27 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                                       onPressed: () {
                                         if (isItemPage) {
                                           var toDelete = [];
-                                          objectSelections.objects.forEach((lo) {
+                                          objectSelections.objects
+                                              .forEach((lo) {
                                             toDelete.add({
-                                              "parent": Data.getParentOfIndex(childsParents[lo]),
+                                              "parent": Data.getParentOfIndex(
+                                                  childsParents[lo]),
                                               "child": lo,
                                             });
                                           });
 
                                           toDelete.forEach((element) {
-                                            element['parent'].getChilds().remove(element['child']);
+                                            element['parent']
+                                                .getChilds()
+                                                .remove(element['child']);
                                           });
                                         } else {
                                           if (parent != null) {
                                             objectSelections.objects
                                                 .forEach((element) {
-                                              parent.getChilds().remove(element);
+                                              parent
+                                                  .getChilds()
+                                                  .remove(element);
                                             });
                                           } else {
                                             objectSelections.objects
@@ -336,7 +343,8 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                 ? ((objectSelections.contains(childs[index]))
                     ? Icon(Icons.check_box)
                     : Icon(Icons.check_box_outline_blank))
-                : (childs[index].getColor() != null && childs[index].getColor() != "ffffffff"
+                : (childs[index].getColor() != null &&
+                        childs[index].getColor() != "ffffffff"
                     ? Icon(Icons.circle,
                         color: Color(
                             int.parse(childs[index].getColor(), radix: 16)))
