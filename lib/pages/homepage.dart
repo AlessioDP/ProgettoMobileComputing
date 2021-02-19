@@ -4,7 +4,6 @@ import 'package:SearchIt/widgets/side_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 
-
 class Homepage extends StatefulWidget {
   Homepage({Key key}) : super(key: key);
 
@@ -37,6 +36,7 @@ class _HomepageState extends State<Homepage> {
       // Args can be null if this widget is loaded directly
       _isItemsPage = args.itemsPage;
     }
+    print("building homepage");
     return EditObjectContainer(
       title: _isItemsPage ? 'ItemPage' : 'Homepage',
       indexes: _isItemsPage ? null : [],

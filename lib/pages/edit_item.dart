@@ -43,7 +43,7 @@ class _EditItemState extends State<EditItem> {
     if (_quantityController == null)
       _quantityController =
           TextEditingController(text: item?.quantity.toString());
-    checkBoxValue = item.place;
+    checkBoxValue = item?.place ?? false;
     Color pickerColor = savedColor ??
         (item != null
             ? Color(int.parse(item.color, radix: 16))
@@ -89,8 +89,7 @@ class _EditItemState extends State<EditItem> {
               padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextField(
                 decoration: InputDecoration(
-                    labelText: 'Description',
-                    border: OutlineInputBorder()),
+                    labelText: 'Description', border: OutlineInputBorder()),
                 controller: _descriptionController,
                 onChanged: (description) {
                   description = _descriptionController.text.toString();
@@ -98,13 +97,12 @@ class _EditItemState extends State<EditItem> {
               ),
             ),
             Container(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Center(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                      Row(children: [
                         Container(
                           padding: EdgeInsets.fromLTRB(0, 5, 5, 0),
                           child: Text(
@@ -125,60 +123,54 @@ class _EditItemState extends State<EditItem> {
                             },
                           ),
                         ),
-                      ]
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          child: Text(
-                            'Place:',
-                            style:
-                                TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ]),
+                      Row(
+                        children: [
+                          Container(
+                            child: Text(
+                              'Place:',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
                           ),
-                        ),
-                        Container(
-                          child: Checkbox(
-                              value: checkBoxValue,
-                              activeColor: Colors.blue,
-                              onChanged: (bool newValue) {
-                                setState(() {
-                                  checkBoxValue = newValue;
+                          Container(
+                            child: Checkbox(
+                                value: checkBoxValue,
+                                activeColor: Colors.blue,
+                                onChanged: (bool newValue) {
+                                  setState(() {
+                                    checkBoxValue = newValue;
+                                  });
+                                }),
+                          ),
+                        ],
+                      ),
+                      RaisedButton(
+                          elevation: 2.0,
+                          child: Text('Color'),
+                          color: pickerColor,
+                          textColor: useWhiteForeground(pickerColor)
+                              ? const Color(0xffffffff)
+                              : const Color(0xff000000),
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    titlePadding: const EdgeInsets.all(0.0),
+                                    contentPadding: const EdgeInsets.all(0.0),
+                                    content: SingleChildScrollView(
+                                      child: ColorPicker(
+                                        pickerColor: pickerColor,
+                                        onColorChanged: changeColor,
+                                        showLabel: true,
+                                        pickerAreaHeightPercent: 0.8,
+                                      ),
+                                    ),
+                                  );
                                 });
-                              }),
-                        ),
-                      ],
-                    ),
-                    RaisedButton(
-                      elevation: 2.0,
-                      child: Text('Color'),
-                      color: pickerColor,
-                      textColor: useWhiteForeground(pickerColor)
-                          ? const Color(0xffffffff)
-                          : const Color(0xff000000),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              titlePadding: const EdgeInsets.all(0.0),
-                              contentPadding: const EdgeInsets.all(0.0),
-                              content: SingleChildScrollView(
-                                child: ColorPicker(
-                                  pickerColor: pickerColor,
-                                  onColorChanged: changeColor,
-                                  showLabel: true,
-                                  pickerAreaHeightPercent: 0.8,
-                                ),
-                              ),
-                            );
-                          }
-                        );
-                      }
-                    )
-                  ]
-                )
-              )
-            )
+                          })
+                    ])))
           ],
         ),
       ),

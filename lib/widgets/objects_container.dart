@@ -42,22 +42,33 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
   Map childsParents;
   var sort;
 
+  var isItemPage = false;
+
   @override
   Widget build(BuildContext context) {
     ObjectSelections objectSelections = Provider.of<ObjectSelections>(context);
-    print(widget.indexes);
+    childsParents = new Map();
+    log(widget.title);
+    log(widget.key.toString());
+    log(widget.indexes.toString());
     if (widget.indexes == null) {
+      isItemPage = true;
       childs = [];
-      childsParents = new Map();
 
       Data.getAllItems().forEach((element) {
         childs.add(element["item"]);
         childsParents[element["item"]] = element["index"];
       });
     } else if (widget.indexes.length > 0) {
+      isItemPage = false;
       parent = Data.getObjectAtIndex(widget.indexes);
       childs = parent.getChilds();
+
+      for (int c = 0; c < childs.length; c++) {
+        childsParents[childs[c]] = c;
+      }
     } else {
+      isItemPage = false;
       childs = data.homes;
     }
 
@@ -109,9 +120,16 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                             }
                           });
                         else if (lo is Item) {
-                          List<int> parentIndex =
-                              new List.of(childsParents[lo]);
-                          int itemIndex = parentIndex.removeLast();
+                          List<int> parentIndex;
+                          int itemIndex;
+                          if (isItemPage) {
+                            parentIndex = new List.of(childsParents[lo]);
+                            itemIndex = parentIndex.removeLast();
+                          } else {
+                            parentIndex = widget.indexes;
+                            itemIndex = childsParents[lo];
+                          }
+
                           Navigator.pushNamed(context, '/edit_item',
                                   arguments:
                                       EditItemArguments(parentIndex, itemIndex))
@@ -163,7 +181,7 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                 ]
               : <Widget>[
                   IconButton(
-                      icon: childs is Item ? null : Icon(Icons.sort), //TODO
+                      icon: isItemPage ? Icon(Icons.sort) : Icon(null), //TODO
                       onPressed: () {
                         return showDialog(
                           context: context,
@@ -238,25 +256,28 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
               objectSelections.toggle(childs[index]);
             },
             onTap: () {
-              setState(() {
-                if (objectSelections.isSelectionMode()) {
-                  objectSelections.toggle(childs[index]);
-                } else {
-                  if (childs[index] is Item &&
-                      !((childs[index] as Item).isPlace())) {
-                    List<int> parentIndex =
-                        new List.of(childsParents[childs[index]]);
-                    parentIndex.removeLast();
-                    Navigator.pushNamed(context, '/view_item',
-                        arguments:
-                            ViewItemArguments(parentIndex, childs[index]));
+              //setState(() {
+              if (objectSelections.isSelectionMode()) {
+                objectSelections.toggle(childs[index]);
+              } else {
+                if (childs[index] is Item &&
+                    !((childs[index] as Item).isPlace())) {
+                  List<int> parentIndex;
+                  if (isItemPage) {
+                    parentIndex = new List.of(childsParents[childs[index]]);
                   } else {
-                    Navigator.pushNamed(context, '/itempage',
-                        arguments:
-                            ItempageArguments([...widget.indexes, index]));
+                    parentIndex = widget.indexes;
                   }
+
+                  Navigator.pushNamed(context, '/view_item',
+                      arguments: ViewItemArguments(parentIndex, childs[index]));
+                } else {
+                  Navigator.pushNamed(context, '/itempage',
+                      arguments: ItempageArguments(
+                          [...(widget.indexes ?? []), index]));
                 }
-              });
+              }
+              //});
             },
             selected: objectSelections.contains(childs[index]),
             leading: Icon(childs[index] is Home
