@@ -38,12 +38,4 @@ class Database {
   static String dataToJson(Data data) {
     return jsonEncode(data);
   }
-
-  static Data dataFromJson(String json) {
-    return Data.fromJson(jsonDecode(json));
-  }
-
-  static String dataToJson(Data data) {
-    return jsonEncode(data);
-  }
 }
