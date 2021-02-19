@@ -23,6 +23,8 @@ class _EditHomeState extends State<EditHome> {
   TextEditingController _descriptionController;
   Color savedColor;
 
+  bool _validName = true;
+
   void changeColor(Color color) {
     setState(() => savedColor = color);
   }
@@ -60,11 +62,16 @@ class _EditHomeState extends State<EditHome> {
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
             child: TextField(
               decoration: InputDecoration(
-                  hintText: 'Enter a name', border: OutlineInputBorder()),
+                labelText: 'Name',
+                border: OutlineInputBorder(),
+                errorText: _validName ? null : 'You must insert a valid name',
+              ),
               controller: _nameController,
               onChanged: (name) {
                 name = _nameController.text.toString();
               },
+
+              
             ),
           ),
           Container(
@@ -78,8 +85,9 @@ class _EditHomeState extends State<EditHome> {
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
             child: TextField(
               decoration: InputDecoration(
-                  hintText: 'Enter a description',
-                  border: OutlineInputBorder()),
+                labelText: 'Description',
+                border: OutlineInputBorder()
+              ),
               controller: _descriptionController,
               onChanged: (name) {
                 name = _descriptionController.text.toString();
@@ -88,9 +96,10 @@ class _EditHomeState extends State<EditHome> {
           ),
           Container(
             padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
-            child: RaisedButton(
+            child: Center(
+              child: RaisedButton(
               elevation: 2.0,
-              child: Text('Color'),
+              child: Text('Set a color'),
               color: pickerColor,
               textColor: useWhiteForeground(pickerColor)
                   ? const Color(0xffffffff)
@@ -116,13 +125,18 @@ class _EditHomeState extends State<EditHome> {
               }
             )
           )
-        ],
-      )),
+        )
+      ])),
       floatingActionButton: ButtonBar(
         children: <Widget>[
           FloatingActionButton(
             heroTag: "btn1",
             onPressed: () {
+              if (_nameController.text.isEmpty) {
+                setState(() => _validName = false);
+                return;
+              }
+
               if (home == null) {
                 home = Home.empty();
                 data.homes.add(home);

@@ -24,6 +24,8 @@ class _EditItemState extends State<EditItem> {
   Color savedColor;
   var checkBoxValue = false;
 
+  bool _validName = true;
+
   void changeColor(Color color) {
     setState(() => savedColor = color);
   }
@@ -32,23 +34,20 @@ class _EditItemState extends State<EditItem> {
   Widget build(BuildContext context) {
     final EditItemArguments args = ModalRoute.of(context).settings.arguments;
 
-    print("==");
-    print(args.indexParent);
-    print(args.indexItem);
-    print("==");
     parent = Data.getObjectAtIndex(args.indexParent);
     item = args.indexItem != null ? parent.getChilds()[args.indexItem] : null;
     if (_nameController == null)
       _nameController = TextEditingController(text: item?.name);
     if (_descriptionController == null)
       _descriptionController = TextEditingController(text: item?.description);
+    if (_quantityController == null)
+      _quantityController =
+          TextEditingController(text: item?.quantity.toString());
+    checkBoxValue = item.place;
     Color pickerColor = savedColor ??
         (item != null
             ? Color(int.parse(item.color, radix: 16))
             : Color(0xffffffff));
-    if (_quantityController == null)
-      _quantityController =
-          TextEditingController(text: item?.quantity.toString());
 
     return Scaffold(
       appBar: AppBar(
@@ -61,7 +60,7 @@ class _EditItemState extends State<EditItem> {
             Container(
               padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
               child: Text(
-                'Item\'s name: ',
+                'Name: ',
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
             ),
@@ -69,8 +68,10 @@ class _EditItemState extends State<EditItem> {
               padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextField(
                 decoration: InputDecoration(
-                    hintText: 'Enter a name for your Item',
-                    border: OutlineInputBorder()),
+                  labelText: 'Name',
+                  border: OutlineInputBorder(),
+                  errorText: _validName ? null : 'You must insert a valid name',
+                ),
                 controller: _nameController,
                 onChanged: (name) {
                   name = _nameController.text.toString();
@@ -80,7 +81,7 @@ class _EditItemState extends State<EditItem> {
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
               child: Text(
-                'Item\'s description: ',
+                'Description: ',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
@@ -88,7 +89,7 @@ class _EditItemState extends State<EditItem> {
               padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextField(
                 decoration: InputDecoration(
-                    hintText: 'Enter a description for your Item',
+                    labelText: 'Description',
                     border: OutlineInputBorder()),
                 controller: _descriptionController,
                 onChanged: (description) {
@@ -97,90 +98,65 @@ class _EditItemState extends State<EditItem> {
               ),
             ),
             Container(
-                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.fromLTRB(0, 5, 5, 0),
-                      child: Text(
-                        'Item\'s quantity: ',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      child: DropdownButton(
-                        value: int.tryParse(_quantityController.text) ?? 1,
-                        items: [
-                          DropdownMenuItem(
-                            child: Text('1'),
-                            value: 1,
-                          ),
-                          DropdownMenuItem(
-                            child: Text('2'),
-                            value: 2,
-                          ),
-                          DropdownMenuItem(
-                            child: Text('3'),
-                            value: 3,
-                          ),
-                          DropdownMenuItem(
-                            child: Text('4'),
-                            value: 4,
-                          ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            _quantityController.text = value.toString();
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                )),
-            Container(
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: Row(
-                children: [
-                  Container(
-                    child: Text(
-                      'Is a place: ',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.fromLTRB(0, 5, 5, 0),
+                          child: Text(
+                            'Quantity:',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          child: DropdownButton(
+                            value: int.tryParse(_quantityController.text) ?? 1,
+                            items: _generateQuantity(),
+                            onChanged: (value) {
+                              setState(() {
+                                _quantityController.text = value.toString();
+                              });
+                            },
+                          ),
+                        ),
+                      ]
                     ),
-                  ),
-                  Container(
-                    child: Checkbox(
-                        value: checkBoxValue,
-                        activeColor: Colors.green,
-                        onChanged: (bool newValue) {
-                          setState(() {
-                            checkBoxValue = newValue;
-                          });
-                        }),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 1),
-              child: Text(
-                'Pick a color: ',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Container(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
-                child: RaisedButton(
-                    elevation: 2.0,
-                    child: Text('Color'),
-                    color: pickerColor,
-                    textColor: useWhiteForeground(pickerColor)
-                        ? const Color(0xffffffff)
-                        : const Color(0xff000000),
-                    onPressed: () {
-                      showDialog(
+                    Row(
+                      children: [
+                        Container(
+                          child: Text(
+                            'Place:',
+                            style:
+                                TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Container(
+                          child: Checkbox(
+                              value: checkBoxValue,
+                              activeColor: Colors.blue,
+                              onChanged: (bool newValue) {
+                                setState(() {
+                                  checkBoxValue = newValue;
+                                });
+                              }),
+                        ),
+                      ],
+                    ),
+                    RaisedButton(
+                      elevation: 2.0,
+                      child: Text('Color'),
+                      color: pickerColor,
+                      textColor: useWhiteForeground(pickerColor)
+                          ? const Color(0xffffffff)
+                          : const Color(0xff000000),
+                      onPressed: () {
+                        showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
@@ -195,8 +171,14 @@ class _EditItemState extends State<EditItem> {
                                 ),
                               ),
                             );
-                          });
-                    }))
+                          }
+                        );
+                      }
+                    )
+                  ]
+                )
+              )
+            )
           ],
         ),
       ),
@@ -205,9 +187,10 @@ class _EditItemState extends State<EditItem> {
           FloatingActionButton(
             heroTag: "btn1",
             onPressed: () async {
-              var a = data.homes[0].childs.length;
-              var b = Database.dataToJson(data).length;
-              print("Previous $a [$b]");
+              if (_nameController.text.isEmpty) {
+                setState(() => _validName = false);
+                return;
+              }
 
               if (item == null) {
                 item = Item.empty();
@@ -222,9 +205,6 @@ class _EditItemState extends State<EditItem> {
 
               await Database.save();
 
-              a = parent.getChilds().length;
-              b = Database.dataToJson(data).length;
-              print("New $a [$b]");
               Navigator.pop(context, true);
             },
             child: Icon(
@@ -234,5 +214,16 @@ class _EditItemState extends State<EditItem> {
         ],
       ),
     );
+  }
+
+  List _generateQuantity() {
+    List<DropdownMenuItem<int>> ret = [];
+    for (int i = 1; i <= 50; i++) {
+      ret.add(DropdownMenuItem(
+        child: Text(i.toString()),
+        value: i,
+      ));
+    }
+    return ret;
   }
 }
