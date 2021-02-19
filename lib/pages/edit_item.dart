@@ -22,7 +22,8 @@ class _EditItemState extends State<EditItem> {
   TextEditingController _descriptionController;
   TextEditingController _quantityController;
   Color savedColor;
-  var checkBoxValue = false;
+  bool checkBoxValue = false;
+  bool checkBoxChanged = false;
 
   bool _validName = true;
 
@@ -43,7 +44,8 @@ class _EditItemState extends State<EditItem> {
     if (_quantityController == null)
       _quantityController =
           TextEditingController(text: item?.quantity.toString());
-    checkBoxValue = item?.place ?? false;
+    if (!checkBoxChanged)
+      checkBoxValue = item?.place ?? false;
     Color pickerColor = savedColor ??
         (item != null
             ? Color(int.parse(item.color, radix: 16))
@@ -140,6 +142,7 @@ class _EditItemState extends State<EditItem> {
                                 onChanged: (bool newValue) {
                                   setState(() {
                                     checkBoxValue = newValue;
+                                    checkBoxChanged = true;
                                   });
                                 }),
                           ),
@@ -149,6 +152,7 @@ class _EditItemState extends State<EditItem> {
                           elevation: 2.0,
                           child: Text('Color'),
                           color: pickerColor,
+                          padding: EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
                           textColor: useWhiteForeground(pickerColor)
                               ? const Color(0xffffffff)
                               : const Color(0xff000000),

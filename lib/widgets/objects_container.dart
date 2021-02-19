@@ -346,7 +346,7 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                 ? ((objectSelections.contains(childs[index]))
                     ? Icon(Icons.check_box)
                     : Icon(Icons.check_box_outline_blank))
-                : (childs[index].getColor() != null
+                : (childs[index].getColor() != null && childs[index].getColor() != "ffffffff"
                     ? Icon(Icons.circle,
                         color: Color(
                             int.parse(childs[index].getColor(), radix: 16)))

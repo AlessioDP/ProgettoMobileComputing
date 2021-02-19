@@ -36,13 +36,10 @@ class ViewItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.all(9),
+                      padding: EdgeInsets.only(top: 9),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.arrow_right,
-                            size: 40,
-                          ),
                           Text(
                             ' ' + args.item.name,
                             style: TextStyle(
@@ -52,30 +49,48 @@ class ViewItem extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.only(bottom: 20),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Description: ',
+                          Flexible(
+                              child: Text(
+                              args.item.description,
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 20)),
-                          Text(args.item.description,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w100, fontSize: 20)),
+                                color: Colors.grey[700],
+                                fontWeight: FontWeight.w400,
+                                fontSize: 20
+                              )
+                            )
+                          )
                         ],
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(20),
-                      child: Row(
-                        children: [
-                          Text('Location: ',
+                      padding: EdgeInsets.only(top: 30),
+                      child: Text('Location:',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 20)),
-                          Text(parent.getName(),
+                                  fontWeight: FontWeight.w400, fontSize: 20))
+                                  
+                    ),
+                    Flexible(
+                        child: Text(
+                          _generateLocationName(parent, args.indexParent),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w100, fontSize: 20)),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 30),
+                      child: Text('Quantity:',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w100, fontSize: 20)),
-                        ],
-                      ),
+                                  fontWeight: FontWeight.w400, fontSize: 20))
+                                  
+                    ),
+                    Container(
+                      child: Text(args.item.quantity.toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w100, fontSize: 20))
+                                  
                     ),
                   ],
                 ),
@@ -85,5 +100,19 @@ class ViewItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _generateLocationName(ListedObject parent, List<int> indexParent) {
+    String ret = parent.getName();
+    List<int> newIndex = [...indexParent];
+
+    while(newIndex.length > 1) {
+      ListedObject biggerParent = Data.getParentOfIndex(newIndex);
+      if (biggerParent != null) {
+        ret = biggerParent.getName() + " > " + ret;
+      }
+      newIndex.removeLast();
+    }
+    return ret;
   }
 }

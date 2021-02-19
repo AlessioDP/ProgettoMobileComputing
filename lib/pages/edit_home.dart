@@ -95,33 +95,34 @@ class _EditHomeState extends State<EditHome> {
             ),
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
             child: Center(
               child: RaisedButton(
-              elevation: 2.0,
-              child: Text('Set a color'),
-              color: pickerColor,
-              textColor: useWhiteForeground(pickerColor)
-                  ? const Color(0xffffffff)
-                  : const Color(0xff000000),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      titlePadding: const EdgeInsets.all(0.0),
-                      contentPadding: const EdgeInsets.all(0.0),
-                      content: SingleChildScrollView(
-                        child: ColorPicker(
-                          pickerColor: pickerColor,
-                          onColorChanged: changeColor,
-                          showLabel: true,
-                          pickerAreaHeightPercent: 0.8,
+                elevation: 2.0,
+                child: Text('Set a color'),
+                color: pickerColor,
+                padding: EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
+                textColor: useWhiteForeground(pickerColor)
+                    ? const Color(0xffffffff)
+                    : const Color(0xff000000),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        titlePadding: const EdgeInsets.all(0.0),
+                        contentPadding: const EdgeInsets.all(0.0),
+                        content: SingleChildScrollView(
+                          child: ColorPicker(
+                            pickerColor: pickerColor,
+                            onColorChanged: changeColor,
+                            showLabel: true,
+                            pickerAreaHeightPercent: 0.8,
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                );
+                      );
+                    }
+                  );
               }
             )
           )
