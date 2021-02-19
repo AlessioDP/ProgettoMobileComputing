@@ -1,16 +1,10 @@
-# searchit
+# SearchIt
 
-A new Flutter project.
+Applicazione sviluppata con Flutter (1.26.0) per il corso **Mobile Computing** 2020-2021 (**Roma Tre** - uniroma3)
 
-## Getting Started
+<br>
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+_Sviluppata da:_
+- _Alessio "AlessioDP" De Pauli_
+- _Daniele "Gattsu98" Laino_
+- _Renzo "wodo96" Cuomo_
