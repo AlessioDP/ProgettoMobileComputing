@@ -44,13 +44,97 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
 
   var isItemPage = false;
 
+  Widget appBarTitle;
+  Icon icon = new Icon(
+    Icons.search,
+    color: Colors.white,
+  );
+
+  final globalKey = new GlobalKey<ScaffoldState>();
+  final TextEditingController _controller = new TextEditingController();
+  List<dynamic> _list;
+  bool _isSearching;
+  String _searchText = "";
+  List searchresult = [];
+
+  _EditObjectContainerState() {
+    _controller.addListener(() {
+      if (_controller.text.isEmpty) {
+        setState(() {
+          _isSearching = false;
+          _searchText = "";
+        });
+      } else {
+        setState(() {
+          _isSearching = true;
+          _searchText = _controller.text;
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _isSearching = false;
+    values();
+  }
+
+  void values() {
+    if (childs != null) {
+      for (int i = 0; i < childs.length; i++) {
+        _list.add(childs[i]);
+      }
+    } else {
+      _list = []; 
+    }
+  }
+
+  void _handleSearchStart() {
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void _handleSearchEnd() {
+    setState(() {
+      this.icon = new Icon(
+        Icons.search,
+        color: Colors.white,
+      );
+      this.appBarTitle = new Text(
+        widget.title,
+        style: new TextStyle(color: Colors.white),
+      );
+      _isSearching = false;
+      _controller.clear();
+    });
+  }
+
+  void searchOperation(String searchText) {
+    searchresult.clear();
+    if (_isSearching != null) {
+      for (int i = 0; i < _list.length; i++) {
+        String data = _list[i];
+        if (data.toLowerCase().contains(searchText.toLowerCase())) {
+          searchresult.add(data);
+        }
+      }
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     ObjectSelections objectSelections = Provider.of<ObjectSelections>(context);
+
     childsParents = new Map();
     log(widget.title);
     log(widget.key.toString());
     log(widget.indexes.toString());
+    
+    print(searchresult.length);
+
     if (widget.indexes == null) {
       isItemPage = true;
       childs = [];
@@ -97,7 +181,7 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                         Navigator.pop(context);
                       })
                   : null),
-          title: Text(widget.title),
+          title: appBarTitle,
           actions: objectSelections.isSelectionMode()
               ? <Widget>[
                   // TODO - Check if count == 1
@@ -181,7 +265,35 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                 ]
               : <Widget>[
                   IconButton(
-                      icon: isItemPage ? Icon(Icons.sort) : Icon(null), //TODO
+                    icon: icon,
+                    onPressed: () {
+                      setState(() {
+                        if (this.icon.icon == Icons.search) {
+                          this.icon = new Icon(
+                            Icons.close,
+                            color: Colors.white,
+                          );
+                          this.appBarTitle = new TextField(
+                            controller: _controller,
+                            style: new TextStyle(
+                              color: Colors.white,
+                            ),
+                            decoration: new InputDecoration(
+                                prefixIcon:
+                                    new Icon(Icons.search, color: Colors.white),
+                                hintText: "Search...",
+                                hintStyle: new TextStyle(color: Colors.white)),
+                            onChanged: searchOperation,
+                          );
+                          _handleSearchStart();
+                        } else {
+                          _handleSearchEnd();
+                        }
+                      });
+                    },
+                  ),
+                  IconButton(
+                      icon: childs is Item ? null : Icon(Icons.sort), //TODO
                       onPressed: () {
                         return showDialog(
                           context: context,
@@ -237,11 +349,38 @@ class _EditObjectContainerState extends State<EditObjectContainer> {
                       }),
                 ],
         ),
-        body: childs.length > 0
+        body: childs.length > 0 && _isSearching == false
             ? buildListObjects(objectSelections)
-            : Center(
-                child: Text("Press the + below to add " +
-                    (parent == null ? "a home" : "an item"))));
+            : childs.length > 0 && _isSearching == true
+                ? new Container(
+                    child: new Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        new Flexible(
+                            child: searchresult.length != 0 ||
+                                    _controller.text.isNotEmpty
+                                ? new ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: searchresult.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      String listData = searchresult[index];
+                                      return new ListTile(
+                                        title: new Text(listData.toString()),
+                                      );
+                                    },
+                                  )
+                                : Container(
+                                    padding: EdgeInsets.all(30),
+                                    child: Text("No search results"),
+                                  ))
+                      ],
+                    ),
+                  )
+                : Center(
+                    child: Text("Press the + below to add " +
+                        (parent == null ? "a home" : "an item"))));
   }
 
   Widget buildListObjects(ObjectSelections objectSelections) {
